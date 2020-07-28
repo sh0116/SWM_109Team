@@ -1,117 +1,216 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(MyApp());
+    runApp(MaterialApp(
+        title: 'test 109',
+        home: Scaffold(
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(title: Text('test 109')),
+            body: home(),
+        ),
+    ));
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class home extends StatefulWidget {
+  home({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _homeState createState() => _homeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class _homeState extends State<home> {
+  String userName = 'name';
+  String userGender = 'gender';
+  DateTime userBirthday = DateTime.now();
+  String userAddress = 'address';
+  String userContact = 'contact';
 
   @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
+  Widget build(BuildContext context){
+    return SingleChildScrollView(
+      child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            SizedBox(height: 20),
+            Text('[ Input user info ]', style: TextStyle(fontSize: 25)),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Name'),
+                Container(
+                  child: TextField(
+                    controller: TextEditingController(),
+                    style: TextStyle(fontSize: 21, color: Colors.black),
+                    textAlign: TextAlign.center,
+                    onChanged: (String str){
+                      userName = str;
+                    },
+                  ),
+                  width: 150,
+                  padding: EdgeInsets.only(left: 16),
+                )
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Gender'),
+                Container(
+                  height: 50,
+                  width: 100,
+                  child: ListTile(
+                    title: Text('F'),
+                    leading: Radio(
+                      value: 'F',
+                      groupValue: userGender,
+                      onChanged: (value){
+                        userGender = 'F';
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: 100,
+                  child: ListTile(
+                    title: Text('M'),
+                    leading: Radio(
+                      value: 'M',
+                      groupValue: userGender,
+                      onChanged: (value){
+                        userGender = 'M';
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Birthday'),
+                Container(
+                  child: RaisedButton(
+                    child: Text('show date picker'),
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: 150,
+                            padding: EdgeInsets.only(top: 6.0),
+                            color: CupertinoColors.white,
+                            child: DefaultTextStyle(
+                              style: const TextStyle(
+                                color: CupertinoColors.black,
+                                fontSize: 22.0,
+                              ),
+                              child: GestureDetector(
+                                // Blocks taps from propagating to the modal sheet and popping.
+                                onTap: () {},
+                                child: SafeArea(
+                                  top: false,
+                                  child: CupertinoDatePicker(
+                                    mode: CupertinoDatePickerMode.date,
+                                    initialDateTime: DateTime.now(),
+                                    onDateTimeChanged: (DateTime newDateTime) {
+                                      userBirthday = newDateTime;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  height: 40,
+                  padding: EdgeInsets.only(left: 16),
+                )
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Address'),
+                Container(
+                  child: TextField(
+                    controller: TextEditingController(),
+                    style: TextStyle(fontSize: 21, color: Colors.black),
+                    textAlign: TextAlign.center,
+                    onChanged: (String str){
+                      userAddress = str;
+                    },
+                  ),
+                  width: 150,
+                  padding: EdgeInsets.only(left: 16),
+                )
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Contact'),
+                Container(
+                  child: TextField(
+                    controller: TextEditingController(),
+                    style: TextStyle(fontSize: 21, color: Colors.black),
+                    textAlign: TextAlign.center,
+                    onChanged: (String str){
+                      userContact = str;
+                    },
+                  ),
+                  width: 150,
+                  padding: EdgeInsets.only(left: 16),
+                )
+              ],
+            ),
+            SizedBox(height: 50),
+            Container(
+              child: RaisedButton(
+                  child: Text('submit'),
+                  onPressed: () {
+                    setState(() {});
+                    final response = http.post('http://13.209.4.217:5555/user_info_post',
+                      body: jsonEncode(
+                        {
+                          'name': "'"+userName+"'",
+                          'gender': "'"+userGender+"'",
+                          'birth': "'"+userBirthday.toString().substring(0,10)+"'",
+                          'address': "'"+userAddress+"'",
+                          'contact': "'"+userContact+"'"
+                        },
+                      ),
+                      headers: {'Content-Type': "application/json"},
+                    );
+                  }
+              ),
+            ),
+            SizedBox(height: 50),
+            Text(userName),
+            SizedBox(height: 20),
+            Text(userGender),
+            SizedBox(height: 20),
+            Text(userBirthday.toString()),
+            SizedBox(height: 20),
+            Text(userAddress),
+            SizedBox(height: 20),
+            Text(userContact)
+          ]
+      )
     );
   }
 }
