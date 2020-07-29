@@ -5,26 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-    runApp(MaterialApp(
-        title: 'test 109',
-        home: Scaffold(
-            resizeToAvoidBottomPadding: false,
-            appBar: AppBar(title: Text('test 109')),
-            body: home(),
-        ),
-    ));
-}
-
-class home extends StatefulWidget {
-  home({Key key, this.title}) : super(key: key);
+class userInfo extends StatefulWidget {
+  userInfo({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _homeState createState() => _homeState();
+  _userInfoState createState() => _userInfoState();
 }
 
-class _homeState extends State<home> {
+class _userInfoState extends State<userInfo> {
   String userName = 'name';
   String userGender = 'gender';
   DateTime userBirthday = DateTime.now();
@@ -53,7 +42,7 @@ class _homeState extends State<home> {
                       userName = str;
                     },
                   ),
-                  width: 150,
+                  width: 170,
                   padding: EdgeInsets.only(left: 16),
                 )
               ],
