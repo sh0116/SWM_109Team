@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:test109/menu.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -23,9 +27,18 @@ class login extends StatefulWidget {
   _loginState createState() => _loginState();
 }
 
+Future<String> fetchProt(http.Client client, String contact) async {
+  // 해당 URL로 데이터를 요청하고 수신함
+  final response = await client.get('http://13.209.4.217:5555/prot_info_post?contact='+contact);
+  //print(response.body);
+  // parsePhotos 함수를 백그라운도 격리 처리
+  return response.body;
+}
+
 class _loginState extends State<login> {
   String protName = 'name';
   String protContact = 'contact';
+  String delay = ' ';
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +93,13 @@ class _loginState extends State<login> {
             RaisedButton(
               child: Text('LOGIN'),
               onPressed: (){
-                setState(() {});
-                final response = http.get('http://13.209.4.217:5555/prot_info_post?contact='+protContact);
+                fetchProt(http.Client(), protContact).then((fetchName) {
+                  if(fetchName == protName){
+                    Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
+                  } else {
+                    setState(() { delay = "wrong name or contact"; });
+                  }
+                });
               },
             ),
             SizedBox(width: 10),
@@ -99,9 +117,11 @@ class _loginState extends State<login> {
                   headers: {'Content-Type': "application/json"},
                 );
               },
-            )
+            ),
           ],
-        )
+        ),
+        SizedBox(height: 20),
+        Text(delay)
       ],
     );
   }
