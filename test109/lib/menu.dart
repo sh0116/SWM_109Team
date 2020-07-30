@@ -12,22 +12,28 @@ class menu extends StatefulWidget {
 class _menuState extends State<menu> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(height: 20),
-        RaisedButton(
-          child: Text('user info'),
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
-              return userInfo();
-            })
-            );
-          },
+    return Scaffold(
+      appBar: AppBar(
+          title: Text('menu'),
+          automaticallyImplyLeading: false,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 20),
+          RaisedButton(
+            child: Text('user info'),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
+                return userInfo();
+              })
+              );
+            },
 
-        )
-      ],
+          )
+        ],
+      )
     );
   }
 }
