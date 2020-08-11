@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:test109/dataCenter.dart';
 import 'package:test109/menu.dart';
 
 void main() {
@@ -27,18 +27,12 @@ class login extends StatefulWidget {
   _loginState createState() => _loginState();
 }
 
-Future<String> fetchProt(http.Client client, String contact) async {
-  // 해당 URL로 데이터를 요청하고 수신함
-  final response = await client.get('http://13.209.4.217:5555/prot_info_post?contact='+contact);
-  //print(response.body);
-  // parsePhotos 함수를 백그라운도 격리 처리
-  return response.body;
-}
-
 class _loginState extends State<login> {
-  String protName = 'name';
-  String protContact = 'contact';
-  String delay = ' ';
+
+  String _protName = 'name';
+  String _protContact = 'contact';
+  String _protId = 'id';
+  String _delay = ' ';
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +52,7 @@ class _loginState extends State<login> {
                 style: TextStyle(fontSize: 21, color: Colors.black),
                 textAlign: TextAlign.center,
                 onChanged: (String str){
-                  protName = str;
+                  _protName = str;
                 },
               ),
               width: 170,
@@ -77,7 +71,7 @@ class _loginState extends State<login> {
                 style: TextStyle(fontSize: 21, color: Colors.black),
                 textAlign: TextAlign.center,
                 onChanged: (String str){
-                  protContact = str;
+                  _protContact = str;
                 },
               ),
               width: 170,
@@ -92,12 +86,57 @@ class _loginState extends State<login> {
           children: <Widget>[
             RaisedButton(
               child: Text('LOGIN'),
-              onPressed: (){
-                fetchProt(http.Client(), protContact).then((fetchName) {
-                  if(fetchName == protName){
-                    Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
+              onPressed: () async {
+                // fetch corresponding name to contact
+                await fetchData(http.Client(), "prot_info/name", "contact", _protContact).then((fetchName) async {
+                  //print(fetchName);
+                  if(fetchName == _protName){
+                    await fetchData(http.Client(), "prot_info/id", "contact", protContact).then((fetchId) {
+                      //print(fetchId);
+                      _protId = fetchId;
+                      setState((){
+                        setProtName(_protName);
+                        setProtContact(_protContact);
+                        setProtId(_protId);
+                      });
+                    });
+                    await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchId) {
+                      //print(fetchName);
+                      setUserName(fetchId);
+                    });
+                    await fetchData(http.Client(), "user_info/name", "prot_id", getProtId()).then((fetchName) {
+                      //print(fetchName);
+                      setUserName(fetchName);
+                    });
+                    await fetchData(http.Client(), "user_info/gender", "prot_id", getProtId()).then((fetchGender) {
+                      //print(fetchGender);
+                      setUserGender(fetchGender);
+                    });
+                    await fetchData(http.Client(), "user_info/birth", "prot_id", getProtId()).then((fetchBirthday) {
+                      //print(fetchBirthday);
+                      setUserBirthday(fetchBirthday);
+                    });
+                    await fetchData(http.Client(), "user_info/address", "prot_id", getProtId()).then((fetchAddress) {
+                      //print(fetchAddress);
+                      setUserAddress(fetchAddress);
+                    });
+                    await fetchData(http.Client(), "user_info/contact", "prot_id", getProtId()).then((fetchContact) {
+                      //print(fetchContact);
+                      setUserContact(fetchContact);
+                      Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
+                    });
+//                    await fetchAllData(http.Client(), "user_info/*", "prot_id", getProtId()).then((fetchUser){
+//                      print(fetchUser);
+//                      setUserName(fetchUser[0]);
+//                      setUserGender(fetchUser[1]);
+//                      setUserBirthday(fetchUser[2]);
+//                      setUserAddress(fetchUser[3]);
+//                      setUserContact(fetchUser[4]);
+//
+//                      Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
+//                    });
                   } else {
-                    setState(() { delay = "wrong name or contact"; });
+                    setState(() { _delay = "prot info not found"; });
                   }
                 });
               },
@@ -105,23 +144,31 @@ class _loginState extends State<login> {
             SizedBox(width: 10),
             RaisedButton(
               child: Text('REGISTER'),
-              onPressed: (){
+              onPressed: () async {
                 setState(() {});
-                final response = http.post('http://13.209.4.217:5555/prot_info_post',
+                final response = http.post(FlaskURL+'prot_info/register',
                   body: jsonEncode(
                     {
-                      'name': "'"+protName+"'",
-                      'contact': "'"+protContact+"'",
+                      'name': "'"+_protName+"'",
+                      'contact': "'"+_protContact+"'",
                     },
                   ),
                   headers: {'Content-Type': "application/json"},
                 );
+                await fetchData(http.Client(), "prot_info/id", "contact", protContact).then((fetchId) {
+                  print(fetchId);
+                  _protId = fetchId;
+                  setProtName(_protName);
+                  setProtContact(_protContact);
+                  setProtId(_protId);
+                });
+                Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
               },
             ),
           ],
         ),
         SizedBox(height: 20),
-        Text(delay)
+        Text(_delay)
       ],
     );
   }
