@@ -1,5 +1,6 @@
 PODS:
   - Flutter (1.0.0)
+<<<<<<< HEAD
   - path_provider_linux (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
@@ -9,19 +10,30 @@ PODS:
   - shared_preferences_macos (0.0.1):
     - Flutter
   - shared_preferences_web (0.0.1):
+=======
+  - shared_preferences (0.0.1):
+    - Flutter
+  - webview_flutter (0.0.1):
+>>>>>>> gonji
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+<<<<<<< HEAD
   - path_provider_linux (from `.symlinks/plugins/path_provider_linux/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - shared_preferences_linux (from `.symlinks/plugins/shared_preferences_linux/ios`)
   - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
   - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
+=======
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+>>>>>>> gonji
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+<<<<<<< HEAD
   path_provider_linux:
     :path: ".symlinks/plugins/path_provider_linux/ios"
   shared_preferences:
@@ -42,5 +54,18 @@ SPEC CHECKSUMS:
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
 
 PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+=======
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  webview_flutter:
+    :path: ".symlinks/plugins/webview_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+>>>>>>> gonji
 
 COCOAPODS: 1.9.1
