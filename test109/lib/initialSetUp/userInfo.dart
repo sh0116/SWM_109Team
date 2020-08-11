@@ -22,7 +22,7 @@ class _userInfoState extends State<userInfo> {
   String _userBirthday = 'birthday';
   String _userAddress = 'address';
   String _userContact = 'contact';
-  String _protId = "protId";
+  String _protId = getProtId();
 
   @override
   Widget build(BuildContext context){
@@ -178,30 +178,19 @@ class _userInfoState extends State<userInfo> {
                   child: RaisedButton(
                       child: Text('register'),
                       onPressed: () async {
-                        setState(() {});
-                        final response = http.post(FlaskURL+'user_info/register',
-                          body: jsonEncode(
-                            {
-                              'name': "'"+_userName+"'",
-                              'gender': "'"+_userGender+"'",
-                              'birth': "'"+_userBirthday+"'",
-                              'address': "'"+_userAddress+"'",
-                              'contact': "'"+_userContact+"'",
-                              'prot_id': "'"+_protId+"'"
-                            },
-                          ),
-                          headers: {'Content-Type': "application/json"},
-                        );
-                        await fetchData(http.Client(), "user_info/id", "contact", protContact).then((fetchId) {
-                          print(fetchId);
-                          _userId = fetchId;
-                          setUserId(_userId);
-                          setUserName(_userName);
-                          setUserGender(_userGender);
-                          setUserBirthday(_userBirthday);
-                          setUserAddress(_userAddress);
-                          setUserContact(_userContact);
-                          Navigator.push( context, MaterialPageRoute(builder: (context) => robotInfo()), );
+                        Map<String, dynamic> jsonBody = {'name': "'"+_userName+"'",'gender': "'"+_userGender+"'",'birth': "'"+_userBirthday+"'",'address': "'"+_userAddress+"'",'contact': "'"+_userContact+"'",'prot_id': "'"+getProtId()+"'"};
+                        await post('user_info', jsonBody).then((val) async {
+                          await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchId) {
+                            //print(fetchId);
+                            _userId = fetchId;
+                            setUserId(_userId);
+                            setUserName(_userName);
+                            setUserGender(_userGender);
+                            setUserBirthday(_userBirthday);
+                            setUserAddress(_userAddress);
+                            setUserContact(_userContact);
+                            Navigator.push( context, MaterialPageRoute(builder: (context) => robotInfo()), );
+                          });
                         });
                         //print(_userName + _userContact);
                       }

@@ -26,6 +26,7 @@ class _robotInfoState extends State<robotInfo> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 50),
                   Text('[ Input robot info ]', style: TextStyle(fontSize: 25)),
                   SizedBox(height: 40),
                   Row(
@@ -69,20 +70,15 @@ class _robotInfoState extends State<robotInfo> {
                   Container(
                     child: RaisedButton(
                         child: Text('register'),
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {});
-                          final response = http.post(FlaskURL+'robot_info/register',
-                            body: jsonEncode(
-                              {
-                                'name': "'"+_robotName+"'",
-                                'robot_id': "'"+_robotId+"'",
-                                'user_id': "'"+getUserId()+"'"
-                              },
-                            ),
-                            headers: {'Content-Type': "application/json"},
-                          );
-                          setRobotName(_robotName);
-                          setRobotId(_robotId);
+                          Map<String, dynamic> jsonBody = {'name': "'"+_robotName+"'",'robot_id': "'"+_robotId+"'",'user_id': "'"+getUserId()+"'"};
+                          await post('robot_info', jsonBody).then((val) async {
+                            setRobotName(_robotName);
+                            setRobotId(_robotId);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          });
                         }
                     ),
                   ),

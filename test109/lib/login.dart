@@ -89,52 +89,44 @@ class _loginState extends State<login> {
               onPressed: () async {
                 // fetch corresponding name to contact
                 await fetchData(http.Client(), "prot_info/name", "contact", _protContact).then((fetchName) async {
-                  //print(fetchName);
+                  print(fetchName + " " + _protContact);
                   if(fetchName == _protName){
-                    await fetchData(http.Client(), "prot_info/id", "contact", protContact).then((fetchId) {
+                    print("--login success");
+                    await fetchData(http.Client(), "prot_info/id", "contact", _protContact).then((fetchId) async {
                       //print(fetchId);
                       _protId = fetchId;
-                      setState((){
-                        setProtName(_protName);
-                        setProtContact(_protContact);
-                        setProtId(_protId);
+                      setProtName(_protName);
+                      setProtContact(_protContact);
+                      setProtId(_protId);
+                      await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchUserId) async {
+                        //print(fetchName);
+                        setUserId(fetchUserId);
+                        await fetchData(http.Client(), "user_info/name", "prot_id", getProtId()).then((fetchUserName) async {
+                          //print(fetchName);
+                          setUserName(fetchUserName);
+                          await fetchData(http.Client(), "user_info/gender", "prot_id", getProtId()).then((fetchUserGender) async {
+                          //print(fetchGender);
+                          setUserGender(fetchUserGender);
+                          await fetchData(http.Client(), "user_info/birth", "prot_id", getProtId()).then((fetchUserBirthday) async {
+                            //print(fetchBirthday);
+                            setUserBirthday(fetchUserBirthday);
+                            await fetchData(http.Client(), "user_info/address", "prot_id", getProtId()).then((fetchUserAddress) async {
+                              //print(fetchAddress);
+                              setUserAddress(fetchUserAddress);
+                              await fetchData(http.Client(), "user_info/contact", "prot_id", getProtId()).then((fetchUserContact) {
+                                //print(fetchContact);
+                                setUserContact(fetchUserContact);
+                                print(getProtId() + " " + getProtName() + " " + getProtContact());
+                                print(getUserId() + " " + getUserName() + " " + getUserContact());
+                                print("--fetch user info success");
+                                Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
+                              });
+                            });
+                          });
+                        });
                       });
                     });
-                    await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchId) {
-                      //print(fetchName);
-                      setUserName(fetchId);
-                    });
-                    await fetchData(http.Client(), "user_info/name", "prot_id", getProtId()).then((fetchName) {
-                      //print(fetchName);
-                      setUserName(fetchName);
-                    });
-                    await fetchData(http.Client(), "user_info/gender", "prot_id", getProtId()).then((fetchGender) {
-                      //print(fetchGender);
-                      setUserGender(fetchGender);
-                    });
-                    await fetchData(http.Client(), "user_info/birth", "prot_id", getProtId()).then((fetchBirthday) {
-                      //print(fetchBirthday);
-                      setUserBirthday(fetchBirthday);
-                    });
-                    await fetchData(http.Client(), "user_info/address", "prot_id", getProtId()).then((fetchAddress) {
-                      //print(fetchAddress);
-                      setUserAddress(fetchAddress);
-                    });
-                    await fetchData(http.Client(), "user_info/contact", "prot_id", getProtId()).then((fetchContact) {
-                      //print(fetchContact);
-                      setUserContact(fetchContact);
-                      Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
-                    });
-//                    await fetchAllData(http.Client(), "user_info/*", "prot_id", getProtId()).then((fetchUser){
-//                      print(fetchUser);
-//                      setUserName(fetchUser[0]);
-//                      setUserGender(fetchUser[1]);
-//                      setUserBirthday(fetchUser[2]);
-//                      setUserAddress(fetchUser[3]);
-//                      setUserContact(fetchUser[4]);
-//
-//                      Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
-//                    });
+                  });
                   } else {
                     setState(() { _delay = "prot info not found"; });
                   }
@@ -146,23 +138,17 @@ class _loginState extends State<login> {
               child: Text('REGISTER'),
               onPressed: () async {
                 setState(() {});
-                final response = http.post(FlaskURL+'prot_info/register',
-                  body: jsonEncode(
-                    {
-                      'name': "'"+_protName+"'",
-                      'contact': "'"+_protContact+"'",
-                    },
-                  ),
-                  headers: {'Content-Type': "application/json"},
-                );
-                await fetchData(http.Client(), "prot_info/id", "contact", protContact).then((fetchId) {
-                  print(fetchId);
-                  _protId = fetchId;
-                  setProtName(_protName);
-                  setProtContact(_protContact);
-                  setProtId(_protId);
+                Map<String, dynamic> jsonBody = {'name': "'"+_protName+"'", 'contact': "'"+_protContact+"'",};
+                await post('prot_info',jsonBody).then((val) async {
+                  await fetchData(http.Client(), "prot_info/id", "contact", _protContact).then((fetchId) {
+                    print(fetchId);
+                    _protId = fetchId;
+                    setProtName(_protName);
+                    setProtContact(_protContact);
+                    setProtId(_protId);
+                    Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
+                  });
                 });
-                Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
               },
             ),
           ],

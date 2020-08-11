@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // FLASK SERVER
 String FlaskURL = 'http://13.125.221.213:5555/';
@@ -48,6 +49,16 @@ getRobotName(){ return robotName; }
 
 setRobotId(String id){ robotId = id; }
 setRobotName(String name){ robotName = name; }
+
+Future<String> post(String routeTable, Map<String, dynamic> jsonBody) async {
+  final http.Response response = await http.post(FlaskURL+routeTable+'/register',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(jsonBody),
+  );
+  return 'post';
+}
 
 Future<String> fetchData(http.Client client, String route, String data, String value) async {
   // 해당 URL로 데이터를 요청하고 수신함
