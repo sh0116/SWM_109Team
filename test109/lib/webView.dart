@@ -17,6 +17,7 @@ class _webViewState extends State<webView> {
           title: Text('대시보드')
         ),
         body: WebView(
+          //initialUrl: 'http://youtube.com',
           initialUrl: 'http://www.109center.com:5000',
           javascriptMode: JavascriptMode.unrestricted,
         )
