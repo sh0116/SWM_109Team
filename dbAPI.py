@@ -14,26 +14,12 @@ def connectRDS(host, port, userName, userPasswd, database):
     try:
         connection = pymysql.connect(host, user=userName, passwd=userPasswd, db=database, port=port, use_unicode=True, charset='utf8')
         cursor = connection.cursor()
-    except: 
+    except:
         logging.error("connection fail")
         sys.exit(1)
     return connection, cursor
 
 # INSERT
-# insert into user_info table
-def insert_user_info(name, gender, birth, address, contact, prot_id):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into user_info (name, gender, birth, address, contact, prot_id) values ("+name+","+gender+","+birth+","+address+","+contact+","+str(prot_id)+");"
-    cursor.execute(query)
-    connection.commit()
-
-# insert into robot_info table
-def insert_robot_info(robot_name, robot_id, user_id):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into robot_info (robot_name, robot_id, user_id) values ("+robot_name+","+str(robot_id)+","+str(user_id)+");"
-    cursor.execute(query)
-    connection.commit()
-
 # insert into prot_info table
 def insert_prot_info(name, contact):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
@@ -41,135 +27,92 @@ def insert_prot_info(name, contact):
     cursor.execute(query)
     connection.commit()
 
-# insert to fall_down table
-def insert_fall_down(user_id):
+# insert into user_info table
+def insert_user_info(name, gender, birth, address, contact, prot_id):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into fall_down (user_id) values ("+str(user_id)+");"
+    query = "insert into user_info (name, gender, birth, address, contact, prot_id) values ("+name+","+gender+","+birth+","+address+","+contact+","+str(prot_id)+");"
+    cursor.execute(query)
+    #print(query)
+    connection.commit()
+
+# insert into robot_info table
+def insert_robot_info(robot_name, robot_id, user_id):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "insert into robot_info (robot_name, robot_id, user_id) values ("+robot_name+","+str(robot_id)+","+str(user_id)+");"
+    print(query)
     cursor.execute(query)
     connection.commit()
 
-# insert to wake_up table
-def insert_wake_up(user_id):
+# insert into sensor data table
+def insert_data(data_name, *args):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into wake_up (user_id) values ("+str(user_id)+");"
-    cursor.execute(query)
-    connection.commit()
-
-# insert to sleep table
-def insert_sleep(user_id):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into sleep (user_id) values ("+str(user_id)+");"
-    cursor.execute(query)
-    connection.commit()
-
-# insert to activity table    
-def insert_activity(num, user_id):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into activity (num, user_id) values ("+str(num)+","+str(user_id)+");"
-    cursor.execute(query)
-    connection.commit()
-
-# insert to body_temp table    
-def insert_body_temp(num, user_id):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into body_temp (num, user_id) values ("+str(num)+","+str(user_id)+");"
+    query = ""
+   #print(args)
+    if(len(args) == 1):
+        query = "insert into "+data_name+" (user_id) values ("+str(args[0])+");"
+    elif(len(args) == 2):
+        query = "insert into "+data_name+" (num, user_id) values ("+str(args[0])+","+str(args[1])+");"
     cursor.execute(query)
     connection.commit()
 
 # SELECT
-
-def select_user_info():
+# select from table
+def select(table, num=0, *args):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from user_info;"
+    query = "select "
+    #print(args)
+    for arg in args:
+        query += str(arg)
+        if(arg != args[len(args)-1]): query += ","
+    query += " from "+str(table)+";"
+    #print(query)
     cursor.execute(query)
     connection.commit()
-    rows = cursor.fetchall()
-    return rows
-
-# select from falldown table
-def select_fall_down():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from fall_down;"
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchall()
-    '''
     result = []
-    for row in rows:
-        data = []
-        data.append(row[0])
-        data.append(str(row[1]))
-        result.append(data)
-        '''
-    return rows
-
-# select from wakeup table
-def select_wake_up():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from wake_up;"
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchall()
-    result = []
-    for row in rows:
-        data = []
-        data.append(row[0])
-        data.append(str(row[1]))
-        result.append(data)
+    if (num == 0): # all
+        rows = cursor.fetchall()
+        if(rows is None): return result # empty set
+        for row in rows:
+            result0 = []
+            for row0 in row:
+                result0.append(row0)
+            result.append(result0)
+    else: # one
+        rows = cursor.fetchone()
+        if(rows is None): return result # empty set
+        for row in rows:
+            result.append(str(row))
+        return result
     return result
 
-# select from gosleep table
-def select_sleep():
+# select from table with where condition
+def select_where(table, num=0, *args, **kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from sleep;"
+    query = "select "
+    for arg in args:
+        query += str(arg)
+        if(arg != args[len(args)-1]): query += ","
+    query += " from "+str(table)+" where "
+    for key, value in kwargs.items():
+        query += str(key)+"="+str(value)
+    query += ";"
+    #print(query)
     cursor.execute(query)
     connection.commit()
-    rows = cursor.fetchall()
     result = []
-    for row in rows:
-        data = []
-        data.append(row[0])
-        data.append(str(row[1]))
-        result.append(data)
+    if (num == 0): # all
+        rows = cursor.fetchall()
+        #print(rows)
+        if(rows is None): return result # empty set
+        for row in rows:
+            result0 = []
+            for row0 in row:
+                result0.append(str(row0))
+            result.append(result0)
+    else: # one
+        rows = cursor.fetchone()
+        #print(rows)
+        if(rows is None): return result # empty set
+        for row in rows:
+            result.append(str(row))
     return result
-
-# select from activity table
-def select_activity():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from activity;"
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchall()
-    result = []
-    for row in rows:
-        data = []
-        data.append(row[0])
-        data.append(row[1])
-        data.append(str(row[2]))
-        result.append(data)
-    return result
-
-def select_activity2():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select TIMESTAMP, NUM from activity;"
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchall()
-    return rows
-
-# select from temperature table
-def select_body_temp():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from body_temp;"
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchall()
-    result = []
-    for row in rows:
-        data = []
-        data.append(row[0])
-        data.append(row[1])
-        data.append(str(row[2]))
-        result.append(data)
-    return result
-

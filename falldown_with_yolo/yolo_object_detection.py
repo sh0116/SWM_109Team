@@ -1,7 +1,11 @@
 import cv2
 import numpy as np
-import time 
+import time
 import enum
+import requests
+
+URL = 'http://13.125.221.213:5555/fall_down'
+data = {'user_id' : '1'}
 
 # Load Yolo
 net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
@@ -17,7 +21,7 @@ red_color = (0,0,255)
 try:
     print("open cam")
     cap = cv2.VideoCapture(0)
-    #cap = cv2.VideoCapture('falldown_test')
+    #cap = cv2.VideoCapture('/Users/hyunjigonji/yolo_object_detection')
 except:
     print("not working")
 cap.set(3, 800)
@@ -59,7 +63,7 @@ while True:
             class_id = np.argmax(scores)
             if str(classes[class_id]) != 'person': continue
             confidence = scores[class_id]
-            if confidence > 0.5:
+            if confidence > 0.8:
                 # Object detected
                 center_x = int(detection[0] * width)
                 center_y = int(detection[1] * height)
@@ -76,15 +80,18 @@ while True:
                             origin_time = time.time() # count start
                         else:
                             now_time = time.time()
-                            if now_time - origin_time >= 5:
+                            if now_time - origin_time >= 5 and origin_time is not 0:
+                                #print(args)
                                 print("fall down!")
+                                res = requests.post(URL, json=data)
                                 origin_time = 0
+                                
                     else:
                         nowStatus = status.lying
                         origin_time = 0
                 elif w > h:
                     nowStatus = status.lying
-                    color = red_color
+                    color = blue_color
                 else:
                     nowStatus = status.standing
                     color = blue_color
@@ -95,7 +102,7 @@ while True:
                 #cv2.putText(frame, label, (x, y + 30), font, 3, color, 3)
                 #boxes.append([x, y, w, h])
                 #confidences.append(float(confidence))
-                #class_ids.append(class_id) 
+                #class_ids.append(class_id)
                 beforeStatus = nowStatus
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
     font = cv2.FONT_HERSHEY_PLAIN
