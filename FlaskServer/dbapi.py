@@ -73,7 +73,9 @@ def insert_body_temp(num):
 # select from falldown table
 def select_fall_down():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from fall_down;"
+    query = "select * from fall_down;" 
+    #"select count(*) as num from fall_down ;"
+
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
@@ -81,6 +83,14 @@ def select_fall_down():
     return rows
 
 # select from wakeup table
+def select_fall_down_count():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select count(*) as num from fall_down ;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
+    return rows
 
 
 
@@ -153,14 +163,24 @@ def select_body_temp2():
         result.append(data)
     return result
 
-def select_body_temp():
+def select_temp():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from body_temp;"
+    query = "select * from temperature"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
     
     return rows
+
+def select_humidity():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select * from humidity"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    
+    return rows
+
 
 
 def select_user_info():
@@ -171,6 +191,17 @@ def select_user_info():
     rows = cursor.fetchall()
     
     return rows
+
+
+def select_body_temp():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select * from body_temp;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    
+    return rows
+
 
 def select_addresstest():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
