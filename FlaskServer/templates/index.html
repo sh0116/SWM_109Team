@@ -12,20 +12,10 @@
     <link rel="stylesheet" href="static/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="static/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="static/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="static/plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
+
     <link rel="stylesheet" href="static/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="static/plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="static/plugins/summernote/summernote-bs4.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!--다른템플릿 추가
@@ -34,19 +24,21 @@
 	<link rel="stylesheet" href="static/css/ready.css">
     <link rel="stylesheet" href="assets/css/demo.css">
     -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>마커 클러스터</title>
+
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f3a3a8e297eaddc4e57c1381ad036f3&libraries=services"></script>
-    <script src="makerdata/MakerClustering.js"></script>
-    </style>
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+
     <div class="wrapper">
 
         <!-- Navbar -->
@@ -285,7 +277,9 @@
                             <!-- /.card-tools -->
                         </div>
                         <div class="card-body">
-                            <div id="map" style="width:100%;height:400px;"></div>
+                            <div id="map" style="width:100%;height:400px;">
+
+                            </div>
                         </div>
                         <!-- /.card-body-->
 
@@ -303,8 +297,8 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <p class="text-muted "><b>Name : </b> {{data1[0][1]}} </p>
-                                        <p class="text-muted "><b>Birth : </b>{{data1[0][3]}}</p>
+                                        <p class="text-muted "><b>Name : </b> {{data1[0].1}} </p>
+                                        <p class="text-muted "><b>Birth : </b>{{data1[0].3}}</p>
                                         <p class="text-muted "><b>Gender : </b> {{data1[0][2]}}</p>
 
                                     </div>
@@ -317,20 +311,36 @@
                                         </ul>
                                     </div>
                                 </div>
+
                             </div>
 
                         </div>
                         <div class=row>
                             <div class="col-6">
+                                <div class="info-box mb-3">
+                                    <span class="info-box-icon "><img src="static/img/sun.png"></img></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">현재 온도</span>
+                                        <span class="info-box-number">
+                                            {{data[0][1]}}
+                                            <medium>℃</medium>
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <div class="col-6">
                                 <div class="info-box">
-                                    <span class="info-box-icon "><img src="static/img/thermometer.png"></img>
+                                    <span class="info-box-icon "><img src="static/img/humidity1.png"></img>
                                     </span>
 
                                     <div class="info-box-content">
-                                        <span class="info-box-text">USER 체온</span>
+                                        <span class="info-box-text">현재 습도</span>
                                         <span class="info-box-number">
-                                            {{data[0][1]}}
-                                            <small>℃</small>
+                                            {{data3[0][1]}}
+                                            <medium>%</medium>
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -338,33 +348,9 @@
                                 <!-- /.info-box -->
                             </div>
                             <!-- /.col -->
-                            <div class="col-6">
-                                <div class="info-box mb-3">
-                                    <span class="info-box-icon "><img src="static/img/sun.png"></img></span>
-
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">현재 온도</span>
-                                        <span class="info-box-number">28</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-                                <!-- /.info-box -->
-                            </div>
                             <!-- /.col -->
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <div class="info-box mb-3">
-                                    <span class="info-box-icon "><img src="static/img/humidity.png"></img></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">습도</span>
-                                        <span class="info-box-number">760</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-                                <!-- /.info-box -->
-                            </div>
-                            <!-- /.col -->
                             <div class="col-6">
                                 <div class="info-box mb-3">
                                     <span class="info-box-icon "><img src="static/img/dog.png"></img></span>
@@ -376,6 +362,20 @@
                                 </div>
                                 <!-- /.info-box -->
                             </div>
+                            <div class="col-6">
+                                <div class="info-box mb-3">
+                                    <span class="info-box-icon ">
+                                        <img src="static/img/grandparents.png"></img>
+                                    </span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">낙상이력</span>
+                                        <span class="info-box-number">{{row1.0}}</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                            </div>
+                            <!-- /.col -->
                             <!-- /.col -->
                         </div>
                     </div>
@@ -437,7 +437,10 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div id="line-chart" style="height: 300px;"></div>
+                                <div class="chart">
+                                    <canvas id="lineChart"
+                                        style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                </div>
                             </div>
                             <!-- /.card-body-->
                         </div>
@@ -496,6 +499,18 @@
                         </div>
                         <!-- /.card -->
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="card-body">
+                                <div class="chart">
+                                    <canvas id="areaChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+
                 </div>
             </div>
             <!-- Info boxes -->
@@ -512,46 +527,31 @@
         <!-- jQuery -->
         <script src="static/plugins/jquery/jquery.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
-        <script src="static/plugins/jquery-ui/jquery-ui.min.js"></script>
-        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-        <script>
-            $.widget.bridge('uibutton', $.ui.button)
-        </script>
-        <!-- Bootstrap 4 -->
+
         <script src="static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- ChartJS -->
         <script src="static/plugins/chart.js/Chart.min.js"></script>
         <!-- Sparkline -->
         <script src="static/plugins/sparklines/sparkline.js"></script>
-        <!-- JQVMap -->
-        <script src="static/plugins/jqvmap/jquery.vmap.min.js"></script>
-        <script src="static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
         <!-- jQuery Knob Chart -->
         <script src="static/plugins/jquery-knob/jquery.knob.min.js"></script>
         <!-- daterangepicker -->
         <script src="static/plugins/moment/moment.min.js"></script>
-        <script src="static/plugins/daterangepicker/daterangepicker.js"></script>
         <!-- Tempusdominus Bootstrap 4 -->
         <script src="static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
         <!-- Summernote -->
         <script src="static/plugins/summernote/summernote-bs4.min.js"></script>
-        <!-- overlayScrollbars -->
-        <script src="static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
         <!-- AdminLTE App -->
         <script src="static/js/adminlte.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="static/js/pages/dashboard.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="static/js/demo.js"></script>
-
-
         <script src="static/plugins/jquery-ui/jquery-ui.min.js"></script>
         <!-- Bootstrap 4 -->
-        <script src="static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- AdminLTE App -->
+
         <script src="static/js/adminlte.min.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="static/js/demo.js"></script>
+
         <!-- FLOT CHARTS -->
         <script src="static/plugins/flot/jquery.flot.js"></script>
         <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
@@ -560,30 +560,13 @@
         <script src="static/plugins/flot-old/jquery.flot.pie.min.js"></script>
         <!-- Page script -->
 
-        <script src="static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- ChartJS -->
-        <script src="static/plugins/chart.js/Chart.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="static/js/adminlte.min.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="static/js/demo.js"></script>
-        <!-- page script -->
+        <audio id="xyz" src="static/img/fall_down.mp3" preload="auto"></audio>
         <script>
             $(function () {
-                /* ChartJS
-                 * -------
-                 * Here we will create a few charts using ChartJS
-                 */
-
-                //--------------
-                //- AREA CHART -
-                //--------------
-
-                // Get context with jQuery - using jQuery's .get() method.
                 var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
                 var areaChartData = {
-                    labels: ['월요일', 'February', 'March', 'April', 'May', 'June', 'July'],
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                     datasets: [
                         {
                             label: 'Digital Goods',
@@ -594,7 +577,7 @@
                             pointStrokeColor: 'rgba(60,141,188,1)',
                             pointHighlightFill: '#fff',
                             pointHighlightStroke: 'rgba(60,141,188,1)',
-                            data: [28, 48, 40, 19, 86, 27, 90]
+                            data: [7, 7.5, 6.5, 7, 5.5, 8, 7]
                         },
                         {
                             label: 'Electronics',
@@ -605,7 +588,7 @@
                             pointStrokeColor: '#c1c7d1',
                             pointHighlightFill: '#fff',
                             pointHighlightStroke: 'rgba(220,220,220,1)',
-                            data: [65, 59, 80, 81, 56, 55, 40]
+                            data: [20, 21, 20, 22.5, 20.5, 21, 21]
                         },
                     ]
                 }
@@ -619,7 +602,7 @@
                     scales: {
                         xAxes: [{
                             gridLines: {
-                                display: false,
+                                display: true,
                             }
                         }],
                         yAxes: [{
@@ -927,60 +910,6 @@
                 })
                 /* END LINE CHART */
 
-                /*
-                 * FULL WIDTH STATIC AREA CHART
-                 * -----------------
-                 */
-                var areaData = [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6],
-                [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9],
-                [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]]
-                $.plot('#area-chart', [areaData], {
-                    grid: {
-                        borderWidth: 0
-                    },
-                    series: {
-                        shadowSize: 0, // Drawing is faster without shadows
-                        color: '#00c0ef',
-                        lines: {
-                            fill: true //Converts the line chart to area chart
-                        },
-                    },
-                    yaxis: {
-                        show: false
-                    },
-                    xaxis: {
-                        show: false
-                    }
-                })
-
-                /* END AREA CHART */
-
-                /*
-                 * BAR CHART
-                 * ---------
-                 */
-
-                var bar_data = {
-                    data: [[1, 10], [2, 8], [3, 4], [4, 13], [5, 17], [6, 9]],
-                    bars: { show: true }
-                }
-                $.plot('#bar-chart', [bar_data], {
-                    grid: {
-                        borderWidth: 1,
-                        borderColor: '#f3f3f3',
-                        tickColor: '#f3f3f3'
-                    },
-                    series: {
-                        bars: {
-                            show: true, barWidth: 0.5, align: 'center',
-                        },
-                    },
-                    colors: ['#3c8dbc'],
-                    xaxis: {
-                        ticks: [[1, 'January'], [2, 'February'], [3, 'March'], [4, 'April'], [5, 'May'], [6, 'June']]
-                    }
-                })
-                /* END BAR CHART */
 
                 /*
                  * DONUT CHART
@@ -1052,155 +981,66 @@
 
             var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
             var geocoder = new kakao.maps.services.Geocoder();
-            
-            var newAdd = ["테헤란로 311", "테헤란로 313", "테헤란로 314"];
-
-            for (var i = 0; i < newAdd.length; i++) {
+            var newAdd = []
+            var text = []
+            {% for rows in data1 %}
+            newAdd.push('{{rows[4]}}');
+            text.push('{{rows[1]}}');
+            {% endfor %}
+            console.log(text[0]);
+            newAdd.forEach(function (v, i) {
                 geocoder.addressSearch(newAdd[i], function (result, status) {
 
                     // 정상적으로 검색이 완료됐으면 
+
                     if (status === kakao.maps.services.Status.OK) {
 
                         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
+                        var imageSrc = 'static/img/green_maker'
                         // 결과값으로 받은 위치를 마커로 표시합니다
                         var marker = new kakao.maps.Marker({
                             map: map,
                             position: coords
                         });
-
-                        // 인포윈도우로 장소에 대한 설명을 표시합니다
                         var infowindow = new kakao.maps.InfoWindow({
-                            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + text[i] + '</div>' + '<div style = text-align:center;padding:6px 0;>' + newAdd[i] + '</div>'
                         });
 
-                        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                         map.setCenter(coords);
-                        var iwContent = '<p class="text-muted "><b>Name : </b> {{data1[0][1]}} </p><p class="text-muted "><b>address : </b> {{data1[0][4]}} </p>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                        (function (marker, infowindow) {
-                            // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
-                            kakao.maps.event.addListener(marker, 'mouseover', function () {
-                                infowindow.open(map, marker);
-                            });
 
-                            // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-                            kakao.maps.event.addListener(marker, 'mouseout', function () {
-                                infowindow.close();
+                        (function (marker, infowindow) {
+
+                            // kakao.maps.event.addListener(marker, 'mouseover', function () {
+                            //     infowindow.open(map, marker);
+                            // });
+
+                            // // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+                            // kakao.maps.event.addListener(marker, 'mouseout', function () {
+                            //     infowindow.close();
+                            // });
+                            kakao.maps.event.addListener(marker, 'click', function (e) {
+                                if (infowindow.getMap()) {
+                                    infowindow.close();
+                                } else {
+                                    infowindow.open(map, marker);
+                                }
                             });
                         })(marker, infowindow);
                     }
                 });
-            }
-
-            // 마커를 표시할 위치입니다
-            /*
-            var positions = [
-                {
-                    content: '<div>카카오</div>',
-                    latlng: new kakao.maps.LatLng(33.450705, 126.570677)
-                },
-                {
-                    content: '<div>생태연못</div>',
-                    latlng: new kakao.maps.LatLng(33.450936, 126.569477)
-                },
-                {
-                    content: '<div>텃밭</div>',
-                    latlng: new kakao.maps.LatLng(33.450879, 126.569940)
-                },
-                {
-                    content: '<div>근린공원</div>',
-                    latlng: new kakao.maps.LatLng(33.451393, 126.570738)
-                }
-            ];
-
-            // 마커 이미지의 이미지 주소입니다
-            var imageSrc = "https://t1.kakaocdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-
-            for (var i = 0; i < positions.length; i++) {
-                // 마커를 생성합니다
-                var marker = new kakao.maps.Marker({
-                    map: map, // 마커를 표시할 지도
-                    position: positions[i].latlng // 마커의 위치
-                });
-
-                // 마커에 표시할 인포윈도우를 생성합니다
-                var infowindow = new kakao.maps.InfoWindow({
-                    content: positions[i].content // 인포윈도우에 표시할 내용
-                });
-
-                // 마커에 이벤트를 등록하는 함수 만들고 즉시 호출하여 클로저를 만듭니다
-                // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-                (function (marker, infowindow) {
-                    // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
-                    kakao.maps.event.addListener(marker, 'mouseover', function () {
-                        infowindow.open(map, marker);
-                    });
-
-                    // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-                    kakao.maps.event.addListener(marker, 'mouseout', function () {
-                        infowindow.close();
-                    });
-                })(marker, infowindow);
-            }
-
-            // 마커를 지도에 표시합니다.
-            marker.setMap(map);
-
-            // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-            var iwContent = '<p class="text-muted "><b>Name : </b> {{data1[0][1]}} </p><p class="text-muted "><b>address : </b> {{data1[0][4]}} </p>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-            // 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-                content: iwContent
             });
 
-            kakao.maps.event.addListener(marker, 'click', function (e) {
-                if (infowindow.getMap()) {
-                    infowindow.close();
-                } else {
-                    infowindow.open(map, marker);
-                }
-            });
-            var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+        </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
 
-            /*
-            var imgadd = 'static/img/';
-            var mapContainer = document.getElementById('map');
-            var firstposition = new naver.maps.LatLng(37.3849483, 127.1229117);
-            var map = new naver.maps.Map('map', {
-                center: firstposition,
-                zoom: 15
-            });
-            var position = new naver.maps.LatLng(37.3849483, 127.1229117);
+            let alarm = new Audio();
+            alarm.src = 'static/img/fall_down.mp3'; // path to your alarm audio file
+            {% if row.0 >= 3 %}
+            alarm.play();
+            swal("낙상이 발생하였습니다", " ", "warning");
+            {% endif %}
 
-            var marker = new naver.maps.Marker({
-                position: position,
-                map: map,
-                icon: {
-                    url: imgadd + 'green_maker.png',
-                    size: new naver.maps.Size(50, 52),
-                    origin: new naver.maps.Point(-12, 0),
-                    anchor: new naver.maps.Point(25, 26)
-                }
-            });
-
-            var iwContent = '<p class="text-muted "><b>Name : </b> {{data1[0][1]}} </p><p class="text-muted "><b>address : </b> {{data1[0][4]}} </p>',
-                iwPosition = new naver.maps.LatLng(37.3849483, 127.1229117);
-
-            var infowindow = new naver.maps.InfoWindow({
-                position: iwPosition,
-                content: iwContent
-            });
-
-            naver.maps.Event.addListener(marker, "click", function (e) {
-                if (infowindow.getMap()) {
-                    infowindow.close();
-                } else {
-                    infowindow.open(map, marker);
-                }
-            });
-*/
         </script>
 </body>
 
