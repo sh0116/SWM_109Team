@@ -12,7 +12,7 @@
 
 # 1. API DOC LINK (미완성)
 
-* [임시 링크]](http://www.109center.com:5000/) 
+* (http://www.109center.com:5000/) 
 
 ---
 
