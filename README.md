@@ -36,7 +36,7 @@
 # 3. ERD Diagram (미완성)
 
 <div align="center" style="display:flex;">
-	<img src=".\public\images\sangkaTalk_erd.png">
+	<img src="./ERD.png">
 </div>
 
 ---
