@@ -75,3 +75,53 @@
 *
 *
 ---
+# Table
+## members
+### 1. STRUCTURE
+| 이름 | 형식 | 옵션 | 비고 | 
+| ------ | ------ | ------ | ------ |
+| num | int | auto_increment,<br>Not Null, Primary key | |
+| google_id | varchar(45) | Not Null | |
+| my_mac | varchar(45) | Not Null | |
+| lastest_use | varchar(45) | Not Null | 접속시마다 업데이트 |
+| state | int | Not Null, default = 0 | 0 = 일반 1 = 접촉자 2 = 확진자 | 
+### 2. SQL
+```SQL
+ create table members (
+   `num` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   `google_id` VARCHAR(45) NOT NULL,
+   `my_mac` VARCHAR(45) NOT NULL,
+   `lastest_use` VARCHAR(45) NOT NULL,
+   `state` INT DEFAULT 0
+  );
+```
+
+------------------------------------
+## 개인 TABLE - mac address로 명명
+### 1. STRUCTURE
+| 이름 | 형식 | 옵션 | 비고 | 
+| ------ | ------ | ------ | ------ |
+| num | int | auto_increment,<br>Not Null, Primary key | |
+| scan_mac | varchar(45) | Not Null | |
+| scan_time | varchar(45) | Not Null | 14일 이후 데이터 삭제 |
+ 
+### 2. SQL
+```SQL
+  CREATE TABLE (개인 mac address) (
+   `num` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   `scan_mac` VARCHAR(45) NOT NULL,
+   `scan_time` VARCHAR(45) NOT NULL
+  );
+```
+
+--------------------------------------
+
+# Database
+## ID / PW
+  + id : dotdaDBadmin
+  + pw : dotda1234
+
+### connect in EC2 server
+```
+  mysql -u dotdaDBadmin -p -h dotda-public-db-dev.cmloh3khu1qp.ap-northeast-2.rds.amazonaws.com
+```
