@@ -51,13 +51,13 @@
 
 # 5. Main Function
 
-* 낙상감지를 통하여 응급상황 시 관제 센터 및 보호자 알림
-* 능동적 말벗 기능을 통하여 외로움 완화 및 친근한 대화 유도
-* 온/습도 등 집 상태를 모니터링 하여 응급상황 시 센터에 자동 신고 기능
-* 약 복용 알림 기능
-* 보호자 앱
-* 수집한 데이터를 시각화하는 대시보드 구현
-
+| 주요 기능 | 설명| 
+| ------ | ------ | 
+| 영상인식 | 낙상감지를 통하여 응급상황 시 관제 센터 및 보호자 알림 |
+| 음성인식 | 능동적 말벗 기능을 통하여 외로움 완화 및 친근한 대화 유도 및 약 복용 알림 기능| 
+| 위험감지 | 온/습도 등 집 상태를 모니터링 하여 응급상황 시 센터에 자동 신고 기능 | 
+| 보호자 앱| 로봇 초기설정 및 사용자 정보 input 기능 |
+| 웹 관제 | 수집한 데이터를 시각화하는 대시보드 구현 | 
 
 ---
 
@@ -75,53 +75,3 @@
 *
 *
 ---
-# Table
-## members
-### 1. STRUCTURE
-| 이름 | 형식 | 옵션 | 비고 | 
-| ------ | ------ | ------ | ------ |
-| num | int | auto_increment,<br>Not Null, Primary key | |
-| google_id | varchar(45) | Not Null | |
-| my_mac | varchar(45) | Not Null | |
-| lastest_use | varchar(45) | Not Null | 접속시마다 업데이트 |
-| state | int | Not Null, default = 0 | 0 = 일반 1 = 접촉자 2 = 확진자 | 
-### 2. SQL
-```SQL
- create table members (
-   `num` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   `google_id` VARCHAR(45) NOT NULL,
-   `my_mac` VARCHAR(45) NOT NULL,
-   `lastest_use` VARCHAR(45) NOT NULL,
-   `state` INT DEFAULT 0
-  );
-```
-
-------------------------------------
-## 개인 TABLE - mac address로 명명
-### 1. STRUCTURE
-| 이름 | 형식 | 옵션 | 비고 | 
-| ------ | ------ | ------ | ------ |
-| num | int | auto_increment,<br>Not Null, Primary key | |
-| scan_mac | varchar(45) | Not Null | |
-| scan_time | varchar(45) | Not Null | 14일 이후 데이터 삭제 |
- 
-### 2. SQL
-```SQL
-  CREATE TABLE (개인 mac address) (
-   `num` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   `scan_mac` VARCHAR(45) NOT NULL,
-   `scan_time` VARCHAR(45) NOT NULL
-  );
-```
-
---------------------------------------
-
-# Database
-## ID / PW
-  + id : dotdaDBadmin
-  + pw : dotda1234
-
-### connect in EC2 server
-```
-  mysql -u dotdaDBadmin -p -h dotda-public-db-dev.cmloh3khu1qp.ap-northeast-2.rds.amazonaws.com
-```
