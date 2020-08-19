@@ -43,10 +43,6 @@
 
 # 4. Server Architecture (미완성)
 
-<!-- <div align="center" style="display:flex;">
-	<img src="./image/server-architecture2.jpeg">
-</div> -->
-
 ---
 
 # 5. Main Function
@@ -66,9 +62,11 @@
 * [vscode](https://code.visualstudio.com/) - 편집기
 * [MySQL](https://www.mysql.com/) - DataBase
 * [MySQL Workbench](https://www.mysql.com/products/workbench/) - MySQL 시각화 툴
+* [MySQL Workbench](https://www.mysql.com/products/workbench/) - MySQL 시각화 툴
 * [AWS EC2](https://aws.amazon.com/ko/ec2/?sc_channel=PS&sc_campaign=acquisition_KR&sc_publisher=google&sc_medium=english_ec2_b&sc_content=ec2_e&sc_detail=aws%20ec2&sc_category=ec2&sc_segment=177228231544&sc_matchtype=e&sc_country=KR&s_kwcid=AL!4422!3!177228231544!e!!g!!aws%20ec2&ef_id=WkRozwAAAnO-lPWy:20180412120123:s) - 클라우드 환경 컴퓨팅 시스템
 * [AWS RDS](https://aws.amazon.com/ko/rds/) - 클라우드 환경 데이터베이스 관리 시스템
 * [AWS S3](https://aws.amazon.com/ko/s3/) - 클라우드 스토리지
+* [AWS EC2](https://aws.amazon.com/ko/ec2/) - 클라우드 스토리지
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/) -  Python의 마이크로 웹 프레임워크
 * [bootstrap](https://getbootstrap.com/) -  빠르고 간편한 반응형 웹 디자인(responsive web design)을 위한 open-source front-end framework
 *
