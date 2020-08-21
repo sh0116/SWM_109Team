@@ -21,6 +21,29 @@ def connectRDS(host, port, userName, userPasswd, database):
 
 # INSERT
 # insert to user_info table
+# insert into sensor data table
+def insert_data(data_name, *args):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = ""
+   #print(args)
+    if(len(args) == 1):
+        query = "insert into "+data_name+" (user_id) values ("+str(args[0])+");"
+    elif(len(args) == 2):
+        query = "insert into "+data_name+" (num, user_id) values ("+str(args[0])+","+str(args[1])+");"
+    cursor.execute(query)
+    connection.commit()
+
+
+def ffff_data(data_name,fall):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = ""
+   #print(args)
+    if(len(args) == 1):
+        query = "update"+data_name+" set fall = " +fall+ " wher id = 1"
+    cursor.execute(query)
+    connection.commit()
+
+
 def insert_user_info(name, gender, birth, address, contact):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "insert into user_info (name, gender, birth, address, contact) values ('"+name+"','"+gender+"','"+birth+"','"+address+"','"+contact+"');"
@@ -71,42 +94,18 @@ def insert_body_temp(num):
 
 # SELECT
 # select from falldown table
-def select_fall_down():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from fall_down;" 
-    #"select count(*) as num from fall_down ;"
 
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchall()
-
-    return rows
-
-# select from wakeup table
-def select_fall_down_count():
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query ="select count(*) as num from fall_down ;"
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchone()
-
-    return rows
 
 
 
 def select_wake_up():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from wake_up;"
+    query = "select TIMESTAMP from activity;"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
-    result = []
-    for row in rows:
-        data = []
-        data.append(row[0])
-        data.append(str(row[1]))
-        result.append(data)
-    return result
+    return rows
+
 
 # select from gosleep table
 def select_sleep():
@@ -210,4 +209,36 @@ def select_addresstest():
     connection.commit()
     rows = cursor.fetchall()
     
+    return rows
+
+
+def select_ffff():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select fall from ffff;" 
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
+    return rows
+
+
+def select_fall_down():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select * from fall_down;" 
+    #"select count(*) as num from fall_down ;"
+
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+
+    return rows
+
+# select from wakeup table
+def select_fall_down_count():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select count(*) as num from fall_down ;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
     return rows
