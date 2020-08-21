@@ -245,7 +245,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Dashboard</h1>
+                            <h1 class="m-0 text-dark">109 center Dashboard </h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -293,6 +293,7 @@
                             <div class="card-header border-bottom-0">
                                 USERINFO
                             </div>
+                            
                             <div class="card-body pt-0">
 
                                 <div class="row">
@@ -562,6 +563,14 @@
 
         <audio id="xyz" src="static/img/fall_down.mp3" preload="auto"></audio>
         <script>
+            var sleep_time = []
+            {% for rows in sleep %}
+            sleep_time.push('{{rows[1]}}');
+            {% endfor %}
+            var string = sleep_time[0]
+            console.log(string);
+            console.log(string.substring(11, 13));
+            console.log(string.substring(14, 16));
             $(function () {
                 var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
@@ -910,52 +919,6 @@
                 })
                 /* END LINE CHART */
 
-
-                /*
-                 * DONUT CHART
-                 * -----------
-                 */
-
-                var donutData = [
-                    {
-                        label: 'Series2',
-                        data: 30,
-                        color: '#3c8dbc'
-                    },
-                    {
-                        label: 'Series3',
-                        data: 20,
-                        color: '#0073b7'
-                    },
-                    {
-                        label: 'Series4',
-                        data: 50,
-                        color: '#00c0ef'
-                    }
-                ]
-                $.plot('#donut-chart', donutData, {
-                    series: {
-                        pie: {
-                            show: true,
-                            radius: 1,
-                            innerRadius: 0.5,
-                            label: {
-                                show: true,
-                                radius: 2 / 3,
-                                formatter: labelFormatter,
-                                threshold: 0.1
-                            }
-
-                        }
-                    },
-                    legend: {
-                        show: false
-                    }
-                })
-                /*
-                 * END DONUT CHART
-                 */
-
             })
 
             /*
@@ -1010,21 +973,21 @@
 
                         (function (marker, infowindow) {
 
-                            // kakao.maps.event.addListener(marker, 'mouseover', function () {
-                            //     infowindow.open(map, marker);
-                            // });
-
-                            // // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-                            // kakao.maps.event.addListener(marker, 'mouseout', function () {
-                            //     infowindow.close();
-                            // });
-                            kakao.maps.event.addListener(marker, 'click', function (e) {
-                                if (infowindow.getMap()) {
-                                    infowindow.close();
-                                } else {
-                                    infowindow.open(map, marker);
-                                }
+                            kakao.maps.event.addListener(marker, 'mouseover', function () {
+                                infowindow.open(map, marker);
                             });
+
+                            // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+                            kakao.maps.event.addListener(marker, 'mouseout', function () {
+                                infowindow.close();
+                            });
+                            // kakao.maps.event.addListener(marker, 'click', function (e) {
+                            //     if (infowindow.getMap()) {
+                            //         infowindow.close();
+                            //     } else {
+                            //         infowindow.open(map, marker);
+                            //     }
+                            // });
                         })(marker, infowindow);
                     }
                 });
@@ -1033,12 +996,27 @@
         </script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
-
             let alarm = new Audio();
             alarm.src = 'static/img/fall_down.mp3'; // path to your alarm audio file
-            {% if row.0 >= 3 %}
+            {% if row1.0 >= row2.0 %}
             alarm.play();
-            swal("낙상이 발생하였습니다", " ", "warning");
+            var swal = swal({
+                title: "낙상이 발생하였습니다",
+                text: "",
+                icon: "warning",
+                buttons: ["NO", "YES"]
+            }).then((YES) => {
+                if (YES) {
+                    flag = true;
+                    
+                } else {
+                    flag = false;
+                }
+            });
+
+            Promise.all([swal]).then(function () {
+                console.log(flag);
+            });
             {% endif %}
 
         </script>
