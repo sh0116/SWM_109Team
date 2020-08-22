@@ -565,20 +565,15 @@
         <script>
             var sleep_time = []
             {% for rows in sleep %}
-            sleep_time.push('{{rows[1]}}');
+            sleep_time.push('{{rows[3]}}');
             {% endfor %}
-            var string = sleep_time[0]
-            console.log(string);
-            console.log(string.substring(11, 13));
-            console.log(string.substring(14, 16));
             $(function () {
                 var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-
                 var areaChartData = {
                     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                     datasets: [
                         {
-                            label: 'Digital Goods',
+                            label: 'Wake_up',
                             backgroundColor: 'rgba(60,141,188,0.9)',
                             borderColor: 'rgba(60,141,188,0.8)',
                             pointRadius: false,
@@ -586,10 +581,10 @@
                             pointStrokeColor: 'rgba(60,141,188,1)',
                             pointHighlightFill: '#fff',
                             pointHighlightStroke: 'rgba(60,141,188,1)',
-                            data: [7, 7.5, 6.5, 7, 5.5, 8, 7]
+                            data: sleep_time
                         },
                         {
-                            label: 'Electronics',
+                            label: 'Sleeptime',
                             backgroundColor: 'rgba(210, 214, 222, 1)',
                             borderColor: 'rgba(210, 214, 222, 1)',
                             pointRadius: false,

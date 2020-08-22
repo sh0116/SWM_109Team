@@ -16,15 +16,15 @@ class RegistUser(Resource):
 api.add_resource(RegistUser,'/user')
 
 
-@app.route('/fall_down', methods = ['POST'])
-def fall_down():
-    if request.method == 'POST':
-        print(request.get_json())
-        user_id = request.get_json().get('user_id')
-        dbapi.insert_data('fall_down',user_id)
-        return 'fall_down'
-    else:
-        return 'fall_down'
+# @app.route('/fall_down', methods = ['POST'])
+# def fall_down():
+#     if request.method == 'POST':
+#         print(request.get_json())
+#         user_id = request.get_json().get('user_id')
+#         dbapi.insert_data('fall_down',user_id)
+#         return 'fall_down'
+#     else:
+#         return 'fall_down'
 
 
 
@@ -33,7 +33,8 @@ def fall_down():
     if request.method == 'POST':
         print(request.get_json())
         user_id = request.get_json().get('user_id')
-        dbapi.insert_data1('wake_up',user_id)
+        graph = request.get_json().get('graph')
+        dbapi.insert_data('wake_up',user_id,graph)
         return 'wake_up'
     else:
         return 'wake_up'

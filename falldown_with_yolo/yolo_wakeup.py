@@ -3,10 +3,14 @@ import numpy as np
 import time
 import enum
 import requests
+from datetime import datetime
+
+
 
 URL = 'http://13.125.221.213:5000/fall_down'
 URL1 = 'http://13.125.221.213:5000/wake_up'
-data = {'user_id' : '3'}
+
+
 
 # Load Yolo
 net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
@@ -33,6 +37,10 @@ class status(enum.Enum):
     standing = 0
     lying = 1
     falldown = 2
+
+    
+pre_time = datetime.now()
+nowTuple = pre_time.timetuple()
 
 origin_time = 0
 now_time = 0
@@ -88,6 +96,8 @@ while True:
                                 #print(args)
                                 color = red_color
                                 print("fall down!")
+                                print("낙상일시 : {}-{}-{} {}:{}:{}".format(pre_time.year,pre_time.month,
+                                                                        pre_time.day,pre_time.hour,pre_time.minute,pre_time.second))
                                 print("시간체크하였습니다 %d", now_time - origin_time)
                                 #res = requests.post(URL, json=data)
                                 origin_time = 0
@@ -104,9 +114,16 @@ while True:
                     color = blue_color
                 else:
                     nowStatus = status.standing
-                    if sleeptime >= 20:
-                        #res = requests.post(URL1, json=data)
-                        print("깨어났네요")
+                    if sleeptime >= 5:
+                        
+                        wake_up_hour = int(nowTuple.tm_hour) 
+                        wake_up_min = int(nowTuple.tm_min)
+                        wake_up_time = wake_up_hour +(wake_up_min)*0.01
+                        data = {'user_id' : '3', 'graph' : wake_up_time}
+                        print("낙상일시 : {}-{}-{} {}:{}:{}".format(pre_time.year, pre_time.month, pre_time.day,
+                                                                pre_time.hour,pre_time.minute,pre_time.second))
+                        print("깨어났네요 %d",wake_up_time)
+                        res = requests.post(URL1, json=data)
                     color = blue_color
                     origin_time = 0
                     sleeptime=0

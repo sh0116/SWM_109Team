@@ -29,7 +29,7 @@ def insert_data(data_name, *args):
     if(len(args) == 1):
         query = "insert into "+data_name+" (user_id) values ("+str(args[0])+");"
     elif(len(args) == 2):
-        query = "insert into "+data_name+" (num, user_id) values ("+str(args[0])+","+str(args[1])+");"
+        query = "insert into "+data_name+" (user_id, graph) values ("+str(args[0])+","+str(args[1])+");"
     cursor.execute(query)
     connection.commit()
 
@@ -100,7 +100,7 @@ def insert_body_temp(num):
 
 def select_wake_up():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select TIMESTAMP from activity;"
+    query = "select * from wake_up;"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
