@@ -73,7 +73,7 @@ class _robotInfoState extends State<robotInfo> {
                         onPressed: () async {
                           setState(() {});
                           Map<String, dynamic> jsonBody = {'name': "'"+_robotName+"'",'robot_id': "'"+_robotId+"'",'user_id': "'"+getUserId()+"'"};
-                          await post('robot_info', jsonBody).then((val) async {
+                          await postData('robot_info', jsonBody).then((val) async {
                             setRobotName(_robotName);
                             setRobotId(_robotId);
                             Navigator.pop(context);
