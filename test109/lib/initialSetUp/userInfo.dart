@@ -179,7 +179,7 @@ class _userInfoState extends State<userInfo> {
                       child: Text('register'),
                       onPressed: () async {
                         Map<String, dynamic> jsonBody = {'name': "'"+_userName+"'",'gender': "'"+_userGender+"'",'birth': "'"+_userBirthday+"'",'address': "'"+_userAddress+"'",'contact': "'"+_userContact+"'",'prot_id': "'"+getProtId()+"'"};
-                        await post('user_info', jsonBody).then((val) async {
+                        await postData('user_info', jsonBody).then((val) async {
                           await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchId) {
                             //print(fetchId);
                             _userId = fetchId;

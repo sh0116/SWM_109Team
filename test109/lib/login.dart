@@ -139,7 +139,7 @@ class _loginState extends State<login> {
               onPressed: () async {
                 setState(() {});
                 Map<String, dynamic> jsonBody = {'name': "'"+_protName+"'", 'contact': "'"+_protContact+"'",};
-                await post('prot_info',jsonBody).then((val) async {
+                await postData('prot_info',jsonBody).then((val) async {
                   await fetchData(http.Client(), "prot_info/id", "contact", _protContact).then((fetchId) {
                     print(fetchId);
                     _protId = fetchId;
