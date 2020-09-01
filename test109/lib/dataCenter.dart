@@ -50,7 +50,8 @@ getRobotName(){ return robotName; }
 setRobotId(String id){ robotId = id; }
 setRobotName(String name){ robotName = name; }
 
-Future<String> post(String routeTable, Map<String, dynamic> jsonBody) async {
+// Flask 서버를 통해 DB에 저장
+Future<String> postData(String routeTable, Map<String, dynamic> jsonBody) async {
   final http.Response response = await http.post(FlaskURL+routeTable+'/register',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -60,11 +61,10 @@ Future<String> post(String routeTable, Map<String, dynamic> jsonBody) async {
   return 'post';
 }
 
+// Flask 서버를 통해 DB에서 값을 가져옴
 Future<String> fetchData(http.Client client, String route, String data, String value) async {
-  // 해당 URL로 데이터를 요청하고 수신함
   String query = FlaskURL+route+'?'+data+'='+value;
   final response = await client.get(query);
-  //print(query+" "+response.body);
   return response.body;
 }
 
