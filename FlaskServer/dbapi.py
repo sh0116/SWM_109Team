@@ -224,7 +224,7 @@ def select_ffff():
 
 def select_fall_down():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from fall_down;" 
+    query = "select * from fall_down order by id desc;" 
     #"select count(*) as num from fall_down ;"
 
     cursor.execute(query)
