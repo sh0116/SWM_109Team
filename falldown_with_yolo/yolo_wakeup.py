@@ -4,13 +4,16 @@ import time
 import enum
 import requests
 from datetime import datetime
+#import pygame
 
+#URL = 'http://13.125.221.213:5555/fall_down'
+#data = {'user_id' : '1'}
+time_URL = 'http://13.125.221.213:5000/wake_up'
+day = ['월요일','화요일','수요일', '목요일', '금요일', '토요일', '일요일']
+cal_day = datetime.today().weekday()
 
-
-URL = 'http://13.125.221.213:5000/fall_down'
-URL1 = 'http://13.125.221.213:5000/wake_up'
-
-
+sleep_check = 0
+wake_check = 0
 
 # Load Yolo
 net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
@@ -33,11 +36,53 @@ except:
 cap.set(3, 800)
 cap.set(4, 600)
 
+'''
+def play_mp3_question():
+    pygame.mixer.init()
+    pygame.mixer.music.load("./question.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+    #print("play over...")
+    return
+
+def play_mp3_notice():
+    pygame.mixer.init()
+    pygame.mixer.music.load("./notice.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+    #print("play over...")
+    return
+'''
+
+def day_sleep_time():
+    sleep_hour = int(nowTuple.tm_hour) 
+    sleep_min = int(nowTuple.tm_min)
+    seconds = (pre_time.hour * 60 + pre_time.minute) * 60 + pre_time.second
+    sleep_time = seconds/3600
+    data = {'user_id' : '1', 'graph' : sleep_time,'day':day[cal_day]}
+    print("취침일시 : {}-{}-{} {}:{}:{}".format(pre_time.year, pre_time.month, pre_time.day
+                                            ,pre_time.hour,pre_time.minute,pre_time.second))
+    print("잠들었습니다. %d",sleep_time,day[cal_day])
+    #res = requests.post(time_URL, json=data)
+    
+def day_wake_time():
+    wake_up_hour = int(nowTuple.tm_hour)
+    wake_up_min = int(nowTuple.tm_min)
+    seconds = (pre_time.hour * 60 + pre_time.minute) * 60 + pre_time.second
+    wake_up_time = seconds/3600
+    if seconds >= 14400 and seconds<=27000:
+        data = {'user_id' : '3', 'graph' : wake_up_time,'day':day[cal_day]}
+        print("기상일시 : {}-{}-{} {}:{}:{}".format(pre_time.year, pre_time.month, pre_time.day
+                                                ,pre_time.hour,pre_time.minute,pre_time.second))
+        print("깨어났네요 %d",wake_up_time,day[cal_day])
+        #res = requests.post(time_URL, json=data)
+
 class status(enum.Enum):
     standing = 0
     lying = 1
     falldown = 2
-
     
 pre_time = datetime.now()
 nowTuple = pre_time.timetuple()
@@ -45,28 +90,26 @@ nowTuple = pre_time.timetuple()
 origin_time = 0
 now_time = 0
 sleeptime=0
+
 beforeStatus = status.standing
 nowStatus = status.standing
+
+standing_time = time.time()
+lying_time = time.time()
+falldown_time = time.time()
+
+hasPrinted = False
+
 # Taking video
 while True:
     # Loading image
     ret, frame = cap.read()
-    #frame = cv2.resize(frame, (600,600), cv2.INTER_AREA)
     height, width, channels = frame.shape
-    #height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    #width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 
     # Detecting objects
     blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
-    #blob = cv2.dnn.blobFromImage(frame)
-
     net.setInput(blob)
     outs = net.forward(output_layers)
-
-    # Showing informations on the screen
-    class_ids = []
-    confidences = []
-    boxes = []
 
     for out in outs:
         for detection in out:
@@ -74,8 +117,7 @@ while True:
             class_id = np.argmax(scores)
             if str(classes[class_id]) != 'person': continue
             confidence = scores[class_id]
-            if confidence > 0.8:
-                # Object detected
+            if confidence > 0.8: # person detected when confidence is over 0.8
                 center_x = int(detection[0] * width)
                 center_y = int(detection[1] * height)
                 w = int(detection[2] * width)
@@ -83,83 +125,88 @@ while True:
                 # Rectangle coordinates
                 x = int(center_x - w/2)
                 y = int(center_y - h/2)
-                if w/2 > h: # detected
-                    color = green_color
-                    if beforeStatus == status.standing or beforeStatus == status.falldown:
+                if w/2 > h: # fall down
+                    now_time = time.time()
+                    diff_time = now_time - standing_time
+                    if diff_time <= 1:
+                        falldown_time = time.time()
                         nowStatus = status.falldown
-                        if origin_time == 0:
-                            origin_time = time.time()
-                            print("시간체크하겠습니다 %d",origin_time)# count start
-                        else:
-                            now_time = time.time()
-                            if now_time - origin_time >= 5 and origin_time is not 0:
-                                #print(args)
-                                color = red_color
-                                print("fall down!")
-                                print("낙상일시 : {}-{}-{} {}:{}:{}".format(pre_time.year,pre_time.month,
-                                                                        pre_time.day,pre_time.hour,pre_time.minute,pre_time.second))
-                                print("시간체크하였습니다 %d", now_time - origin_time)
-                                #res = requests.post(URL, json=data)
-                                origin_time = 0
-                                
-                    else:
+                        color = redf_color
+                        print("fall down 111")
+                        #play_mp3_question()
+                    elif beforeStatus == status.falldown:
+                        if diff_time >= 5 and diff_time < 10:
+                            falldown_time = time.time()
+                            nowStatus = status.falldown
+                            color = red_color
+                            if hasPrinted == False:
+                                print("fall down 222")
+                                #play_mp3_question()
+                                hasPrinted2 = True
+                        elif diff_time >= 10:
+                            falldown_time = time.time()
+                            nowStatus = status.falldown
+                            color = red_color
+                            print("fall down 333")
+                            #play_mp3_notice()
+                            #quit()
+                    else: # lying
+                        lying_time = time.time()
                         nowStatus = status.lying
                         sleeptime = sleeptime+1
+                        if sleeptime >= 5:
+                            seconds = (pre_time.hour * 60 + pre_time.minute) * 60 + pre_time.second
+                            sleep_time = seconds/3600
+                            if (seconds >= 75,600 and seconds<=86339) or (seconds >=0 and seconds <=1800) :
+                                if sleep_check == 0:
+                                    sleep_check +=1
+                                    day_sleep_time()
+                                else:
+                                    continue
+                            else:
+                                sleep_check = 0
+                            
                         
-                        
-                elif w > h:
+                elif w > h: # lying
+                    lying_time = time.time()
                     nowStatus = status.lying
                     sleeptime = sleeptime+1
-                    print(sleeptime)
-                    color = blue_color
-                else:
-                    nowStatus = status.standing
                     if sleeptime >= 5:
+                            seconds = (pre_time.hour * 60 + pre_time.minute) * 60 + pre_time.second
+                            sleep_time = seconds/3600
+                            if (seconds >= 75,600 and seconds<=86339) or (seconds >=0 and seconds <=1800) :
+                                if sleep_check == 0:
+                                    sleep_check +=1
+                                    day_sleep_time()
+                                else:
+                                    continue
+                            else:
+                                sleep_check = 0
+                    color = green_color
+                else: # standing
+                    standing_time = time.time()
+                    nowStatus = status.standing
+                    if sleeptime >= 10:
+                        seconds = (pre_time.hour * 60 + pre_time.minute) * 60 + pre_time.second
+                            sleep_time = seconds/3600
+                            if seconds >= 14400 and seconds<=27000:
+                                if wake_check == 0:
+                                    wake_check +=1
+                                    day_wake_time()
+                                else:
+                                    continue
+                            else:
+                                wake_check = 0
                         
-                        wake_up_hour = int(nowTuple.tm_hour) 
-                        wake_up_min = int(nowTuple.tm_min)
-                        wake_up_time = wake_up_hour +(wake_up_min)*0.01
-                        data = {'user_id' : '3', 'graph' : wake_up_time}
-                        print("낙상일시 : {}-{}-{} {}:{}:{}".format(pre_time.year, pre_time.month, pre_time.day,
-                                                                pre_time.hour,pre_time.minute,pre_time.second))
-                        print("깨어났네요 %d",wake_up_time)
-                        res = requests.post(URL1, json=data)
                     color = blue_color
                     origin_time = 0
                     sleeptime=0
-                #label = str(classes[class_ids[i]])
-                #color = colors[i]
-                cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-                #cv2.putText(frame, label, (x, y + 30), font, 3, color, 3)
-                #boxes.append([x, y, w, h])
-                
-                #confidences.append(float(confidence))
-                #class_ids.append(class_id)
+                label = str(nowStatus)[7:] # parsing status to label
+                font = cv2.FONT_HERSHEY_SIMPLEX # define font style
+                cv2.rectangle(frame, (x, y), (x + w, y + h), color, 10) # draw rectangle
+                cv2.putText(frame, label, (x, y - 30), font, 3, color, 7) # write text
                 beforeStatus = nowStatus
-    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-    font = cv2.FONT_HERSHEY_PLAIN
-    '''for i in range(len(boxes)):
-        if i in indexes:
-            x, y, w, h = boxes[i]
-            if w > h:
-                #print("fall down!!")
-                color = red_color
-                if origin_time == 0:
-                    origin_time = time.time()
-                else:
-                    now_time = time.time()
-                    if now_time - origin_time >= 5:
-                        print("fall down!")
-                        origin_time = 0
-            else:
-                color = blue_color
-                origin_time = 0
-            #label = str(classes[class_ids[i]])
-            #color = colors[i]
-            cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-            #cv2.putText(frame, label, (x, y + 30), font, 3, color, 3) '''
     cv2.imshow("Frame", frame)
     k = cv2.waitKey(1) & 0xFF
     if k == 27: break
-    time.sleep(1)
 cv2.destroyAllWindows()
