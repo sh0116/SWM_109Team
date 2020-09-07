@@ -41,6 +41,16 @@ class _menuState extends State<menu> {
                 );
               },
             ),
+            SizedBox(height: 20),
+            RaisedButton(
+              child: Text('ssh'),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
+                  return webView();
+                })
+                );
+              },
+            )
           ],
         )
       )
