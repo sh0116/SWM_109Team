@@ -33,13 +33,9 @@ def insert_data(data_name, *args):
     cursor.execute(query)
     connection.commit()
 
-
-def ffff_data(data_name,fall):
+def ffff_data(data_name, *args):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = ""
-   #print(args)
-    if(len(args) == 1):
-        query = "update"+data_name+" set fall = " +fall+ " wher id = 1"
+    query = "update ffff set fall = " +str(args[1])+ " where id = 1"
     cursor.execute(query)
     connection.commit()
 
@@ -100,7 +96,7 @@ def insert_body_temp(num):
 
 def select_wake_up():
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from wake_up;"
+    query = "SELECT * FROM ( SELECT * FROM wake_up ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
