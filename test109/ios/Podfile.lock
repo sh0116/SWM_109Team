@@ -1,26 +1,39 @@
 PODS:
   - Flutter (1.0.0)
+  - NMSSH (2.3.1)
   - shared_preferences (0.0.1):
     - Flutter
+  - ssh (0.0.7):
+    - Flutter
+    - NMSSH
   - webview_flutter (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - ssh (from `.symlinks/plugins/ssh/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - NMSSH
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  ssh:
+    :path: ".symlinks/plugins/ssh/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  NMSSH: cd689ae535a1581a6dd9fd4600ff71247df510a6
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  ssh: ab4d3c3430b97acae3f396432952d6bf502c40c6
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
 PODFILE CHECKSUM: 1d2a9028f29e48d921c9ef58592140578691c2af
