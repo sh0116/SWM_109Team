@@ -14,10 +14,26 @@ def connectRDS(host, port, userName, userPasswd, database):
     try:
         connection = pymysql.connect(host, user=userName, passwd=userPasswd, db=database, port=port, use_unicode=True, charset='utf8')
         cursor = connection.cursor()
-    except:
+    except: 
         logging.error("connection fail")
         sys.exit(1)
     return connection, cursor
+
+# INSERT
+# insert to user_info table
+# insert into sensor data table
+def insert_data(data_name, *args):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = ""
+   #print(args)
+    if(len(args) == 2):#fall_down
+        query = "insert into "+data_name+" (user_id, sensor_id) values ("+str(args[0])+","+str(args[1])+");"
+    elif(len(args) == 3):#temp,humi,activity
+        query = "insert into sensor_data (user_id,sensor_id,num) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+");"
+    elif(len(args) == 4):#wake,sleep
+        query = "insert into sensor_data (user_id,sensor_id,num,day) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+");"
+    cursor.execute(query)
+    connection.commit()
 
 # INSERT
 # insert into prot_info table
@@ -43,17 +59,7 @@ def insert_robot_info(robot_name, robot_id, user_id):
     cursor.execute(query)
     connection.commit()
 
-# insert into sensor data table
-def insert_data(data_name, *args):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = ""
-   #print(args)
-    if(len(args) == 1):
-        query = "insert into "+data_name+" (user_id) values ("+str(args[0])+");"
-    elif(len(args) == 2):
-        query = "insert into "+data_name+" (num, user_id) values ("+str(args[0])+","+str(args[1])+");"
-    cursor.execute(query)
-    connection.commit()
+##################################
 
 # SELECT
 # select from table
@@ -116,3 +122,48 @@ def select_where(table, num=0, *args, **kwargs):
         for row in rows:
             result.append(str(row))
     return result
+dbApi.select_graph("sensor_data",0,"num,timestamp",sensor_id = 5)
+    
+def select_fall_down(user_id):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select num,timestamp from sensor_data where sensor_id=5 and user_id="
+    query += user_id + "order by id desc;" 
+    #"select count(*) as num from fall_down ;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+
+    return rows
+
+def select_fall_down_count(id):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select count(*) as num from sensor_data where sensor_id=5 and user_id="
+    query += user_id +";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
+    return rows
+
+def select_wake_up(id):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=3 and user_id=" + user_id + " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    return rows
+def select_sleep(id):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=4 and user_id=" + user_id + " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    return rows
+
+
+
+def ffff_data(data_name, *args):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "update ffff set fall = " +str(args[1])+ " where id = 1"
+    cursor.execute(query)
+    connection.commit()
