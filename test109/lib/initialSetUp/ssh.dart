@@ -17,20 +17,28 @@ class _sshState extends State<ssh> {
 
   Future<void> onClickCmd() async {
     var client = new SSHClient(
-      host: "172.30.1.8",
+      host: "192.168.100.70",
       port: 22,
       username: "pi",
       passwordOrKey: "raspberry",
     );
 
     String result;
-    try {
-      result = await client.connect();
-      if (result == "session_connected") result = await client.execute("ps");
-      client.disconnect();
-    } on PlatformException catch (e) {
-      print('Error: ${e.code}\nError Message: ${e.message}');
+    //try {
+    result = await client.connect();
+    if (result == "session_connected") {
+      result = await client.execute("echo 'network={' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      result = await client.execute("echo '    ssid=\"hub_sungsoo\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      result = await client.execute("echo '    psk=\"1234567890\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      result = await client.execute("echo '    key_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      result = await client.execute("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      result = await client.execute("reboot | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
     }
+      client.disconnect();
+    //}
+    //} on PlatformException catch (e) {
+     //print('Error: ${e.code}\nError Message: ${e.message}');
+    //}
 
     setState(() {
       _result = result;
