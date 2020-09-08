@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test109/initialSetUp/userInfo.dart';
+import 'package:test109/initialSetUp/ssh.dart';
 import 'package:test109/webView.dart';
 
 class menu extends StatefulWidget {
@@ -46,7 +47,7 @@ class _menuState extends State<menu> {
               child: Text('ssh'),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
-                  return webView();
+                  return ssh();
                 })
                 );
               },
