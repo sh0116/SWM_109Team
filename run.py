@@ -102,7 +102,8 @@ def ffff():
     else:
         return 'ffff'
 
-#temperature(1), humidity(2), wake_up(3), sleep(4), fall_down(5), activity(6) 
+#temperature(1), humidity(2), wake_up(3), sleep(4), fall_down(5), activity(6)
+
 @app.route('/')
 def index():
     graph_fall = dbAPI.select_fall_down()
