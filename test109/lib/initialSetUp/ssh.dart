@@ -14,10 +14,12 @@ class ssh extends StatefulWidget {
 class _sshState extends State<ssh> {
   String _result = '';
   List _array;
+  String _ssid = '';
+  String _psk = '';
 
   Future<void> onClickCmd() async {
     var client = new SSHClient(
-      host: "192.168.100.70",
+      host: "172.30.1.47",
       port: 22,
       username: "pi",
       passwordOrKey: "raspberry",
@@ -27,17 +29,19 @@ class _sshState extends State<ssh> {
     //try {
     result = await client.connect();
     if (result == "session_connected") {
-      result = await client.execute("echo 'network={' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      result = await client.execute("echo '    ssid=\"hub_sungsoo\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      result = await client.execute("echo '    psk=\"1234567890\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      result = await client.execute("echo '    key_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      result = await client.execute("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      result = await client.execute("reboot | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo 'network={' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '    ssid=\"" + _ssid + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '    psk=\"" + _psk + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '    key_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '" + _ssid + "' | sudo tee -a /etc/tmp.txt");
+      await client.execute("sudo reboot");
     }
-      client.disconnect();
+    client.disconnect();
+    Navigator.pop(context);
     //}
     //} on PlatformException catch (e) {
-     //print('Error: ${e.code}\nError Message: ${e.message}');
+    //print('Error: ${e.code}\nError Message: ${e.message}');
     //}
 
     setState(() {
@@ -49,16 +53,61 @@ class _sshState extends State<ssh> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('ssh'),
+      ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget> [
+          //Text('Login - protector'),
+          //SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('SSID'),
+              Container(
+                child: TextField(
+                  controller: TextEditingController(),
+                  style: TextStyle(fontSize: 21, color: Colors.black),
+                  textAlign: TextAlign.center,
+                  onChanged: (String str){
+                    _ssid = str;
+                  },
+                ),
+                width: 170,
+                padding: EdgeInsets.only(left: 16),
+              )
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('PASSWORD'),
+              Container(
+                child: TextField(
+                  controller: TextEditingController(),
+                  style: TextStyle(fontSize: 21, color: Colors.black),
+                  textAlign: TextAlign.center,
+                  onChanged: (String str){
+                    _psk = str;
+                  },
+                ),
+                width: 170,
+                padding: EdgeInsets.only(left: 16),
+              )
+            ],
+          ),
+          SizedBox(height: 50),
           RaisedButton(
-              child: Text("test ps"),
+              child: Text("submit"),
               onPressed: onClickCmd,
               color: Colors.blue
           ),
-          SizedBox(height: 50),
-          Text(_result)
-        ]
+          //SizedBox(height: 50),
+          //Text(_result),
+          ]
       )
     );
   }
