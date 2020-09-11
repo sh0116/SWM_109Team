@@ -1,0 +1,29 @@
+{
+  "name": "ssh",
+  "version": "0.0.7",
+  "summary": "SSH and SFTP client for Flutter.",
+  "description": "SSH and SFTP client for Flutter. Wraps iOS library NMSSH and Android library Jsch.",
+  "homepage": "https://github.com/shaqian/flutter_ssh",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Qian Sha": "https://github.com/shaqian"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "public_header_files": "Classes/**/*.h",
+  "dependencies": {
+    "Flutter": [
+
+    ],
+    "NMSSH": [
+
+    ]
+  },
+  "platforms": {
+    "ios": "8.0"
+  }
+}
