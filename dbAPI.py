@@ -54,7 +54,7 @@ def insert_user_info(name, gender, birth, address, contact, prot_id):
 # insert into robot_info table
 def insert_robot_info(robot_name, robot_id, user_id):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into robot_info (robot_name, robot_id, user_id) values ("+robot_name+","+str(robot_id)+","+str(user_id)+");"
+    query = "insert into robot_info (robot_name, robot_serial, user_id) values ("+robot_name+","+str(robot_id)+","+str(user_id)+");"
     print(query)
     cursor.execute(query)
     connection.commit()
@@ -106,7 +106,7 @@ def select_where(table, num=0, *args, **kwargs):
         cnt+=1
         if (cnt < length): 
             query += " and "
-    query += ";"
+    query += " order by id desc;"
     #print(query)
     cursor.execute(query)
     connection.commit()
@@ -128,10 +128,22 @@ def select_where(table, num=0, *args, **kwargs):
             result.append(str(row))
     return result
 
-    
-def select_fall_down():
+def get_target_data2db(table_name,target_user):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select id,timestamp from sensor_data where sensor_id=5 and user_id=1 order by id desc;" 
+    query = "select * from " + table_name + " where name = \""+ target_user +"\";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    print(table_name)
+    return rows
+
+    
+def select_fall_down(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select id,timestamp from sensor_data where sensor_id=5 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " order by id desc;"
     #"select count(*) as num from fall_down ;"
     cursor.execute(query)
     connection.commit()
@@ -139,25 +151,35 @@ def select_fall_down():
 
     return rows
 
-def select_fall_down_count():
+def select_fall_down_count(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query ="select count(*) as num from sensor_data where sensor_id=5 and user_id=1;"
+    query ="select count(*) as num from sensor_data where sensor_id=5 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += ";"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchone()
 
     return rows
 
-def select_wake_up():
+def select_wake_up(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=3 and user_id=1 ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
+    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=3 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
     return rows
-def select_sleep():
+
+def select_sleep(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=4 and user_id=1 ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
+    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=4 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
