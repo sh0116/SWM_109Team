@@ -19,7 +19,7 @@ class _sshState extends State<ssh> {
 
   Future<void> onClickCmd() async {
     var client = new SSHClient(
-      host: "172.30.1.47",
+      host: "192.168.4.1",
       port: 22,
       username: "pi",
       passwordOrKey: "raspberry",
@@ -30,11 +30,11 @@ class _sshState extends State<ssh> {
     result = await client.connect();
     if (result == "session_connected") {
       await client.execute("echo 'network={' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      await client.execute("echo '    ssid=\"" + _ssid + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      await client.execute("echo '    psk=\"" + _psk + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      await client.execute("echo '    key_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '\tssid=\"" + _ssid + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '\tpsk=\"" + _psk + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '\tkey_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
-      await client.execute("echo '" + _ssid + "' | sudo tee -a /etc/tmp.txt");
+      await client.execute("echo '" + _ssid + "' | sudo tee -a /etc/ssid_list.txt");
       await client.execute("sudo reboot");
     }
     client.disconnect();
