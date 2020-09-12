@@ -1,14 +1,18 @@
+# -*- coding:utf-8 -*-
 from flask import Flask
 from flask import render_template
 from flask_restful import Resource, Api
 from flask_bootstrap import Bootstrap
 from flask import  request, Response
+from flask import stream_with_context,flash                                                                                                                         
+from time import sleep
 #from flask_mysqldb import MySQL
 import dbAPI
 import sys
 reload(sys)
 sys.setdefaultencoding("UTF-8")
 app = Flask(__name__)
+app.config['JSON_AS_ASCII']=False
 api = Api(app)
 Bootstrap(app)
 
@@ -43,17 +47,17 @@ def user_info_post(data):
     if request.method == 'GET': # SELECT    
         prot_id = request.args['prot_id']
         if(data == 'id'):
-            user = dbAPI.select_where("user_info",1,'id',prot_id=prot_id)
+            user = dbAPI.select_where("user_info",0,'id',prot_id=prot_id)
         elif(data == 'name'):
-            user = dbAPI.select_where("user_info",1,"name",prot_id=prot_id)
+            user = dbAPI.select_where("user_info",0,"name",prot_id=prot_id)
         elif(data == 'gender'):
-            user = dbAPI.select_where("user_info",1,"gender",prot_id=prot_id)
+            user = dbAPI.select_where("user_info",0,"gender",prot_id=prot_id)
         elif(data == 'birth'):
-            user = dbAPI.select_where("user_info",1,"birth",prot_id=prot_id)
+            user = dbAPI.select_where("user_info",0,"birth",prot_id=prot_id)
         elif(data == 'address'):
-            user = dbAPI.select_where("user_info",1,"address",prot_id=prot_id)
+            user = dbAPI.select_where("user_info",0,"address",prot_id=prot_id)
         elif(data == 'contact'):
-            user = dbAPI.select_where("user_info",1,"contact",prot_id=prot_id)
+            user = dbAPI.select_where("user_info",0,"contact",prot_id=prot_id)
         #print(user)
         return str(user)
     else: # POST (INSERT)
@@ -141,6 +145,7 @@ def query():
     #for i in list(dbapi.get_target_data2db( "humidity", target_user ))[0]:
     #for i in list(dbapi.get_target_data2db( "temperature", target_user ))[0]:
     #for i in list(dbapi.get_target_data2db( "fall_down", target_user ))[0]:
+<<<<<<< HEAD
 
     return str(user_info)
 @app.route('/ffff', methods = ['POST'])
@@ -153,6 +158,43 @@ def ffff():
         return 'ffff'
     else:
         return 'ffff'
+=======
+
+    return str(user_info)
+
+# def stream_template(template_name, **context):                                                                                                                                                 
+#     app.update_template_context(context)                                                                                                                                                       
+#     t = app.jinja_env.get_template(template_name)                                                                                                                                              
+#     rv = t.stream(context)                                                                                                                                                                     
+#     rv.disable_buffering()                                                                                                                                                                     
+#     return rv
+
+# data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]                                                                                                                                                          
+# def generate():                                                                                                                                                                                
+#     for item in data:                                                                                                                                                                          
+#         yield str(item)                                                                                                                                                                        
+#         sleep(1)                                                                                                                                                                               
+
+# @app.route('/stream')                                                                                                                                                                          
+# def stream_view():                                                                                                                                                                             
+#     stream_ing = generate()                                                                                                                                                                          
+#     return Response(stream_template('index.html', stream_ing=stream_ing))
+
+@app.route('/ffff', methods = ['POST'])
+def ffff():
+    if request.method == 'POST':
+        print(request.get_json())
+        user_id = request.get_json().get('user_id')
+        fall = request.get_json().get('fall')
+        dbAPI.ffff_data('ffff',user_id,fall)
+        return 'ffff'
+    else:
+        return 'ffff'
+
+@app.route('/ajax-trigger') 
+def ajax_trigger(): 
+    return my_algorithm()
+>>>>>>> yeon
 
 
 if __name__=='__main__':
