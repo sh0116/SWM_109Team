@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test109/initialSetUp/userInfo.dart';
 import 'package:test109/initialSetUp/ssh.dart';
-import 'package:test109/webView.dart';
+import 'package:test109/webView/selectUser.dart';
 
 class menu extends StatefulWidget {
   menu({Key key, this.title}) : super(key: key);
@@ -37,7 +37,7 @@ class _menuState extends State<menu> {
               child: Text('대시보드 열기'),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
-                  return webView();
+                  return selectUser();
                 })
                 );
               },

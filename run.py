@@ -55,7 +55,7 @@ def user_info_post(data):
         elif(data == 'contact'):
             user = dbAPI.select_where("user_info",1,"contact",prot_id=prot_id)
         #print(user)
-        return str(user[0])
+        return str(user)
     else: # POST (INSERT)
         name = request.get_json().get('name')
         gender = request.get_json().get('gender')
