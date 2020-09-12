@@ -100,30 +100,18 @@ class _loginState extends State<login> {
                       setProtId(_protId);
                       await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchUserId) async {
                         //print(fetchName);
-                        setUserId(fetchUserId);
+                        //setUserId(fetchUserId);
+                        userIdList = StrToList(fetchUserId);
                         await fetchData(http.Client(), "user_info/name", "prot_id", getProtId()).then((fetchUserName) async {
                           //print(fetchName);
-                          setUserName(fetchUserName);
-                          await fetchData(http.Client(), "user_info/gender", "prot_id", getProtId()).then((fetchUserGender) async {
-                          //print(fetchGender);
-                          setUserGender(fetchUserGender);
-                          await fetchData(http.Client(), "user_info/birth", "prot_id", getProtId()).then((fetchUserBirthday) async {
-                            //print(fetchBirthday);
-                            setUserBirthday(fetchUserBirthday);
-                            await fetchData(http.Client(), "user_info/address", "prot_id", getProtId()).then((fetchUserAddress) async {
-                              //print(fetchAddress);
-                              setUserAddress(fetchUserAddress);
-                              await fetchData(http.Client(), "user_info/contact", "prot_id", getProtId()).then((fetchUserContact) {
-                                //print(fetchContact);
-                                setUserContact(fetchUserContact);
-                                print(getProtId() + " " + getProtName() + " " + getProtContact());
-                                print(getUserId() + " " + getUserName() + " " + getUserContact());
-                                print("--fetch user info success");
-                                Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
-                              });
-                            });
-                          });
-                        });
+                          //setUserName(fetchUserName);
+                          userNameList = StrToList(fetchUserName);
+                          print(userIdList);
+                          print(userNameList);
+                          //print(getProtId() + " " + getProtName() + " " + getProtContact());
+                          //print(getUserId() + " " + getUserName() + " " + getUserContact());
+                          print("--fetch user info success");
+                          Navigator.push( context, MaterialPageRoute(builder: (context) => menu()), );
                       });
                     });
                   });
