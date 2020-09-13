@@ -8,13 +8,15 @@ class webView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String url = 'http://www.109center.com:5000/userapp?prot_id='+getProtId()+'&user_id='+userId;
+    //print(url);
     return Scaffold(
         appBar: AppBar(
             title: Text('대시보드')
         ),
         body: WebView(
           //initialUrl: 'http://youtube.com',
-          initialUrl: 'http://www.109center.com:5000/userapp?prot_id='+getProtId()+'&user_id='+userId,
+          initialUrl: url,
           javascriptMode: JavascriptMode.unrestricted,
         )
     );
