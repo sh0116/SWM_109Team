@@ -6,16 +6,18 @@ from flask_bootstrap import Bootstrap
 from flask import  request, Response
 from flask import stream_with_context,flash                                                                                                                         
 from time import sleep
+from flask_socketio import SocketIO, emit
 #from flask_mysqldb import MySQL
 import dbAPI
 import sys
 reload(sys)
 sys.setdefaultencoding("UTF-8")
 app = Flask(__name__)
+
 app.config['JSON_AS_ASCII']=False
 api = Api(app)
 Bootstrap(app)
-
+socketio = SocketIO(app)
 class RegistUser(Resource):
     def post(self):
         return{'result':'ok'}
@@ -30,7 +32,11 @@ def sensor():
     num = request.get_json().get('num')
     day = request.get_json().get('day')
     dbAPI.insert_data(str(user_id), str(sensor_id), str(num), str(day))
+    socketio.emit('message', {'data': 'Records Affected'}, broadcast=True)
+    
     return 'sensor'
+
+
 @app.route('/robot_info/<data>', methods = ['POST'])
 def robot_info_post(data):
     if request.method == 'POST': # INSERT
@@ -177,9 +183,9 @@ def ffff():
     else:
         return 'ffff'
 
-@app.route('/ajax-trigger') 
-def ajax_trigger(): 
-    return my_algorithm()
+# @app.route('/ajax-trigger') 
+# def ajax_trigger(): 
+#     return my_algorithm()
 
 
 if __name__=='__main__':
