@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // FLASK SERVER
-String FlaskURL = 'http://13.125.221.213:5555/';
+String FlaskURL = 'http://13.125.221.213:5000/';
 
 // USER
 String userId = '0';

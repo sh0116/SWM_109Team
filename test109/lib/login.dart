@@ -99,7 +99,7 @@ class _loginState extends State<login> {
                       setProtContact(_protContact);
                       setProtId(_protId);
                       await fetchData(http.Client(), "user_info/id", "prot_id", getProtId()).then((fetchUserId) async {
-                        //print(fetchName);
+                        print(fetchUserId);
                         //setUserId(fetchUserId);
                         userIdList = StrToList(fetchUserId);
                         await fetchData(http.Client(), "user_info/name", "prot_id", getProtId()).then((fetchUserName) async {
