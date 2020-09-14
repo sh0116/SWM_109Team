@@ -119,6 +119,7 @@ def Userapp():
 #temperature(1), humidity(2), wake_up(3), sleep(4), fall_down(5), activity(6) 
 @app.route('/')
 def index():
+    temp1 = request.args.get('user_id')
     graph_fall = dbAPI.select_fall_down(user_id = 2)
     count_fall = dbAPI.select_fall_down_count(user_id = 1)
     wake_up = dbAPI.select_wake_up(user_id = 1)
@@ -129,6 +130,22 @@ def index():
     all_user_info = dbAPI.select("user_info",0, "*")
     
     return render_template('index.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,sleep = wake_up)
+
+@app.route('/map')
+def map():
+    temp1 = request.args.get('user_id')
+    graph_fall = dbAPI.select_fall_down(user_id = int(temp1))
+    count_fall = dbAPI.select_fall_down_count(user_id = int(temp1))
+    wake_up = dbAPI.select_wake_up(user_id = int(temp1))
+    sleep = dbAPI.select_sleep(user_id = int(temp1))
+    temperature = dbAPI.select_where("sensor_data",0,"num",sensor_id = 1, user_id = int(temp1))
+    humidity = dbAPI.select_where("sensor_data",0,"num",sensor_id = 2, user_id = int(temp1))
+    user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
+    all_user_info = dbAPI.select("user_info",0, "*")
+    
+    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,sleep = wake_up)
+
+
 
 @app.route('/contact')
 def Contact():
@@ -151,20 +168,6 @@ def query():
     #for i in list(dbapi.get_target_data2db( "humidity", target_user ))[0]:
     #for i in list(dbapi.get_target_data2db( "temperature", target_user ))[0]:
     #for i in list(dbapi.get_target_data2db( "fall_down", target_user ))[0]:
-<<<<<<< HEAD
-
-    return str(user_info)
-@app.route('/ffff', methods = ['POST'])
-def ffff():
-    if request.method == 'POST':
-        print(request.get_json())
-        user_id = request.get_json().get('user_id')
-        fall = request.get_json().get('fall')
-        dbAPI.ffff_data('ffff',user_id,fall)
-        return 'ffff'
-    else:
-        return 'ffff'
-=======
 
     return str(user_info)
 
@@ -197,16 +200,9 @@ def ffff():
     else:
         return 'ffff'
 
-<<<<<<< HEAD
-@app.route('/ajax-trigger') 
-def ajax_trigger(): 
-    return my_algorithm()
->>>>>>> yeon
-=======
 # @app.route('/ajax-trigger') 
 # def ajax_trigger(): 
 #     return my_algorithm()
->>>>>>> yeon
 
 
 if __name__=='__main__':
