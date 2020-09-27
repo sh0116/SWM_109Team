@@ -187,7 +187,6 @@ def query():
 # @app.route('/stream')                                                                                                                                                                          
 # def stream_view():                                                                                                                                                                             
 #     stream_ing = generate()                                                                                                                                                                          
-#     return Response(stream_template('index.html', stream_ing=stream_ing))
 
 @app.route('/ffff', methods = ['POST'])
 def ffff():
