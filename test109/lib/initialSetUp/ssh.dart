@@ -39,6 +39,8 @@ class _sshState extends State<ssh> {
     }
     client.disconnect();
     Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
     //}
     //} on PlatformException catch (e) {
     //print('Error: ${e.code}\nError Message: ${e.message}');
