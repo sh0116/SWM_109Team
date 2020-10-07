@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:test109/dataCenter.dart';
+import 'package:test109/initialSetUp/ssh.dart';
 
 class robotInfo extends StatefulWidget {
   robotInfo({Key key, this.title}) : super(key: key);
@@ -76,8 +77,7 @@ class _robotInfoState extends State<robotInfo> {
                           await postData('robot_info', jsonBody).then((val) async {
                             setRobotName(_robotName);
                             setRobotId(_robotId);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                            Navigator.push( context, MaterialPageRoute(builder: (context) => ssh()), );
                           });
                         }
                     ),

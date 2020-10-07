@@ -44,7 +44,7 @@ class _menuState extends State<menu> {
             ),
             SizedBox(height: 20),
             RaisedButton(
-              child: Text('ssh'),
+              child: Text('medicine'),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
                   return ssh();
