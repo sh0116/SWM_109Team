@@ -27,7 +27,7 @@ class _selectUserState extends State<selectUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('select user'),
+        title: Text('사용자 선택'),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(8.0),

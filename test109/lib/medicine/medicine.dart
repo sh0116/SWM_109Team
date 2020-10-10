@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test109/dataCenter.dart';
 import 'package:http/http.dart' as http;
+import 'package:test109/medicine/medicineInfo.dart';
 
 class medicine extends StatefulWidget {
   medicine({Key key, this.userId}) : super(key: key);
@@ -20,12 +21,12 @@ class _medicineState extends State<medicine> {
   }
 
   Future<void> getMedicineList() async{
-    await fetchData(http.Client(), "test", "user_id", widget.userId).then((fetchMedicineData) async {
+    await fetchData(http.Client(), "medicine_data/info", "user_id", widget.userId).then((fetchMedicineData) async {
       //print(fetchName);
       //setUserName(fetchUserName);
       List<String> medicineString = StrToList(fetchMedicineData);
       //print("print medicine string");
-      //print(medicineString);
+      print(medicineString);
       medicineList = ListToMedicine(medicineString);
       //print("print medicine list");
       //print(medicineList[0].name + medicineList[1].name);
@@ -38,9 +39,10 @@ class _medicineState extends State<medicine> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('select user'),
+          title: Text('약 목록'),
         ),
         body: ListView.separated(
+          padding: const EdgeInsets.all(10.0),
           itemCount: medicineList.length,
           itemBuilder: (BuildContext context, int index){
             return medicineTile(medicineList[index]);
@@ -48,7 +50,17 @@ class _medicineState extends State<medicine> {
           separatorBuilder: (context, index) {
             return Divider();
           },
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
+              return medicineInfo(userId: widget.userId);
+            })
+            );
+          },
+        ),
     );
   }
 }
@@ -91,9 +103,9 @@ class _medicineTileState extends State<medicineTile>{
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Text(widget.med.name),
-      title: Text(validWeekday(widget.med.week)),
-      subtitle: Text(validTime(widget.med.time)),
+      leading: Text(widget.med.name, textAlign: TextAlign.center,),
+      title: Text(validWeekday(widget.med.week), textAlign: TextAlign.center,),
+      subtitle: Text(validTime(widget.med.time), textAlign: TextAlign.center,),
     );
 
   }

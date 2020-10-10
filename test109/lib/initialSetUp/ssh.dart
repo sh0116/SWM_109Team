@@ -56,7 +56,7 @@ class _sshState extends State<ssh> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ssh'),
+        title: Text('와이파이 연결'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +86,7 @@ class _sshState extends State<ssh> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('PASSWORD'),
+              Text('비밀번호'),
               Container(
                 child: TextField(
                   controller: TextEditingController(),
@@ -103,7 +103,7 @@ class _sshState extends State<ssh> {
           ),
           SizedBox(height: 50),
           RaisedButton(
-              child: Text("submit"),
+              child: Text("등록"),
               onPressed: onClickCmd,
               color: Colors.blue
           ),
