@@ -17,7 +17,7 @@ class _menuState extends State<menu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('menu'),
+          title: Text('메뉴'),
           automaticallyImplyLeading: false,
       ),
       body: Center(

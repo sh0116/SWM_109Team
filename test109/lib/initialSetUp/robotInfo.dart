@@ -22,18 +22,18 @@ class _robotInfoState extends State<robotInfo> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-        appBar: AppBar(title: Text("robot info")),
+        appBar: AppBar(title: Text("로봇 정보")),
         body: SingleChildScrollView(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: 50),
-                  Text('[ Input robot info ]', style: TextStyle(fontSize: 25)),
+                  Text('로봇 정보 입력', style: TextStyle(fontSize: 25)),
                   SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Name'),
+                      Text('이름'),
                       Container(
                         child: TextField(
                           controller: TextEditingController(),
@@ -52,7 +52,7 @@ class _robotInfoState extends State<robotInfo> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('ID'),
+                      Text('시리얼번호'),
                       Container(
                         child: TextField(
                           controller: TextEditingController(),
@@ -70,7 +70,7 @@ class _robotInfoState extends State<robotInfo> {
                   SizedBox(height: 50),
                   Container(
                     child: RaisedButton(
-                        child: Text('register'),
+                        child: Text('등록'),
                         onPressed: () async {
                           setState(() {});
                           Map<String, dynamic> jsonBody = {'name': "'"+_robotName+"'",'robot_id': "'"+_robotId+"'",'user_id': "'"+getUserId()+"'"};
