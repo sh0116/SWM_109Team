@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // FLASK SERVER
-String FlaskURL = 'http://13.125.221.213:5000/';
+String FlaskURL = 'http://13.125.221.213:5555/';
 
 // USER
 String userId = '0';
@@ -54,6 +54,19 @@ getRobotName(){ return robotName; }
 setRobotId(String id){ robotId = id; }
 setRobotName(String name){ robotName = name; }
 
+// MEDICINE
+class Medicine{
+  String name;
+  List<bool> week = new List<bool>(7);
+  List<String> time = new List<String>(3);
+}
+
+String medicineName = 'medicine';
+
+getMedicineName(){ return medicineName; }
+
+setMedicineName(String name){ medicineName = name; }
+
 // Flask 서버를 통해 DB에 저장
 Future<String> postData(String routeTable, Map<String, dynamic> jsonBody) async {
   final http.Response response = await http.post(FlaskURL+routeTable+'/register',
@@ -68,21 +81,44 @@ Future<String> postData(String routeTable, Map<String, dynamic> jsonBody) async 
 List<String> StrToList(String input){
   List<String> ret = List<String>();
   input = input.substring(1,input.length-1);
-  //print(input);
+  //print("print input" + input);
   ret = input.split(r", ");
   //print(ret);
   for(var i = 0 ; i < ret.length ; i++){
-    ret[i] = ret[i].substring(2,ret[i].length-2);
+    //print(ret[i]);
+    if(ret[i][0]=='[') ret[i] = ret[i].substring(1, ret[i].length);
+    if(ret[i][ret[i].length-1]==']') ret[i] = ret[i].substring(0, ret[i].length-1);
+    //print(ret[i]);
+    ret[i] = ret[i].substring(1,ret[i].length-1);
+    //print(ret[i]);
   }
+  return ret;
+}
 
+List<Medicine> ListToMedicine(List input){
+  List<Medicine> ret = List<Medicine>();
+  for(var i = 0 ; i < input.length ; i+=11){
+    Medicine nowMed = new Medicine();
+    nowMed.name = input[i];
+    //print(input[i]);
+    for(var j = 0 ; j < 7 ; j++){
+      //print(input[i+1+j]);
+      nowMed.week[j] = input[i+1+j] == '1' ? true : false;
+    }
+    for(var j = 0 ; j < 3 ; j++){
+      nowMed.time[j] = input[i+8+j].substring(0,input[i+8+j].length-3);
+    }
+    ret.add(nowMed);
+  }
   return ret;
 }
 
 // Flask 서버를 통해 DB에서 값을 가져옴
 Future<String> fetchData(http.Client client, String route, String data, String value) async {
   String query = FlaskURL+route+'?'+data+'='+value;
+  //print(query);
   final response = await client.get(query);
-  //print(StrToList(response.body));
+  //print("how" + response.body);
   return response.body;
 }
 

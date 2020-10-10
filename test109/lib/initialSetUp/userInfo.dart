@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:test109/dataCenter.dart';
 import 'package:test109/initialSetUp/robotInfo.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class userInfo extends StatefulWidget {
   userInfo({Key key, this.title}) : super(key: key);
@@ -27,18 +28,18 @@ class _userInfoState extends State<userInfo> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title: Text("user info")),
+      appBar: AppBar(title: Text("사용자 정보")),
       body: SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 40),
-                Text('[ Input user info ]', style: TextStyle(fontSize: 25)),
+                Text('사용자 정보 입력', style: TextStyle(fontSize: 25)),
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Name'),
+                    Text('이름'),
                     Container(
                       child: TextField(
                         controller: TextEditingController(),
@@ -58,17 +59,17 @@ class _userInfoState extends State<userInfo> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('Gender'),
+                    Text('성별'),
                     Container(
                       height: 50,
                       width: 100,
                       child: ListTile(
-                        title: Text('F'),
+                        title: Text('여'),
                         leading: Radio(
-                          value: 'F',
+                          value: '여',
                           groupValue: userGender,
                           onChanged: (value){
-                            _userGender = 'F';
+                            _userGender = '';
                           },
                         ),
                       ),
@@ -77,12 +78,12 @@ class _userInfoState extends State<userInfo> {
                       height: 50,
                       width: 100,
                       child: ListTile(
-                        title: Text('M'),
+                        title: Text('남'),
                         leading: Radio(
-                          value: 'M',
+                          value: '남',
                           groupValue: userGender,
                           onChanged: (value){
-                            _userGender = 'M';
+                            _userGender = '남';
                           },
                         ),
                       ),
@@ -93,41 +94,27 @@ class _userInfoState extends State<userInfo> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Birthday'),
+                    Text('생년월일'),
                     Container(
                       child: RaisedButton(
-                        child: Text('show date picker'),
+                        child: Text(
+                          '날짜 선택하기',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                         onPressed: () {
-                          showCupertinoModalPopup(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height: 150,
-                                padding: EdgeInsets.only(top: 6.0),
-                                color: CupertinoColors.white,
-                                child: DefaultTextStyle(
-                                  style: const TextStyle(
-                                    color: CupertinoColors.black,
-                                    fontSize: 22.0,
-                                  ),
-                                  child: GestureDetector(
-                                    // Blocks taps from propagating to the modal sheet and popping.
-                                    onTap: () {},
-                                    child: SafeArea(
-                                      top: false,
-                                      child: CupertinoDatePicker(
-                                        mode: CupertinoDatePickerMode.date,
-                                        initialDateTime: DateTime.now(),
-                                        onDateTimeChanged: (DateTime newDateTime) {
-                                          _userBirthday = newDateTime.toString().substring(0,10);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
+                          DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime(1900, 1, 1),
+                              maxTime: DateTime.now(),
+                              onChanged: (date) {
+                                print('change $date');
+                                _userBirthday = date.toString().substring(0,10);
+                              },
+                              onConfirm: (date) {
+                                print('confirm $date');
+                                _userBirthday = date.toString().substring(0,10);
+                              },
+                              currentTime: DateTime.now(), locale: LocaleType.ko);
                         },
                       ),
                       height: 40,
@@ -139,7 +126,7 @@ class _userInfoState extends State<userInfo> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Address'),
+                    Text('도로명 주소'),
                     Container(
                       child: TextField(
                         controller: TextEditingController(),
@@ -158,7 +145,7 @@ class _userInfoState extends State<userInfo> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Contact'),
+                    Text('연락처'),
                     Container(
                       child: TextField(
                         controller: TextEditingController(),
@@ -176,7 +163,7 @@ class _userInfoState extends State<userInfo> {
                 SizedBox(height: 50),
                 Container(
                   child: RaisedButton(
-                      child: Text('register'),
+                      child: Text('등록'),
                       onPressed: () async {
                         Map<String, dynamic> jsonBody = {'name': "'"+_userName+"'",'gender': "'"+_userGender+"'",'birth': "'"+_userBirthday+"'",'address': "'"+_userAddress+"'",'contact': "'"+_userContact+"'",'prot_id': "'"+getProtId()+"'"};
                         await postData('user_info', jsonBody).then((val) async {
