@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test109/initialSetUp/userInfo.dart';
 import 'package:test109/initialSetUp/ssh.dart';
 import 'package:test109/webView/selectUser.dart';
+import 'package:test109/medicine/selectMedicineUser.dart';
 
 class menu extends StatefulWidget {
   menu({Key key, this.title}) : super(key: key);
@@ -44,10 +45,10 @@ class _menuState extends State<menu> {
             ),
             SizedBox(height: 20),
             RaisedButton(
-              child: Text('medicine'),
+              child: Text('약 정보'),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
-                  return ssh();
+                  return selectMedicineUser();
                 })
                 );
               },
