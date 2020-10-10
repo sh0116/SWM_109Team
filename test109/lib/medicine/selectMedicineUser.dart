@@ -2,17 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:test109/dataCenter.dart';
-import 'package:test109/webView/webView.dart';
+import 'package:test109/medicine/medicine.dart';
 
-class selectUser extends StatefulWidget {
-  selectUser({Key key, this.title}) : super(key: key);
+class selectMedicineUser extends StatefulWidget {
+  selectMedicineUser({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _selectUserState createState() => _selectUserState();
+  _selectMedicineUserState createState() => _selectMedicineUserState();
 }
 
-class _selectUserState extends State<selectUser> {
+class _selectMedicineUserState extends State<selectMedicineUser> {
   var namesList = new List<String>();
   var idsList = new List<String>();
 
@@ -41,7 +41,7 @@ class _selectUserState extends State<selectUser> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => webView(userId: idsList[index]),
+                  builder: (context) => medicine(userId: idsList[index]),
                 ),
               );
             },
