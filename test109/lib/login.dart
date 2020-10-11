@@ -10,10 +10,10 @@ import 'package:test109/menu.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: 'test 109',
+    title: '돌봄로봇 백구',
     home: Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(title: Text('test 109')),
+      appBar: AppBar(title: Text('돌봄로봇 백구')),
       body: login(),
     ),
   ));
@@ -40,12 +40,12 @@ class _loginState extends State<login> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text('Login - protector'),
-        SizedBox(height: 20),
+        Text('보호자 로그인', style: TextStyle(fontSize: 25)),
+        SizedBox(height: 40),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Name'),
+            Text('이름'),
             Container(
               child: TextField(
                 controller: TextEditingController(),
@@ -64,7 +64,7 @@ class _loginState extends State<login> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Contact'),
+            Text('연락처'),
             Container(
               child: TextField(
                 controller: TextEditingController(),
@@ -73,6 +73,11 @@ class _loginState extends State<login> {
                 onChanged: (String str){
                   _protContact = str;
                 },
+                decoration: InputDecoration(
+                  //border: InputBorder.,
+                  hintText: '숫자만 입력하세요',
+                  hintStyle: TextStyle(fontSize: 15.0),
+                ),
               ),
               width: 170,
               padding: EdgeInsets.only(left: 16),
@@ -85,16 +90,18 @@ class _loginState extends State<login> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
-              child: Text('LOGIN'),
+              child: Text('로그인'),
               onPressed: () async {
                 // fetch corresponding name to contact
                 await fetchData(http.Client(), "prot_info/name", "contact", _protContact).then((fetchName) async {
+                  String nowProtName = StrToList(fetchName)[0];
                   print(fetchName + " " + _protContact);
-                  if(fetchName == _protName){
+                  if(nowProtName == _protName){
                     print("--login success");
                     await fetchData(http.Client(), "prot_info/id", "contact", _protContact).then((fetchId) async {
                       //print(fetchId);
-                      _protId = fetchId;
+                      String nowProtId = StrToList(fetchId)[0];
+                      _protId = nowProtId;
                       setProtName(_protName);
                       setProtContact(_protContact);
                       setProtId(_protId);
@@ -123,7 +130,7 @@ class _loginState extends State<login> {
             ),
             SizedBox(width: 10),
             RaisedButton(
-              child: Text('REGISTER'),
+              child: Text('등록'),
               onPressed: () async {
                 setState(() {});
                 Map<String, dynamic> jsonBody = {'name': "'"+_protName+"'", 'contact': "'"+_protContact+"'",};

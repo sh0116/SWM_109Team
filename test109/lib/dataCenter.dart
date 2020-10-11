@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // FLASK SERVER
-String FlaskURL = 'http://13.125.221.213:5555/';
+String FlaskURL = 'http://13.125.221.213:5000/';
 
 // USER
 String userId = '0';
@@ -119,7 +119,7 @@ Future<String> fetchData(http.Client client, String route, String data, String v
   //print(query);
   final response = await client.get(query);
   //print("how" + response.body);
-  return response.body;
+  return utf8.decode(response.bodyBytes);
 }
 
 Future<String> fetchAllData(http.Client client, String route, String data, String value) async {
