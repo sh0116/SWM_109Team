@@ -35,7 +35,7 @@ class _menuState extends State<menu> {
             ),
             SizedBox(height: 20),
             RaisedButton(
-              child: Text('대시보드 열기'),
+              child: Text('관제 대시보드'),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
                   return selectUser();
