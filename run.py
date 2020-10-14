@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+
 from flask import Flask
 from flask import render_template
 from flask_restful import Resource, Api
@@ -11,7 +12,7 @@ from flask_socketio import SocketIO, emit
 import dbAPI
 import sys
 reload(sys)
-sys.setdefaultencoding("UTF-8")
+sys.setdefaultencoding("utf-8")
 app = Flask(__name__)
 
 app.config['JSON_AS_ASCII']=False
@@ -27,12 +28,14 @@ api.add_resource(RegistUser,'/user')
 @app.route('/sensor', methods = ['POST'])
 def sensor():
     #print(request)
+
     user_id = request.get_json().get('user_id')
     sensor_id = request.get_json().get('sensor_id')
     num = request.get_json().get('num')
     day = request.get_json().get('day')
-    dbAPI.insert_data(str(user_id), str(sensor_id), str(num), str(day))
-    socketio.emit('message', {'data': 'Records Affected'}, broadcast=True)
+    dbAPI.insert_data("sensor_data",str(user_id), str(sensor_id), str(num), str(day))
+    if str(sensor_id) == '5':
+        socketio.emit('message', {'data': 'Records Affected'}, broadcast=True)
     
     return 'sensor'
 
@@ -65,7 +68,7 @@ def user_info_post(data):
         elif(data == 'contact'):
             user = dbAPI.select_where("user_info",0,"contact",prot_id=prot_id)
         #print(user)
-        return str(user)
+        return str(decodeList(user))
     else: # POST (INSERT)
         name = request.get_json().get('name')
         gender = request.get_json().get('gender')
@@ -75,6 +78,7 @@ def user_info_post(data):
         prot_id = request.get_json().get('prot_id')
         #print(name, contact, prot_id)
         dbAPI.insert_user_info(name, gender, birth, address, contact, prot_id)
+        socketio.emit('user_info', {'data': 'uuuu'}, broadcast=True)
         return "user_info_post"
 
 @app.route('/prot_info/<data>', methods = ['GET','POST'])
@@ -90,7 +94,7 @@ def prot_info_post(data):
             contact = request.args['contact']
             prot = dbAPI.select_where("prot_info",1,"id",contact=contact)
         #print(prot)
-        return str(prot[0])
+        return str(decodeList(prot))
     else: # POST (INSERT)
         name = request.get_json().get('name')
         contact = request.get_json().get('contact')
@@ -138,12 +142,12 @@ def map():
     count_fall = dbAPI.select_fall_down_count(user_id = int(temp1))
     wake_up = dbAPI.select_wake_up(user_id = int(temp1))
     sleep = dbAPI.select_sleep(user_id = int(temp1))
-    temperature = dbAPI.select_where("sensor_data",0,"num",sensor_id = 1, user_id = int(temp1))
+    temperature = dbAPI.select_where("sensor_data",0,"num", user_id = int(temp1), sensor_id = 1)
     humidity = dbAPI.select_where("sensor_data",0,"num",sensor_id = 2, user_id = int(temp1))
     user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
     all_user_info = dbAPI.select("user_info",0, "*")
     
-    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,sleep = wake_up)
+    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep)
 
 
 
@@ -187,6 +191,7 @@ def query():
 # @app.route('/stream')                                                                                                                                                                          
 # def stream_view():                                                                                                                                                                             
 #     stream_ing = generate()                                                                                                                                                                          
+#     return Response(stream_template('index.html', stream_ing=stream_ing))
 
 @app.route('/ffff', methods = ['POST'])
 def ffff():
@@ -199,10 +204,39 @@ def ffff():
     else:
         return 'ffff'
 
+@app.route('/medicine_data/<data>', methods = ['GET','POST'])
+def medicine_data(data):
+    if request.method == 'GET':
+        user_id = request.args['user_id']
+        #print(user_id)
+        val = dbAPI.select_where('medicine_data',0,'name','월','화','수','목','금','토','일','time1','time2','time3',user_id=user_id)
+        print(val)
+        return str(decodeList(val))
+    else: # POST
+        name = request.get_json().get('name')
+        user_id = request.get_json().get('user_id')
+        mon = request.get_json().get('mon')
+        tue = request.get_json().get('tue')
+        wed = request.get_json().get('wed')
+        thu = request.get_json().get('thu')
+        fri = request.get_json().get('fri')
+        sat = request.get_json().get('sat')
+        sun = request.get_json().get('sun')
+        time1 = request.get_json().get('time1')
+        time2 = request.get_json().get('time2')
+        time3 = request.get_json().get('time3')
+	print(name + user_id + time1)
+        if(time2=='000000'): dbAPI.insert_medicine_data(name,user_id,mon,tue,wed,thu,fri,sat,sun,time1);
+        elif(time3=='000000'): dbAPI.insert_medicine_data(name,user_id,mon,tue,wed,thu,fri,sat,sun,time1,time2);
+        else: dbAPI.insert_medicine_data(name,user_id,mon,tue,wed,thu,fri,sat,sun,time1,time2,time3);
+        return 'medicine_data_post';
+
 # @app.route('/ajax-trigger') 
 # def ajax_trigger(): 
 #     return my_algorithm()
 
+def decodeList(input):
+	return repr(input).decode('string-escape')
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=5000, debug=True)
