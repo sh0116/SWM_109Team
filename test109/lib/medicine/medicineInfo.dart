@@ -21,6 +21,13 @@ class _medicineInfoState extends State<medicineInfo> {
   //TimeOfDay time1, time2, time3;
   String _time1 = '', _time2 = '', _time3 = '';
 
+  TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -39,7 +46,7 @@ class _medicineInfoState extends State<medicineInfo> {
                       Text('이름'),
                       Container(
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller: _nameController,
                           style: TextStyle(fontSize: 21, color: Colors.black),
                           textAlign: TextAlign.center,
                           onChanged: (String str){
@@ -183,7 +190,7 @@ class _medicineInfoState extends State<medicineInfo> {
                       Container(
                         child: RaisedButton(
                           child: Text(
-                            '날짜 선택하기',
+                            '시간 선택하기',
                             style: TextStyle(color: Colors.blue),
                           ),
                           onPressed: () async {
@@ -221,7 +228,7 @@ class _medicineInfoState extends State<medicineInfo> {
                       Container(
                         child: RaisedButton(
                           child: Text(
-                            '날짜 선택하기',
+                            '시간 선택하기',
                             style: TextStyle(color: Colors.blue),
                           ),
                           onPressed: () async {
@@ -260,13 +267,13 @@ class _medicineInfoState extends State<medicineInfo> {
                           Map<String, dynamic> jsonBody = {
                             'name': "'"+_medicineName+"'",
                             'user_id': "'"+widget.userId+"'",
-                            '월': "'"+_checkedMon+"'",
-                            '화': "'"+_checkedTue+"'",
-                            '수': "'"+_checkedWed+"'",
-                            '목': "'"+_checkedThu+"'",
-                            '금': "'"+_checkedFri+"'",
-                            '토': "'"+_checkedSat+"'",
-                            '일': "'"+_checkedSun+"'",
+                            'mon': "'"+_checkedMon+"'",
+                            'tue': "'"+_checkedTue+"'",
+                            'wed': "'"+_checkedWed+"'",
+                            'thu': "'"+_checkedThu+"'",
+                            'fri': "'"+_checkedFri+"'",
+                            'sat': "'"+_checkedSat+"'",
+                            'sun': "'"+_checkedSun+"'",
                             'time1': "'"+_time1+"'",
                             'time2': "'"+_time2+"'",
                             'time3': "'"+_time3+"'"};
