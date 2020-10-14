@@ -1,7 +1,13 @@
-# -*- coding: utf-8 -*
+# -*- coding:utf-8 -*-
 
 import pymysql
+import logging
+import sys
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+#app.config['JSON_AS_ASCII']=False
 # RDS MYSQL information
 host = "db109.cpehjs7hbg19.ap-northeast-2.rds.amazonaws.com"
 port = 3306
@@ -12,7 +18,12 @@ database = "robot2"
 # connect RDS
 def connectRDS(host, port, userName, userPasswd, database):
     try:
-        connection = pymysql.connect(host, user=userName, passwd=userPasswd, db=database, port=port, use_unicode=True, charset='utf8')
+        connection = pymysql.connect(host, user=userName, passwd=userPasswd, db=database, port=port, use_unicode=True, charset='utf8mb4')
+    #connection.query("set character_set_connection=utf8;")
+    #connection.query("set character_set_server=utf8;")
+    #connection.query("set character_set_client=utf8;")
+    #connection.query("set character_set_results=utf8;")
+    #connection.query("set character_set_database=utf8;")
         cursor = connection.cursor()
     except: 
         logging.error("connection fail")
@@ -31,10 +42,11 @@ def insert_data(data_name, *args):
     elif(len(args) == 3):#temp,humi,activity
         query = "insert into sensor_data (user_id,sensor_id,num) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+");"
     elif(len(args) == 4):#wake,sleep
-        query = "insert into sensor_data (user_id,sensor_id,num,day) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+");"
+        query = "insert into sensor_data (user_id,sensor_id,num,day) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+",'"+str(args[3])+"');"
+    print(query)
     cursor.execute(query)
     connection.commit()
-
+    
 # INSERT
 # insert into prot_info table
 def insert_prot_info(name, contact):
@@ -59,6 +71,21 @@ def insert_robot_info(robot_name, robot_id, user_id):
     cursor.execute(query)
     connection.commit()
 
+def insert_medicine_data(medicine_name, user_id, *args):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "";
+    if(len(args) == 10): query = "insert into medicine_data (name, user_id, 월,화,수,목,금,토,일, time1,time2,time3) values ("+medicine_name+","+str(user_id)+","+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+","+str(args[4])+","+str(args[5])+","+str(args[6])+","+str(args[7])+","+str(args[8])+","+str(args[9])+");"
+    elif(len(args) == 9): query = "insert into medicine_data (name, user_id, 월,화,수,목,금,토,일, time1,time2) values ("+medicine_name+","+str(user_id)+","+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+","+str(args[4])+","+str(args[5])+","+str(args[6])+","+str(args[7])+","+str(args[8])+");"
+    elif(len(args) == 8): query = "insert into medicine_data (name, user_id, 월,화,수,목,금,토,일, time1) values ("+medicine_name+","+str(user_id)+","+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+","+str(args[4])+","+str(args[5])+","+str(args[6])+","+str(args[7])+");"
+    print(query)
+    #connection.query("set character_set_connection=utf8;")
+    #connection.query("set character_set_server=utf8;")
+    #connection.query("set character_set_client=utf8;")
+    #connection.query("set character_set_results=utf8;")
+    #connection.query("set character_set_database=utf8;")
+    cursor.execute(query)
+    connection.commit()
+
 #-------------------------------------------------------------------#
 
 # SELECT
@@ -77,11 +104,12 @@ def select(table, num=0, *args):
     result = []
     if (num == 0): # all
         rows = cursor.fetchall()
+	print(rows)
         if(rows is None): return result # empty set
         for row in rows:
             result0 = []
             for row0 in row:
-                result0.append(row0)
+                result0.append(str(row0))
             result.append(result0)
     else: # one
         rows = cursor.fetchone()
@@ -107,25 +135,29 @@ def select_where(table, num=0, *args, **kwargs):
         if (cnt < length): 
             query += " and "
     query += " order by id desc;"
-    #print(query)
+    print(query)
     cursor.execute(query)
     connection.commit()
     result = []
     if (num == 0): # all
         rows = cursor.fetchall()
-        #print(rows)
+        print(rows)
         if(rows is None): return result # empty set
         for row in rows:
             result0 = []
             for row0 in row:
                 result0.append(str(row0))
+		#print(str(row0))
+		#print(str(row0).encode('utf-8'))
             result.append(result0)
+	    #print(result0)
     else: # one
         rows = cursor.fetchone()
         #print(rows)
         if(rows is None): return result # empty set
         for row in rows:
             result.append(str(row))
+    print(result)
     return result
 
 def get_target_data2db(table_name,target_user):
@@ -165,7 +197,7 @@ def select_fall_down_count(**kwargs):
 
 def select_wake_up(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=3 and "
+    query = "SELECT * FROM ( SELECT * FROM sensor_data where sensor_id=3 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
     query += " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
@@ -176,7 +208,7 @@ def select_wake_up(**kwargs):
 
 def select_sleep(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "SELECT * FROM ( SELECT id,num,day,timestamp FROM sensor_data where sensor_id=4 and "
+    query = "SELECT * FROM ( SELECT * FROM sensor_data where sensor_id=4 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
     query += " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
