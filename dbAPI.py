@@ -58,7 +58,7 @@ def insert_prot_info(name, contact):
 # insert into user_info table
 def insert_user_info(name, gender, birth, address, contact, prot_id):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "insert into user_info (name, gender, birth, address, contact, prot_id) values ("+name+","+gender+","+birth+","+address+","+contact+","+str(prot_id)+");"
+    query = "insert into user_info (name, gender, birth, address, contact, prot_id) values ("+name+","+gender+","+birth+","+address+","+contact+","+prot_id+");"
     cursor.execute(query)
     #print(query)
     connection.commit()
@@ -130,9 +130,9 @@ def select_where(table, num=0, *args, **kwargs):
     cnt = 0
     length = len(kwargs)
     for key, value in kwargs.items():
-        query += str(key) + "=" + str(value)
+        query += str(key) + "='" + str(value) + "'"
         cnt+=1
-        if (cnt < length): 
+        if (cnt < length):
             query += " and "
     query += " order by id desc;"
     print(query)
@@ -141,7 +141,7 @@ def select_where(table, num=0, *args, **kwargs):
     result = []
     if (num == 0): # all
         rows = cursor.fetchall()
-        print(rows)
+       # print(rows)
         if(rows is None): return result # empty set
         for row in rows:
             result0 = []
@@ -157,7 +157,7 @@ def select_where(table, num=0, *args, **kwargs):
         if(rows is None): return result # empty set
         for row in rows:
             result.append(str(row))
-    print(result)
+    #print(result)
     return result
 
 def get_target_data2db(table_name,target_user):
@@ -195,6 +195,32 @@ def select_fall_down_count(**kwargs):
 
     return rows
 
+def select_touch(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select sum(num) from sensor_data where sensor_id=7 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += ";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+    print(rows)
+
+    return rows
+
+def select_touch_temp(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select sum(num) from sensor_data where sensor_id=7 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += ";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+    print(rows[0])
+
+    return rows[0]
+
 def select_wake_up(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "SELECT * FROM ( SELECT * FROM sensor_data where sensor_id=3 and "
@@ -216,6 +242,7 @@ def select_sleep(**kwargs):
     connection.commit()
     rows = cursor.fetchall()
     return rows
+
 
 
 
