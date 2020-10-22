@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
-
-from flask import Flask
-from flask import render_template
+import json
+from time import time
+from random import random
+from flask import Flask,session,escape
+from flask import render_template, make_response
 from flask_restful import Resource, Api
 from flask_bootstrap import Bootstrap
 from flask import  request, Response
@@ -11,10 +13,12 @@ from flask_socketio import SocketIO, emit
 #from flask_mysqldb import MySQL
 import dbAPI
 import sys
+import psutil
+import json
 reload(sys)
 sys.setdefaultencoding("utf-8")
 app = Flask(__name__)
-
+app.secret_key = b'gsgewgqhrrfha@!'
 app.config['JSON_AS_ASCII']=False
 api = Api(app)
 Bootstrap(app)
@@ -46,6 +50,7 @@ def robot_info_post(data):
         name = request.get_json().get('name')
         robot_id = request.get_json().get('robot_id')
         user_id = request.get_json().get('user_id')
+	print(name, robot_id, user_id)
         dbAPI.insert_robot_info(name, robot_id, user_id)
         return 'robot_info_post'
     else:
@@ -93,7 +98,7 @@ def prot_info_post(data):
         elif(data == 'id'):
             contact = request.args['contact']
             prot = dbAPI.select_where("prot_info",1,"id",contact=contact)
-        #print(prot)
+            print(prot)
         return str(decodeList(prot))
     else: # POST (INSERT)
         name = request.get_json().get('name')
@@ -133,12 +138,15 @@ def index():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
     all_user_info = dbAPI.select("user_info",0, "*")
     
+    
     return render_template('index.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,sleep = wake_up)
 
 @app.route('/map')
 def map():
     temp1 = request.args.get('user_id')
+    session['userid'] = temp1
     graph_fall = dbAPI.select_fall_down(user_id = int(temp1))
+    touch_count = dbAPI.select_touch(user_id = int(temp1))
     count_fall = dbAPI.select_fall_down_count(user_id = int(temp1))
     wake_up = dbAPI.select_wake_up(user_id = int(temp1))
     sleep = dbAPI.select_sleep(user_id = int(temp1))
@@ -147,14 +155,13 @@ def map():
     user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
     all_user_info = dbAPI.select("user_info",0, "*")
     
-    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep)
+    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count)
 
 
 
 @app.route('/contact')
 def Contact():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
-    temperature = dbAPI.select_where("sensor_data",0,"num",sensor_id = 1, user_id = 1)
     return render_template('Contacts.html',row = user_info)
 @app.route('/ajax',methods = ["GET",'POST'])
 def query():
@@ -234,11 +241,24 @@ def medicine_data(data):
 # @app.route('/ajax-trigger') 
 # def ajax_trigger(): 
 #     return my_algorithm()
+@app.route('/realtime')
+def hello_world():
+    return render_template('index1.html', data='test')
 
-def decodeList(input):
-	return repr(input).decode('string-escape')
+@app.route('/live-data')
+def live_data():
+    # Create a PHP array and echo it as JSON
+   # temp1 = request.args.get('user_id')
+    temp1 = session['userid']
+    print("세션값" + temp1)
+    touch_count = dbAPI.select_touch_temp(user_id = int(temp1))
+    
+    data = [time() * 1000,float(touch_count)]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=5000, debug=True)
-
+    
 
