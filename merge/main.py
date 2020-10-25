@@ -5,8 +5,10 @@ import re
 from tflite_runtime.interpreter import Interpreter
 import tflite_tf
 import tflite_falldown
+import tflite_activity
 import temperature
 import servo
+
 
 import RPi.GPIO as GPIO
 import numpy as np
@@ -47,7 +49,7 @@ touch_count = 0
 
 push_temperature = 0
 push_humidity = 0
-
+realtime = 0
 def request_temper():
     humidity, temperature = temperature.get_temp()
     temperature_data = {'user_id' : 1 , 'sensor_id' : 1, 'num': temperature, 'day' : 'sunday'}
@@ -55,8 +57,16 @@ def request_temper():
     humidity_data = {'user_id' : 1 , 'sensor_id' : 2, 'num' : humidity, 'day' : 'sunday'}
     request = requests.post(URL, json=humidity_data)
 
+def request_realtime():
+    global realtime
+    data = {'user_id' : '1', 'sendor_id':6, 'num' : realtime,'day': 'Sunday'}
+    #res = requests.post(URL, json=data)
+    #print(realtime)
+    realtime = 0
+
 # scheduler
 sched.add_job(request_temper,'interval',seconds=20)
+sched.add_job(request_realtime,'interval',seconds = 60)
 sched.start()
 
 def draw_rect(frame, xmin, ymin, xmax, ymax, nowStatus, color):
@@ -117,6 +127,8 @@ def main():
                 xmax = int(xmax * width)
                 ymin = int(ymin * height)
                 ymax = int(ymax * height)
+                CenterPointX = int((xmin + xmax)/2)
+                CenterPointY = int((ymin + ymax)/2)
                 w = xmax - xmin
                 h = ymax - ymin
 
@@ -126,6 +138,10 @@ def main():
                     nowStatus, color = tflite_falldown.lying_process(beforeStatus)
                 else: # standing
                     nowStatus, color = tflite_falldown.standing_process(beforeStatus)
+                    BeforeCenterPointX = CenterPointX
+                    BeforeCenterPointY = CenterPointY
+                    realtime = tflite_activity.realtime_count(CenterPointX,CenterPointY,BeforeCenterPointX,BeforeCenterPointY,realtime)
+
                 beforeStatus = nowStatus
                 draw_rect(img, xmin, ymin, xmax, ymax, nowStatus, color)
         cv2.imshow("frame", img)
