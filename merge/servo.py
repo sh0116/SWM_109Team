@@ -84,4 +84,6 @@ def shake_tail(sleepTime=DEFAULT_SLEEP,count=DEFAULT_COUNT):
         changeTail(j,sleepCur)
         sleepCur=sleepStart+((sleepEnd-sleepStart)/len(shakeRange))*idx
 
-    changeBody(6.0)	
+    changeBody(6.0)
+    GPIO.cleanup(body_pin)
+    GPIO.cleanup(tail_pin)
