@@ -138,9 +138,9 @@ if __name__ == "__main__":
 		#if humidity is not None and temperature is not None:
 		#	print('temperature = {0:0.3f}C | humidity = {1:0.3f}%'.format(temperature, humidity))
 		#	time.sleep(1)
-		
-		# 머리를 만지고 있고 몸을 만지는 순간 
-		if prev_input_head and ((not prev_input_body) and input_body)):
+	
+		# 
+		if prev_input_head and ((not prev_input_body) and input_body):
 			print ("head to body")
 			touch_count +=1
 		elif prev_input_body and ((not prev_input_head) and input_head):
@@ -156,15 +156,11 @@ if __name__ == "__main__":
         	#slight pause
 		time.sleep(0.10)
 		
-		if touch_count > 15 : 
-			NLP.call_TTS("기분이 좋아요")
-			time.sleep(0.5)
-			shake_tail(count=3)
-			# 서보 끄는거 추가 
-
-			
-
-		
+		#if touch_count > 15 : 
+			#NLP.call_TTS("기분이 좋아요")
+			#time.sleep(0.5)
+			#shake_tail(count=3)
+			# 서보 끄는거 추
 		# if(prev_input_head and input_body):
 		# 	print("head to body")
 		# if ((not prev_input_body) and input_body):
@@ -183,11 +179,6 @@ if __name__ == "__main__":
 			#shake_tail(count=3)
 			#time.sleep(1)
 			#NLP.call_TTS("기분이 좋아요")
-		#if touch_count == 10:
-		#	shake_tail(count=3)
+		if touch_count > 15:
+			shake_tail(count=3)
         #update previous input
-		
-	
-
-
-
