@@ -95,15 +95,18 @@ def main():
         input_head = GPIO.input(headtouch_pin)
         input_body = GPIO.input(bodytouch_pin)
 
-        if ((not prev_input_body) and input_body):
-            print("Under Pressure")
-            touch_count +=1
-            print(touch_count)
-        if ((not prev_input_head) and input_head):
-            print("Under2 Pressure")
-            touch_count +=1
-            print(touch_count)
-        if touch_count == 5:
+        if prev_input_head and ((not prev_input_body) and input_body):
+			print ("head to body")
+			touch_count +=1
+		elif prev_input_body and ((not prev_input_head) and input_head):
+			print("body to head")
+			touch_count +=1 
+		elif (not prev_input_head) and input_head :
+			print("only head")
+		elif (not prev_input_body) and input_body:
+			print("only body")
+
+        if touch_count == 15:
             servo.shake_tail(count=3)
             time.sleep(1)
             NLP.call_TTS("기분이 좋아요")
