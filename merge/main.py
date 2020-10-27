@@ -19,9 +19,8 @@ import sys
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 sys.path.append("/home/pi/109system/NLP")
-import NLP_Main as NLP
+#import NLP_Main as NLP
 
-#time_URL = 'http://109center.com:5000/sensor_data'
 URL = 'http://13.125.221.213:5000/sensor'
 sched = BackgroundScheduler()
 
@@ -47,38 +46,41 @@ prev_input_body = 0
 prev_input_head = 0
 touch_count = 0
 
-push_temperature = 0
-push_humidity = 0
+global realtime,BeforeCenterPointX,BeforeCenterPointY 
 realtime = 0
-def request_temper():
-    humidity, temperature = temperature.get_temp()
-    temperature_data = {'user_id' : 1 , 'sensor_id' : 1, 'num': temperature, 'day' : 'sunday'}
-    request = requests.post(URL, json=temperature_data)
-    humidity_data = {'user_id' : 1 , 'sensor_id' : 2, 'num' : humidity, 'day' : 'sunday'}
-    request = requests.post(URL, json=humidity_data)
+BeforeCenterPointX = 0
+BeforeCenterPointY = 0
 
+def request_temper():
+    humid, temper = temperature.get_temp()
+    temperature_data = {'user_id' : 1 , 'sensor_id' : 1, 'num': temper, 'day' : 'sunday'}
+    request = requests.post(URL, json=temperature_data)
+    humidity_data = {'user_id' : 1 , 'sensor_id' : 2, 'num' : humid, 'day' : 'sunday'}
+    request = requests.post(URL, json=humidity_data)
 def request_realtime():
     global realtime
-    data = {'user_id' : '1', 'sendor_id':6, 'num' : realtime,'day': 'Sunday'}
-    #res = requests.post(URL, json=data)
-    #print(realtime)
+    data = {'user_id' : 1, 'sensor_id': 6, 'num' : realtime, 'day': 'Sunday'}
+    res = requests.post(URL, json=data)
+    print(realtime)
     realtime = 0
 
 # scheduler
 sched.add_job(request_temper,'interval',seconds=20)
-sched.add_job(request_realtime,'interval',seconds = 60)
+sched.add_job(request_realtime,'interval',seconds = 10)
 sched.start()
 
-def draw_rect(frame, xmin, ymin, xmax, ymax, nowStatus, color):
+def draw_rect(frame, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,CenterPointY):
     label = str(nowStatus)[7:]
     font = cv2.FONT_HERSHEY_PLAIN
     cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), color, 5)
     cv2.putText(frame, label, (xmin, ymin - 5), font, 2, color, 5)
-
+    cv2.circle(frame,(CenterPointX,CenterPointY),10,(0,255,255),-1)
+    
 min_confidence = 0.6
 def main():
     global beforeStatus
     global prev_input_body, prev_input_head, touch_count
+    global realtime,BeforeCenterPointX,BeforeCenterPointY
     # Open cam
     cap = PiCamera()
     try:
@@ -94,22 +96,21 @@ def main():
     for frame in cap.capture_continuous(rawCapture, format="bgr", use_video_port=True):
         input_head = GPIO.input(headtouch_pin)
         input_body = GPIO.input(bodytouch_pin)
-
         if prev_input_head and ((not prev_input_body) and input_body):
-			print ("head to body")
-			touch_count +=1
-		elif prev_input_body and ((not prev_input_head) and input_head):
-			print("body to head")
-			touch_count +=1 
-		elif (not prev_input_head) and input_head :
-			print("only head")
-		elif (not prev_input_body) and input_body:
-			print("only body")
+            print("head to body")
+            touch_count +=1
+        elif prev_input_body and ((not prev_input_head) and input_head):
+            print("body to head")
+            touch_count +=1 
+        elif (not prev_input_head) and input_head :
+            print("only head")
+        elif (not prev_input_body) and input_body:
+            print("only body")
 
         if touch_count == 15:
-            servo.shake_tail(count=3)
-            time.sleep(1)
-            NLP.call_TTS("기분이 좋아요")
+            #servo.shake_tail(count=3)
+            #time.sleep(1)
+            #NLP.call_TTS("기분이 좋아요")
             touch_count = 0
         prev_input_head = input_head
         prev_input_body = input_body
@@ -141,12 +142,15 @@ def main():
                     nowStatus, color = tflite_falldown.lying_process(beforeStatus)
                 else: # standing
                     nowStatus, color = tflite_falldown.standing_process(beforeStatus)
-                    BeforeCenterPointX = CenterPointX
-                    BeforeCenterPointY = CenterPointY
-                    realtime = tflite_activity.realtime_count(CenterPointX,CenterPointY,BeforeCenterPointX,BeforeCenterPointY,realtime)
-
+                    #BeforeCenterPointX = CenterPointX
+                    #BeforeCenterPointY = CenterPointY
+                    activity = tflite_activity.realtime_count(CenterPointX,CenterPointY,BeforeCenterPointX,BeforeCenterPointY)
+                    if activity is True:
+                        realtime +=1 
                 beforeStatus = nowStatus
-                draw_rect(img, xmin, ymin, xmax, ymax, nowStatus, color)
+                draw_rect(img, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,CenterPointY)
+                BeforeCenterPointX = CenterPointX
+                BeforeCenterPointY = CenterPointY
         cv2.imshow("frame", img)
         rawCapture.truncate(0)
 
