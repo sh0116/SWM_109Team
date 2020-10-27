@@ -21,17 +21,17 @@ SLEEP_END = 0.01
 # pins
 body_pin = 36
 tail_pin = 38
-
+head_pin = 16
 # set up pins
 GPIO.setup(body_pin, GPIO.OUT)
 GPIO.setup(tail_pin, GPIO.OUT)
-
+GPIO.setup(head_pin, GPIO.OUT)
 body_servo = GPIO.PWM(body_pin, 50)
 tail_servo = GPIO.PWM(tail_pin, 50)
-
+head_servo = GPIO.PWM(head_pin, 50)
 body_servo.start(3)
 tail_servo.start(7.5)
-
+head_servo.start(3)
 def changeTail(duty, sleepTime=DEFAULT_SLEEP):
     tail_servo.ChangeDutyCycle(duty)
     time.sleep(sleepTime)
@@ -51,6 +51,9 @@ def up_tail(sleepTime=DEFAULT_SLEEP):
     changeTail(7.5,sleepTime)
     for i in np.arange(3.0,6.0,0.1):
         changeBody(i,sleepTime=UP_DOWN_SLEEP)
+
+def turn_head(sleepTime=DEFAULT_SLEEP):
+    global UP_DOWN_SLEEP
 
 def shake_tail(sleepTime=DEFAULT_SLEEP,count=DEFAULT_COUNT):
     global SLEEP_START, SLEEP_END
@@ -85,5 +88,6 @@ def shake_tail(sleepTime=DEFAULT_SLEEP,count=DEFAULT_COUNT):
         sleepCur=sleepStart+((sleepEnd-sleepStart)/len(shakeRange))*idx
 
     changeBody(6.0)
+    print("aaaaaa")
     GPIO.cleanup(body_pin)
     GPIO.cleanup(tail_pin)
