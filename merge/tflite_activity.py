@@ -1,6 +1,6 @@
 
-def realtime_count(Cpx,Cpy,Bpx,Bpy,realtime):
-    global realtime
-    if abs(Cpx - Bpx) >=15 or abs(Cpy-Bpy) >=15:
-        realtime+=1
-    return realtime
+def realtime_count(Cpx,Cpy,Bpx,Bpy):
+    if abs(Cpx - Bpx) >=2 or abs(Cpy-Bpy) >=2:
+        return True
+    else:
+        return False
