@@ -58,7 +58,7 @@ def up_tail(sleepTime=DEFAULT_SLEEP):
 
 def turn_head(sleepTime=DEFAULT_SLEEP,):
     global UP_DOWN_SLEEP
-    for i in np.arange(0.0,12.0,0.1):
+    for i in np.arange(0.0,6.0,0.1):
         changeHead(i,sleepTime=UP_DOWN_SLEEP)
 
 def shake_tail(sleepTime=DEFAULT_SLEEP,count=DEFAULT_COUNT):
