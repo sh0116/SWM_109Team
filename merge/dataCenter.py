@@ -3,6 +3,7 @@ URL = 'http://13.125.221.213:5000/sensor'
 temp_interval = 20
 activ_interval = 10
 touch_interval = 30
+head_interval = 60
 
 # sensor id
 temperature = 1

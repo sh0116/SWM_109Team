@@ -8,8 +8,10 @@ import tflite_tf
 import tflite_falldown
 import tflite_activity
 import sensor_temp
-import sensor_servo
+import sensor_head_servo
+import sensor_tail_servo
 import sensor_touch
+import os
 
 
 import RPi.GPIO as GPIO
@@ -42,6 +44,9 @@ global BeforeCenterPointX, BeforeCenterPointY
 BeforeCenterPointX = 0
 BeforeCenterPointY = 0
 
+global isExecuted
+isExecuted = False
+
 # scheduler
 sched = BackgroundScheduler()
 sched.add_job(sensor_temp.request_temper, 'interval', seconds = dataCenter.temp_interval)
@@ -58,6 +63,7 @@ def draw_rect(frame, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,Cente
     
 min_confidence = 0.6
 def main():
+    global isExecuted
     global beforeStatus
     global BeforeCenterPointX, BeforeCenterPointY
     # Open cam
@@ -70,7 +76,7 @@ def main():
     rawCapture = PiRGBArray(cap, size=(320, 240))
     rawCapture.truncate(0)
     interpreter = tflite_tf.load_interpreter()
-
+    showtime = time.time()
     # Detecting objects
     for frame in cap.capture_continuous(rawCapture, format="bgr", use_video_port=True):
         input_head = GPIO.input(headtouch_pin)
@@ -81,36 +87,51 @@ def main():
         img = np.asarray(frame.array)
         height, width, channels = img.shape
         img = cv2.resize(img, (300,300))
-
         outs = tflite_tf.detect_objects(interpreter, img, min_confidence)
+        if len(outs): # if anything detected 
+            for out in outs:
+                if out['class_id'] == 0 and out['score'] > min_confidence:
+                    # Convert the bounding box figures from relative coordinates
+                    # to absolute coordinates based on the original resolution
+                    ymin, xmin, ymax, xmax = out['bounding_box']
+                    xmin = int(xmin * width)
+                    xmax = int(xmax * width)
+                    ymin = int(ymin * height)
+                    ymax = int(ymax * height)
+                    CenterPointX = int((xmin + xmax)/2)
+                    CenterPointY = int((ymin + ymax)/2)
+                    w = xmax - xmin
+                    h = ymax - ymin
 
-        for out in outs:
-            if out['class_id'] == 0 and out['score'] > min_confidence:
-                # Convert the bounding box figures from relative coordinates
-                # to absolute coordinates based on the original resolution
-                ymin, xmin, ymax, xmax = out['bounding_box']
-                xmin = int(xmin * width)
-                xmax = int(xmax * width)
-                ymin = int(ymin * height)
-                ymax = int(ymax * height)
-                CenterPointX = int((xmin + xmax)/2)
-                CenterPointY = int((ymin + ymax)/2)
-                w = xmax - xmin
-                h = ymax - ymin
+                    if w/2 > h: # fall down
+                        nowStatus, color = tflite_falldown.falldown_process(beforeStatus)
+                    elif w > h: # lying
+                        nowStatus, color = tflite_falldown.lying_process(beforeStatus)
+                    else: # standing
+                        nowStatus, color = tflite_falldown.standing_process(beforeStatus)
+                        tflite_activity.realtime_count(CenterPointX, CenterPointY, BeforeCenterPointX, BeforeCenterPointY) # calculate activity 
+                    beforeStatus = nowStatus
+                    draw_rect(img, xmin, ymin, xmax, ymax, nowStatus, color, CenterPointX, CenterPointY)
+                    BeforeCenterPointX = CenterPointX
+                    BeforeCenterPointY = CenterPointY
+                    showtime = time.time()
+                    isExecuted = False
+                    try:
+                        os.system("pkill -9 -ef sensor_head_servo.py")
+                        os.system("python3 sensor_cleanup_servo.py")
+                        sched.remove_job(sensor_head_servo.execute_turn_head)
+                        print("remove sched")
+                    except:
+                        continue
+        else: # nothing detected
+            notshowtime = time.time()
+            difftime = notshowtime - showtime
+            if difftime >= 5 and (not isExecuted):
+                os.system("python3 sensor_head_servo.py&")
+                sched.add_job(sensor_head_servo.execute_turn_head, "interval", seconds = dataCenter.head_interval)
+                print("add sched")
+                isExecuted = True
 
-                if w/2 > h: # fall down
-                    nowStatus, color = tflite_falldown.falldown_process(beforeStatus)
-                elif w > h: # lying
-                    nowStatus, color = tflite_falldown.lying_process(beforeStatus)
-                else: # standing
-                    nowStatus, color = tflite_falldown.standing_process(beforeStatus)
-                    #BeforeCenterPointX = CenterPointX
-                    #BeforeCenterPointY = CenterPointY
-                    tflite_activity.realtime_count(CenterPointX,CenterPointY,BeforeCenterPointX,BeforeCenterPointY) # calculate activity 
-                beforeStatus = nowStatus
-                draw_rect(img, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,CenterPointY)
-                BeforeCenterPointX = CenterPointX
-                BeforeCenterPointY = CenterPointY
         cv2.imshow("frame", img)
         rawCapture.truncate(0)
 
@@ -120,6 +141,7 @@ def main():
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
             cap.close()
+            GPIO.cleanup(head_pin)
             break
     cv2.destroyAllWindows()
 
