@@ -24,7 +24,7 @@ def day_sleep_time(isSleeping):
     if (seconds >= 75600 and seconds <= 86339) or (seconds >= 0 and seconds <= 1800) :
         if sleep_check == 0:
             sleep_check +=1
-            data = {'user_id' : '1', 'graph' : sleep_time,'day':day[cal_day]}
+            data = {'user_id' : '1', 'graph' : sleep_time, 'day': day[cal_day]}
     else:
         sleep_check = 0
     #print("sleep time : {}-{}-{} {}:{}:{}".format(pre_time.year, pre_time.month, pre_time.day,pre_time.hour,pre_time.minute,pre_time.second))
@@ -36,7 +36,7 @@ def day_wake_time():
     if seconds >= 14400 and seconds<=27000:
         if wake_check == 0:
             wake_check +=1
-            data = {'user_id' : '3', 'graph' : wake_up_time,'day':day[cal_day]}
+            data = {'user_id' : '3', 'graph' : wake_up_time, 'day': day[cal_day]}
             #print("wake up time : {}-{}-{} {}:{}:{}".format(pre_time.year, pre_time.month, pre_time.day,pre_time.hour,pre_time.minute,pre_time.second))
             #print("wake up %d",wake_up_time,day[cal_day])
     else:

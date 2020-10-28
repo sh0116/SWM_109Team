@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "324845225618",
+    "firebase_url": "https://robot109-3692b.firebaseio.com",
+    "project_id": "robot109-3692b",
+    "storage_bucket": "robot109-3692b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324845225618:android:3f205d0dbe13b3c951884b",
+        "android_client_info": {
+          "package_name": "swm.test109"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324845225618-u5qt1i23n83b833ko1rqm0tvck0gh0fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0uXLT5461GneP0sKnu34U-5O9Xfv-b-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324845225618-u5qt1i23n83b833ko1rqm0tvck0gh0fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
