@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - NMSSH (2.3.1)
   - shared_preferences (0.0.1):
     - Flutter
@@ -11,6 +13,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - ssh (from `.symlinks/plugins/ssh/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -22,6 +25,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   ssh:
@@ -31,6 +36,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   NMSSH: cd689ae535a1581a6dd9fd4600ff71247df510a6
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   ssh: ab4d3c3430b97acae3f396432952d6bf502c40c6
@@ -38,4 +44,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1d2a9028f29e48d921c9ef58592140578691c2af
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.0
