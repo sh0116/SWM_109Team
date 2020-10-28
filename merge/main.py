@@ -1,3 +1,4 @@
+import dataCenter
 import cv2
 from picamera import PiCamera
 from picamera.array import PiRGBArray
@@ -6,8 +7,9 @@ from tflite_runtime.interpreter import Interpreter
 import tflite_tf
 import tflite_falldown
 import tflite_activity
-import temperature
-import servo
+import sensor_temp
+import sensor_servo
+import sensor_touch
 
 
 import RPi.GPIO as GPIO
@@ -21,9 +23,6 @@ import requests
 sys.path.append("/home/pi/109system/NLP")
 #import NLP_Main as NLP
 
-URL = 'http://13.125.221.213:5000/sensor'
-sched = BackgroundScheduler()
-
 # GPIO
 GPIO.setmode(GPIO.BOARD)
 
@@ -34,39 +33,20 @@ bodytouch_pin = 13 # touch for body
 GPIO.setup(headtouch_pin,GPIO.IN)
 GPIO.setup(bodytouch_pin,GPIO.IN)
 
-# variables for cv
+# variables for opencv
 global beforeStatus, nowStatus
 beforeStatus = tflite_falldown.status.standing
 nowStatus = tflite_falldown.status.standing
 
-# variables for touch sensor
-#initialise a previous input variable to 0 (Assume no pressure applied)
-global prev_input_body, prev_input_head, touch_count
-prev_input_body = 0
-prev_input_head = 0
-touch_count = 0
-
-global realtime,BeforeCenterPointX,BeforeCenterPointY 
-realtime = 0
+global BeforeCenterPointX, BeforeCenterPointY
 BeforeCenterPointX = 0
 BeforeCenterPointY = 0
 
-def request_temper():
-    humid, temper = temperature.get_temp()
-    temperature_data = {'user_id' : 1 , 'sensor_id' : 1, 'num': temper, 'day' : 'sunday'}
-    request = requests.post(URL, json=temperature_data)
-    humidity_data = {'user_id' : 1 , 'sensor_id' : 2, 'num' : humid, 'day' : 'sunday'}
-    request = requests.post(URL, json=humidity_data)
-def request_realtime():
-    global realtime
-    data = {'user_id' : 1, 'sensor_id': 6, 'num' : realtime, 'day': 'Sunday'}
-    res = requests.post(URL, json=data)
-    print(realtime)
-    realtime = 0
-
 # scheduler
-sched.add_job(request_temper,'interval',seconds=20)
-sched.add_job(request_realtime,'interval',seconds = 10)
+sched = BackgroundScheduler()
+sched.add_job(sensor_temp.request_temper, 'interval', seconds = dataCenter.temp_interval)
+sched.add_job(sensor_touch.request_touch,'interval', seconds = dataCenter.touch_interval)
+sched.add_job(tflite_activity.request_realtime, 'interval', seconds = dataCenter.activ_interval)
 sched.start()
 
 def draw_rect(frame, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,CenterPointY):
@@ -79,8 +59,7 @@ def draw_rect(frame, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,Cente
 min_confidence = 0.6
 def main():
     global beforeStatus
-    global prev_input_body, prev_input_head, touch_count
-    global realtime,BeforeCenterPointX,BeforeCenterPointY
+    global BeforeCenterPointX, BeforeCenterPointY
     # Open cam
     cap = PiCamera()
     try:
@@ -96,24 +75,7 @@ def main():
     for frame in cap.capture_continuous(rawCapture, format="bgr", use_video_port=True):
         input_head = GPIO.input(headtouch_pin)
         input_body = GPIO.input(bodytouch_pin)
-        if prev_input_head and ((not prev_input_body) and input_body):
-            print("head to body")
-            touch_count +=1
-        elif prev_input_body and ((not prev_input_head) and input_head):
-            print("body to head")
-            touch_count +=1 
-        elif (not prev_input_head) and input_head :
-            print("only head")
-        elif (not prev_input_body) and input_body:
-            print("only body")
-
-        if touch_count == 15:
-            #servo.shake_tail(count=3)
-            #time.sleep(1)
-            #NLP.call_TTS("기분이 좋아요")
-            touch_count = 0
-        prev_input_head = input_head
-        prev_input_body = input_body
+        sensor_touch.check_touch(input_head, input_body)
 
         #start_time = time.time()
         img = np.asarray(frame.array)
@@ -144,9 +106,7 @@ def main():
                     nowStatus, color = tflite_falldown.standing_process(beforeStatus)
                     #BeforeCenterPointX = CenterPointX
                     #BeforeCenterPointY = CenterPointY
-                    activity = tflite_activity.realtime_count(CenterPointX,CenterPointY,BeforeCenterPointX,BeforeCenterPointY)
-                    if activity is True:
-                        realtime +=1 
+                    tflite_activity.realtime_count(CenterPointX,CenterPointY,BeforeCenterPointX,BeforeCenterPointY) # calculate activity 
                 beforeStatus = nowStatus
                 draw_rect(img, xmin, ymin, xmax, ymax, nowStatus, color,CenterPointX,CenterPointY)
                 BeforeCenterPointX = CenterPointX
