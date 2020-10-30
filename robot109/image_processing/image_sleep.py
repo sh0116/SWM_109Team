@@ -21,6 +21,7 @@ def day_sleep_time(isSleeping):
     global sleep_hour, sleep_min, seconds, sleep_time
     
     sleep_time = seconds/3600
+    #21pm~12:30am
     if (seconds >= 75600 and seconds <= 86339) or (seconds >= 0 and seconds <= 1800) :
         if sleep_check == 0:
             sleep_check +=1
@@ -33,6 +34,7 @@ def day_sleep_time(isSleeping):
 def day_wake_time():
     global day, cal_day, pre_time, sleep_hour, sleep_min, seconds,sleep_check
     sleep_time = seconds/3600
+    #4am ~ 7:30am
     if seconds >= 14400 and seconds<=27000:
         if wake_check == 0:
             wake_check +=1
