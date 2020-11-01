@@ -8,6 +8,8 @@ import image_processing.image_tf as image_tf
 import image_processing.image_falldown as image_falldown
 import image_processing.image_sleep as image_sleep
 import image_processing.image_activity as image_activity
+import image_processing.head_servo_main as head_servo_main
+import time
 
 URL = 'http://13.125.221.213:5000/sensor'
 
@@ -39,7 +41,13 @@ def main():
     rawCapture = PiRGBArray(cap, size=(320, 240))
     rawCapture.truncate(0)
     interpreter = image_tf.load_interpreter()
+
+    # setup head servo
+    head_servo = head_servo_main.setup_head(head_servo_main.head_pin)
+    isHeadClean = False
     
+    showTime = time.time()
+    isTurned1 = isTurned2 = isTurned3 = False
     # Detecting objects
     for frame in cap.capture_continuous(rawCapture, format="bgr", use_video_port=True):
         #start_time = time.time()
@@ -49,11 +57,35 @@ def main():
     
         outs = image_tf.detect_objects(interpreter, img, min_confidence)
 
-        if not outs:
-            print("nothing detected")
-        for out in outs:
-            if out['class_id'] == 0 and out['score'] > min_confidence:
-                print("person detected")
+        if not outs: # nothing detected
+            #print("nothing detected | {} {} {} ".format(isTurned1, isTurned2, isTurned3))
+            notShowTime = time.time()
+            diffTime = notShowTime - showTime
+            if diffTime >= 5: # turn head 5 seconds after nothing detected
+                if isHeadClean: 
+                    head_servo = head_servo_main.setup_head(head_servo_main.head_pin)
+                if not isTurned1:
+                    head_servo_main.turn_head_right(head_servo)
+                    isTurned1 = True
+                else:
+                    if not isTurned2:
+                        head_servo_main.turn_head_left(head_servo)
+                        isTurned2 = True
+                    else:
+                        if not isTurned3:
+                            head_servo_main.turn_head_center(head_servo)
+                            isTurned3= True
+            if diffTime >= 15:
+                isTurned1 = isTurned2 = isTurned3 = False
+                showTime = time.time()
+        for out in outs: # anything detected 
+            if out['class_id'] == 0 and out['score'] > min_confidence: # person detected
+                if isTurned1 or isTurned2 or isTurned3:
+                    isTurned1 = isTurned2 = isTurned3 = False
+                    head_servo_main.cleanup_head(head_servo_main.head_pin)
+                    isHeadClean = True
+                showTime = time.time()
+                #print("person detected")
                 # Convert the bounding box figures from relative coordinates
                 # to absolute coordinates based on the original resolution
                 ymin, xmin, ymax, xmax = out['bounding_box']
@@ -78,6 +110,7 @@ def main():
                 # save now center point
                 BeforeCenterPointX = CenterPointX
                 BeforeCenterPointY = CenterPointY
+
         cv2.imshow("frame", img)
         rawCapture.truncate(0)
         #end_time = time.time()

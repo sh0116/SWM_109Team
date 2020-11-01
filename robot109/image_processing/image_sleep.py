@@ -16,7 +16,7 @@ global sleep_check, wake_check
 sleep_check = 0
 wake_check = 0
 
-def day_sleep_time(isSleeping):
+def day_sleep_time():
     global day, cal_day, pre_time
     global sleep_hour, sleep_min, seconds, sleep_time
     
