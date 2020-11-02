@@ -12,7 +12,7 @@ class webView extends StatelessWidget {
     //print(url);
     return Scaffold(
         appBar: AppBar(
-            title: Text('대시보드')
+            title: Text('사용자 상태 모니터링')
         ),
         body: WebView(
           //initialUrl: 'http://youtube.com',

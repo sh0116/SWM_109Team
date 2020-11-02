@@ -29,32 +29,35 @@ class _selectMedicineUserState extends State<selectMedicineUser> {
       appBar: AppBar(
         title: Text('사용자 선택'),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         padding: const EdgeInsets.all(10.0),
         itemCount: namesList.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
-          return RaisedButton(
-            //height: 50,
+          return Container(
+            height: 80,
+            child: RaisedButton(
             //color: Colors.amber,
-            child: Center(
-                child: Text(
-                    '${namesList[index]}',
-                style: TextStyle(fontSize: 25)
-                )
-            ),
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => medicine(userId: idsList[index]),
-                ),
-              );
-            },
-            //padding: EdgeInsets.all(5),
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(50.0)
-            ),
-            color: Colors.blue,
+              child: Center(
+                  child: Text(
+                      '${namesList[index]}',
+                  style: TextStyle(color: Colors.black, fontSize: 25)
+                  )
+              ),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => medicine(userId: idsList[index]),
+                  ),
+                );
+              },
+              //padding: EdgeInsets.all(5),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0)
+              ),
+              color: Colors.white54,
+            )
           );
         }
       )
