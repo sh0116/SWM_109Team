@@ -1,8 +1,8 @@
-
+var touchcount = '{{touch_count[0]}}'
 Circles.create({
 	id:           'task-complete',
 	radius:       75,
-	value:        20,
+	value:        touchcount,
 	maxValue:     100,
 	width:        8,
 	text:         function(value){return value + '%';},

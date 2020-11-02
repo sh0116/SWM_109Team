@@ -156,7 +156,8 @@ def map():
     humidity = dbAPI.select_where("sensor_data",0,"num",sensor_id = 2, user_id = int(temp1))
     user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
     all_user_info = dbAPI.select("user_info",0, "*")
-    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count)
+    prot_info = dbAPI.select_prot_info(int(temp1))
+    return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count, prot_info = prot_info)
 
 
 
@@ -165,24 +166,6 @@ def Contact():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
     all_user_info = dbAPI.select("user_info",0, "*")
     return render_template('Contacts.html',data1 = user_info,data2 = all_user_info)
-@app.route('/ajax',methods = ["GET",'POST'])
-def query():
-    target_user = request.form.get('student_id')
-    user_info = list()
-    sensor_data = list()
-    for i in list(dbapi.get_target_data2db( "user_info", target_user ))[0]:
-        user_info.append(i)
-    #print(list(dbapi.get_target_data2db( "humidity", target_user ))[0])
-    print(dbapi.select_humidity())
-    print(dbapi.select_fall_down())
-    print(dbapi.select_temp())
-    #print(list(dbapi.get_target_data2db( "temperature", target_user ))[0])
-    #print(list(dbapi.get_target_data2db( "fall_down", target_user ))[0])
-    #for i in list(dbapi.get_target_data2db( "humidity", target_user ))[0]:
-    #for i in list(dbapi.get_target_data2db( "temperature", target_user ))[0]:
-    #for i in list(dbapi.get_target_data2db( "fall_down", target_user ))[0]:
-
-    return str(user_info)
 
 
 @app.route('/medicine_data/<data>', methods = ['GET','POST'])
@@ -231,6 +214,17 @@ def live_data():
 
 def decodeList(input):
 	return repr(input).decode('string-escape')
+    
+@app.route('/set_rasinfo', methods = ['POST'])
+def get_rasinfo():
+    if request.method == 'POST':
+        query       = request.form.get('query')
+        info        = list()
+        try:
+            info    = dbAPI.get_target_data2db(query)
+        except:
+            return str(info)
+    return str(info)
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=5000, debug=True)
