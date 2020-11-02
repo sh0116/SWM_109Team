@@ -160,22 +160,20 @@ def select_where(table, num=0, *args, **kwargs):
     #print(result)
     return result
 
-def get_target_data2db(table_name,target_user):
+def get_target_data2db(query):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select * from " + table_name + " where name = \""+ target_user +"\";"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
-    print(table_name)
-    return rows
 
+    return rows
     
 def select_fall_down(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "select id,timestamp from sensor_data where sensor_id=5 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
-    query += " ORDER BY id DESC LIMIT 4;"
+    query += " ORDER BY id DESC LIMIT 5;"
     #"select count(*) as num from fall_down ;"
     cursor.execute(query)
     connection.commit()
@@ -251,4 +249,3 @@ def ffff_data(data_name, *args):
     query = "update ffff set fall = " +str(args[1])+ " where id = 1"
     cursor.execute(query)
     connection.commit()
-
