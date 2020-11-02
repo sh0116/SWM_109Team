@@ -160,6 +160,17 @@ def select_where(table, num=0, *args, **kwargs):
     #print(result)
     return result
 
+def select_prot_info(num):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select prot_info.name, prot_info.contact from user_info, prot_info where user_info.prot_id = prot_info.id and user_info.id = "
+    query += str(num)+";"
+    print(query)
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+
+    return rows
+
 def get_target_data2db(query):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     cursor.execute(query)
