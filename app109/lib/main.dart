@@ -15,6 +15,7 @@ void main() {
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new login()
       },
+    theme: ThemeData(fontFamily: 'SC'),
     /*home: Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(title: Text('돌봄로봇 백구')),

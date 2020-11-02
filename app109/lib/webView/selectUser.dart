@@ -27,33 +27,37 @@ class _selectUserState extends State<selectUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('사용자 선택'),
+        title: Text('사용자 선택', style: TextStyle(fontSize: 20)),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(15.0),
         itemCount: namesList.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
-          return RaisedButton(
-            //height: 50,
+          return Container(
+            height: 80,
             //color: Colors.amber,
-            child: Center(
-              child: Text(
-                '${namesList[index]}',
-                style: TextStyle(fontSize: 30)
-              )
-            ),
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => webView(userId: idsList[index]),
-                ),
-              );
-            },
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(50.0)
-            ),
-            color: Colors.blue,
+            child: RaisedButton(
+              //padding: EdgeInsets.all(10),
+              child: Center(
+                child: Text(
+                  '${namesList[index]}',
+                  style: TextStyle(color: Colors.black, fontSize: 25)
+                )
+              ),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => webView(userId: idsList[index]),
+                  ),
+                );
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0)
+              ),
+              color: Colors.white54,
+            )
           );
         }
       )
