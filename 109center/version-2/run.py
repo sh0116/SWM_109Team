@@ -113,16 +113,19 @@ def prot_info_post(data):
 def Userapp():
     temp = request.args.get('prot_id')
     temp1 = request.args.get('user_id')
+    session['userid'] = temp1
     graph_fall = dbAPI.select_fall_down(user_id = int(temp1))
+    touch_count = dbAPI.select_touch(user_id = int(temp1))
     count_fall = dbAPI.select_fall_down_count(user_id = int(temp1))
     wake_up = dbAPI.select_wake_up(user_id = int(temp1))
     sleep = dbAPI.select_sleep(user_id = int(temp1))
-    temperature = dbAPI.select_where("sensor_data",0,"num",sensor_id = 1, user_id = int(temp1))
+    temperature = dbAPI.select_where("sensor_data",0,"num", user_id = int(temp1), sensor_id = 1)
     humidity = dbAPI.select_where("sensor_data",0,"num",sensor_id = 2, user_id = int(temp1))
     user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
+    all_user_info = dbAPI.select("user_info",0, "*")
     prot_info = dbAPI.select_where("prot_info",0,"*",id=int(temp))
     
-    return render_template('userapp.html',row = graph_fall, data = temperature, data1 = user_info, data2 = prot_info,row1 = count_fall, data3 = humidity,sleep = wake_up)
+    return render_template('userapp.html',row = graph_fall, data = temperature, data1 = user_info, data2 = prot_info,row1 = count_fall, data3 = humidity,sleep = wake_up,touch_count = touch_count)
 
 
 #temperature(1), humidity(2), wake_up(3), sleep(4), fall_down(5), activity(6) 
@@ -229,7 +232,5 @@ def live_data():
 def decodeList(input):
 	return repr(input).decode('string-escape')
 
-
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=5000, debug=True)
-
