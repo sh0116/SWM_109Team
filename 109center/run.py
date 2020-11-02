@@ -40,21 +40,21 @@ def sensor():
     dbAPI.insert_data("sensor_data",str(user_id), str(sensor_id), str(num), str(day))
     if str(sensor_id) == '5':
         socketio.emit('message', {'data': 'Records Affected'}, broadcast=True)
-    
+
     return 'sensor'
 
 
 @app.route('/robot_info/<data>', methods = ['POST'])
 def robot_info_post(data):
-    if request.method == 'POST': # INSERT
-        name = request.get_json().get('name')
-        robot_id = request.get_json().get('robot_id')
-        user_id = request.get_json().get('user_id')
-	print(name, robot_id, user_id)
-        dbAPI.insert_robot_info(name, robot_id, user_id)
-        return 'robot_info_post'
-    else:
-        return 'else'
+	if request.method == 'POST': # INSERT
+		name = request.get_json().get('name')
+		robot_id = request.get_json().get('robot_id')
+		user_id = request.get_json().get('user_id')
+		print(name, robot_id, user_id)
+		dbAPI.insert_robot_info(name, robot_id, user_id)
+		return 'robot_info_post'
+	else:
+		return 'else'
 
 @app.route('/user_info/<data>', methods = ['GET','POST'])
 def user_info_post(data):
@@ -138,7 +138,6 @@ def index():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
     all_user_info = dbAPI.select("user_info",0, "*")
     
-    
     return render_template('index.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,sleep = wake_up)
 
 @app.route('/map')
@@ -154,7 +153,6 @@ def map():
     humidity = dbAPI.select_where("sensor_data",0,"num",sensor_id = 2, user_id = int(temp1))
     user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
     all_user_info = dbAPI.select("user_info",0, "*")
-    
     return render_template('map.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count)
 
 
@@ -162,7 +160,8 @@ def map():
 @app.route('/contact')
 def Contact():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
-    return render_template('Contacts.html',row = user_info)
+    all_user_info = dbAPI.select("user_info",0, "*")
+    return render_template('Contacts.html',data1 = user_info,data2 = all_user_info)
 @app.route('/ajax',methods = ["GET",'POST'])
 def query():
     target_user = request.form.get('student_id')
@@ -182,16 +181,6 @@ def query():
 
     return str(user_info)
 
-@app.route('/ffff', methods = ['POST'])
-def ffff():
-    if request.method == 'POST':
-        print(request.get_json())
-        user_id = request.get_json().get('user_id')
-        fall = request.get_json().get('fall')
-        dbAPI.ffff_data('ffff',user_id,fall)
-        return 'ffff'
-    else:
-        return 'ffff'
 
 @app.route('/medicine_data/<data>', methods = ['GET','POST'])
 def medicine_data(data):
@@ -214,7 +203,7 @@ def medicine_data(data):
         time1 = request.get_json().get('time1')
         time2 = request.get_json().get('time2')
         time3 = request.get_json().get('time3')
-	print(name + user_id + time1)
+        print(name + user_id + time1)
         if(time2=='000000'): dbAPI.insert_medicine_data(name,user_id,mon,tue,wed,thu,fri,sat,sun,time1);
         elif(time3=='000000'): dbAPI.insert_medicine_data(name,user_id,mon,tue,wed,thu,fri,sat,sun,time1,time2);
         else: dbAPI.insert_medicine_data(name,user_id,mon,tue,wed,thu,fri,sat,sun,time1,time2,time3);
@@ -223,9 +212,6 @@ def medicine_data(data):
 # @app.route('/ajax-trigger') 
 # def ajax_trigger(): 
 #     return my_algorithm()
-@app.route('/realtime')
-def hello_world():
-    return render_template('index1.html', data='test')
 
 @app.route('/live-data')
 def live_data():
@@ -240,5 +226,10 @@ def live_data():
     response.content_type = 'application/json'
     return response
 
+def decodeList(input):
+	return repr(input).decode('string-escape')
+
+
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=5000, debug=True)
+

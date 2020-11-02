@@ -104,7 +104,7 @@ def select(table, num=0, *args):
     result = []
     if (num == 0): # all
         rows = cursor.fetchall()
-	print(rows)
+        print(rows)
         if(rows is None): return result # empty set
         for row in rows:
             result0 = []
@@ -175,7 +175,7 @@ def select_fall_down(**kwargs):
     query = "select id,timestamp from sensor_data where sensor_id=5 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
-    query += " order by id desc;"
+    query += " ORDER BY id DESC LIMIT 4;"
     #"select count(*) as num from fall_down ;"
     cursor.execute(query)
     connection.commit()
@@ -251,3 +251,4 @@ def ffff_data(data_name, *args):
     query = "update ffff set fall = " +str(args[1])+ " where id = 1"
     cursor.execute(query)
     connection.commit()
+
