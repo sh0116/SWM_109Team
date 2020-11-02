@@ -110,11 +110,15 @@ class _sshState extends State<ssh> {
               )
             ],
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 100),
           RaisedButton(
-              child: Text("등록"),
+              child: Text("등록", style: TextStyle(fontSize: 20, color: Colors.white)),
               onPressed: onClickCmd,
-              color: Colors.blue
+              padding: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0)
+              ),
+              color: Colors.blue,
           ),
           //SizedBox(height: 50),
           //Text(_result),

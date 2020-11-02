@@ -30,13 +30,18 @@ class _selectMedicineUserState extends State<selectMedicineUser> {
         title: Text('사용자 선택'),
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         itemCount: namesList.length,
         itemBuilder: (BuildContext context, int index) {
           return RaisedButton(
             //height: 50,
             //color: Colors.amber,
-            child: Center(child: Text('${namesList[index]}')),
+            child: Center(
+                child: Text(
+                    '${namesList[index]}',
+                style: TextStyle(fontSize: 25)
+                )
+            ),
             onPressed: (){
               Navigator.push(
                 context,
@@ -45,6 +50,11 @@ class _selectMedicineUserState extends State<selectMedicineUser> {
                 ),
               );
             },
+            //padding: EdgeInsets.all(5),
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0)
+            ),
+            color: Colors.blue,
           );
         }
       )

@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:app109/dataCenter.dart';
 import 'package:app109/menu.dart';
-import 'package:app109/splashScreen.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -50,12 +49,12 @@ class _loginState extends State<login> {
           SizedBox(height: 60),
           Image.asset("images/logo2.png", width: 250),
           SizedBox(height: 80),
-          Text('보호자 로그인', style: TextStyle(fontSize: 25)),
+          Text('보호자 로그인', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
           SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('이름'),
+              Text('이름', style: TextStyle(fontSize: 20)),
               Container(
                 child: TextField(
                   controller: TextEditingController(),
@@ -74,7 +73,7 @@ class _loginState extends State<login> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('연락처'),
+              Text('연락처', style: TextStyle(fontSize: 20)),
               Container(
                 child: TextField(
                   controller: TextEditingController(),
@@ -100,7 +99,7 @@ class _loginState extends State<login> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               RaisedButton(
-                child: Text('로그인'),
+                child: Text('로그인', style: TextStyle(color: Colors.white)),
                 onPressed: () async {
                   // fetch corresponding name to contact
                   await fetchData(http.Client(), "prot_info/name", "contact", _protContact).then((fetchName) async {
@@ -137,10 +136,15 @@ class _loginState extends State<login> {
                     }
                   });
                 },
+                padding: EdgeInsets.all(15),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0)
+                ),
+                color: Colors.blue,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 30),
               RaisedButton(
-                child: Text('등록'),
+                child: Text('등록', style: TextStyle(color: Colors.white)),
                 onPressed: () async {
                   setState(() {});
                   Map<String, dynamic> jsonBody = {'name': "'"+_protName+"'", 'contact': "'"+_protContact+"'",};
@@ -155,6 +159,11 @@ class _loginState extends State<login> {
                     });
                   });
                 },
+                padding: EdgeInsets.all(15),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0)
+                ),
+                color: Colors.blue,
               ),
             ],
           ),

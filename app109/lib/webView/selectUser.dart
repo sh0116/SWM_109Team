@@ -36,7 +36,12 @@ class _selectUserState extends State<selectUser> {
           return RaisedButton(
             //height: 50,
             //color: Colors.amber,
-            child: Center(child: Text('${namesList[index]}')),
+            child: Center(
+              child: Text(
+                '${namesList[index]}',
+                style: TextStyle(fontSize: 30)
+              )
+            ),
             onPressed: (){
               Navigator.push(
                 context,
@@ -45,6 +50,10 @@ class _selectUserState extends State<selectUser> {
                 ),
               );
             },
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(50.0)
+            ),
+            color: Colors.blue,
           );
         }
       )
