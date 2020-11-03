@@ -27,7 +27,7 @@ class _sshState extends State<ssh> {
 
   Future<void> onClickCmd() async {
     var client = new SSHClient(
-      host: "192.168.4.1",
+      host: "10.0.0.5",
       //host: "172.16.101.11",
       port: 22,
       username: "pi",
@@ -42,14 +42,14 @@ class _sshState extends State<ssh> {
       await client.execute("echo '\tssid=\"" + _ssid + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '\tpsk=\"" + _psk + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '\tkey_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '\tscan_ssid=1' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '" + _ssid + "' | sudo tee -a /etc/ssid_list.txt");
       await client.execute("echo '" + _userId + "' | sudo tee -a ~/robot109/data/user_info.txt");
       await client.execute("sudo reboot");
     }
     client.disconnect();
-    Navigator.pop(context);
-    Navigator.pop(context);
+    print("register");
     //}
     //} on PlatformException catch (e) {
     //print('Error: ${e.code}\nError Message: ${e.message}');
@@ -111,14 +111,32 @@ class _sshState extends State<ssh> {
             ],
           ),
           SizedBox(height: 100),
-          RaisedButton(
-              child: Text("등록", style: TextStyle(fontSize: 20, color: Colors.white)),
-              onPressed: onClickCmd,
-              padding: EdgeInsets.all(20),
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(50.0)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                child: Text("등록", style: TextStyle(fontSize: 20, color: Colors.white)),
+                onPressed: onClickCmd,
+                padding: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0)
+                ),
+                color: Colors.blue,
               ),
-              color: Colors.blue,
+              SizedBox(width: 40),
+              RaisedButton(
+                child: Text("돌아가기", style: TextStyle(fontSize: 20, color: Colors.white)),
+                onPressed: (){
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                padding: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0)
+                ),
+                color: Colors.blue,
+              )
+            ]
           ),
           //SizedBox(height: 50),
           //Text(_result),
