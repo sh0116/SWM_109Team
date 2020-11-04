@@ -176,18 +176,25 @@ def test():
     avg_realtime = int(dbAPI.select_avg_realtime(user_id = int(temp1)))
     latest_realtime = int(dbAPI.select_latest_realtime(user_id = int(temp1)))
     user_activity = dbAPI.select_where("sensor_data",0,"*", sensor_id = 8)
-    #print(user_activity)
-    #avg_realtime = int(avg_realtime)
-    #touch_count = int(touch_count)
+    sub_activity = dbAPI.select_sub_activity(sensor_id=6,user_id = int(temp1))
+    sub_touch = dbAPI.select_sub_activity(sensor_id=7,user_id = int(temp1))
+    sub_sleeping = dbAPI.select_sub_activity(sensor_id=9,user_id = int(temp1))
+    temper_min_max = dbAPI.select_min_max(sensor_id=1,user_id=int(temp1))
+    avg_wake = dbAPI.select_avg_sleep(sensor_id=3,user_id=int(temp1))
+    avg_sleep = dbAPI.select_avg_sleep(sensor_id=4,user_id=int(temp1))
+    print("select avg",avg_wake)
+    
     return render_template('test.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,
-    row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count, prot_info = prot_info,avg_realtime = avg_realtime, latest_realtime = latest_realtime, user_activity = user_activity)
+    row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count, prot_info = prot_info,avg_realtime = avg_realtime,
+    latest_realtime = latest_realtime, user_activity = user_activity,sub_activity = sub_activity, sub_touch = sub_touch,sub_sleeping = sub_sleeping,temper_min_max=temper_min_max,avg_wake=avg_wake,avg_sleep=avg_sleep)
 
 
 @app.route('/contact')
 def Contact():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
     all_user_info = dbAPI.select("user_info",0, "*")
-    return render_template('Contacts.html',data1 = user_info,data2 = all_user_info)
+    prot_info = dbAPI.select_prot_info(1)
+    return render_template('Contacts.html',data1 = user_info,data2 = all_user_info,prot_info = prot_info)
 
 
 @app.route('/medicine_data/<data>', methods = ['GET','POST'])
@@ -223,13 +230,21 @@ def medicine_data(data):
 
 @app.route('/live-data')
 def live_data():
-    # Create a PHP array and echo it as JSON
-   # temp1 = request.args.get('user_id')
     temp1 = session['userid']
-    print("세션값" + temp1)
+    #print("세션값" + temp1)
     realtime = dbAPI.select_realtime(user_id = int(temp1))
     
     data = [time() * 1000,float(realtime)]
+    response = make_response(json.dumps(data))
+    response.content_type = 'application/json'
+    return response
+
+@app.route('/activity')
+def activity_data():
+    temp1 = session['userid']
+    realtime = dbAPI.select_realtime(user_id = int(temp1))
+    
+    data = [int(realtime)]
     response = make_response(json.dumps(data))
     response.content_type = 'application/json'
     return response
@@ -240,10 +255,10 @@ def decodeList(input):
 @app.route('/set_rasinfo', methods = ['POST'])
 def get_rasinfo():
     if request.method == 'POST':
-        query       = request.form.get('query')
-        info        = list()
+        query = request.form.get('query')
+        info = list()
         try:
-            info    = dbAPI.get_target_data2db(query)
+            info = dbAPI.get_target_data2db(query)
         except:
             return str(info)
     return str(info)
