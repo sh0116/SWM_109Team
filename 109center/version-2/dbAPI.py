@@ -25,7 +25,7 @@ def connectRDS(host, port, userName, userPasswd, database):
     #connection.query("set character_set_results=utf8;")
     #connection.query("set character_set_database=utf8;")
         cursor = connection.cursor()
-    except: 
+    except:
         logging.error("connection fail")
         sys.exit(1)
     return connection, cursor
@@ -43,7 +43,7 @@ def insert_data(data_name, *args):
         query = "insert into sensor_data (user_id,sensor_id,num) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+");"
     elif(len(args) == 4):#wake,sleep
         query = "insert into sensor_data (user_id,sensor_id,num,day) values ("+str(args[0])+","+str(args[1])+","+str(args[2])+",'"+str(args[3])+"');"
-    print(query)
+    #print(query)
     cursor.execute(query)
     connection.commit()
     
@@ -67,7 +67,7 @@ def insert_user_info(name, gender, birth, address, contact, prot_id):
 def insert_robot_info(robot_name, robot_id, user_id):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "insert into robot_info (robot_name, robot_serial, user_id) values ("+robot_name+","+str(robot_id)+","+str(user_id)+");"
-    print(query)
+    #print(query)
     cursor.execute(query)
     connection.commit()
 
@@ -77,7 +77,7 @@ def insert_medicine_data(medicine_name, user_id, *args):
     if(len(args) == 10): query = "insert into medicine_data (name, user_id, 월,화,수,목,금,토,일, time1,time2,time3) values ("+medicine_name+","+str(user_id)+","+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+","+str(args[4])+","+str(args[5])+","+str(args[6])+","+str(args[7])+","+str(args[8])+","+str(args[9])+");"
     elif(len(args) == 9): query = "insert into medicine_data (name, user_id, 월,화,수,목,금,토,일, time1,time2) values ("+medicine_name+","+str(user_id)+","+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+","+str(args[4])+","+str(args[5])+","+str(args[6])+","+str(args[7])+","+str(args[8])+");"
     elif(len(args) == 8): query = "insert into medicine_data (name, user_id, 월,화,수,목,금,토,일, time1) values ("+medicine_name+","+str(user_id)+","+str(args[0])+","+str(args[1])+","+str(args[2])+","+str(args[3])+","+str(args[4])+","+str(args[5])+","+str(args[6])+","+str(args[7])+");"
-    print(query)
+    #print(query)
     #connection.query("set character_set_connection=utf8;")
     #connection.query("set character_set_server=utf8;")
     #connection.query("set character_set_client=utf8;")
@@ -135,7 +135,7 @@ def select_where(table, num=0, *args, **kwargs):
         if (cnt < length):
             query += " and "
     query += " order by id desc;"
-    print(query)
+    #print(query)
     cursor.execute(query)
     connection.commit()
     result = []
@@ -147,10 +147,10 @@ def select_where(table, num=0, *args, **kwargs):
             result0 = []
             for row0 in row:
                 result0.append(str(row0))
-		#print(str(row0))
-		#print(str(row0).encode('utf-8'))
+        #print(str(row0))
+        #print(str(row0).encode('utf-8'))
             result.append(result0)
-	    #print(result0)
+        #print(result0)
     else: # one
         rows = cursor.fetchone()
         #print(rows)
@@ -164,7 +164,7 @@ def select_prot_info(num):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "select prot_info.name, prot_info.contact from user_info, prot_info where user_info.prot_id = prot_info.id and user_info.id = "
     query += str(num)+";"
-    print(query)
+    #print(query)
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
@@ -192,6 +192,20 @@ def select_fall_down(**kwargs):
 
     return rows
 
+def select_latest_realtime(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select SUM(num) from sensor_data where sensor_id=8 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " ORDER BY id DESC LIMIT 5;"
+    #"select count(*) as num from fall_down ;"
+    print(query)
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
+    return rows[0]
+
 def select_fall_down_count(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query ="select count(*) as num from sensor_data where sensor_id=5 and "
@@ -215,7 +229,7 @@ def select_touch(**kwargs):
     rows = cursor.fetchone()
     print(rows)
 
-    return rows
+    return rows[0]
 
 def select_realtime(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
@@ -226,33 +240,56 @@ def select_realtime(**kwargs):
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchone()
-    print(rows[0])
+    #print(rows[0])
 
+    return rows[0]
+
+def select_avg_realtime(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select AVG(num) from sensor_data where sensor_id=8 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += ";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+    
     return rows[0]
 
 def select_wake_up(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "SELECT * FROM ( SELECT * FROM sensor_data where sensor_id=3 and "
+    query = "select id,hour(timestamp),minute(timestamp) from sensor_data where sensor_id = 3 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
-    query += " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
+    query += " order by id desc limit 1;"
     cursor.execute(query)
     connection.commit()
+    print(query)
     rows = cursor.fetchall()
+    print(rows)
     return rows
 
 def select_sleep(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "SELECT * FROM ( SELECT * FROM sensor_data where sensor_id=4 and "
+    query = "select id,hour(timestamp),minute(timestamp) from sensor_data where sensor_id = 4 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
-    query += " ORDER BY id DESC LIMIT 7) A ORDER BY id ASC;"
+    query += " order by id desc limit 1;"
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
     return rows
 
-
+def compare_sleep_time(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select id,hour(timestamp),minute(timestamp) from sensor_data where sensor_id = 4 and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " order by id desc limit 1;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    return rows
 
 
 def ffff_data(data_name, *args):
@@ -260,3 +297,4 @@ def ffff_data(data_name, *args):
     query = "update ffff set fall = " +str(args[1])+ " where id = 1"
     cursor.execute(query)
     connection.commit()
+
