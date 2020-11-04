@@ -192,19 +192,6 @@ def select_fall_down(**kwargs):
 
     return rows
 
-def select_latest_realtime(**kwargs):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select SUM(num) from sensor_data where sensor_id=8 and "
-    for key, value in kwargs.items():
-        query += str(key) + "=" + str(value)
-    query += " ORDER BY id DESC LIMIT 5;"
-    #"select count(*) as num from fall_down ;"
-    print(query)
-    cursor.execute(query)
-    connection.commit()
-    rows = cursor.fetchone()
-
-    return rows[0]
 
 def select_fall_down_count(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
@@ -256,6 +243,121 @@ def select_avg_realtime(**kwargs):
     
     return rows[0]
 
+def select_latest_realtime(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query = "select SUM(num) from sensor_data where sensor_id=8 and "
+    for key, value in kwargs.items ():
+        query += str(key) + "=" + str(value)
+    query += " ORDER BY id DESC LIMIT 5;"
+    #"select count(*) as num from fall_down ;"
+    print(query)
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
+    return rows[0]
+
+def select_sub_activity(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    today_query ="select day(now());"
+    #print("today query", today_query)
+    cursor.execute(today_query)
+    connection.commit()
+    today = cursor.fetchone()
+    #print("day :" ,today[0] )
+    #select sum(num) from sensor_data where sensor_id=6 day(timestamp)=today
+    today_activity_query ="select SUM(num) from sensor_data where day(timestamp)=" + str(today[0])+" and "
+    cnt = 0
+    length = len(kwargs)
+    for key, value in kwargs.items():
+        today_activity_query += str(key) + "=" + str(value)
+        cnt+=1
+        if (cnt < length):
+            today_activity_query += " and "
+    # for key, value in kwargs.items():
+    #     today_activity_query += str(key) + "=" + str(value)
+    today_activity_query += ";"
+    cursor.execute(today_activity_query)
+    #print("today activity query", today_activity_query)
+    connection.commit()
+    today_activity = cursor.fetchone()
+    before_day = int(today[0] - 1)
+    before_day_query ="select SUM(num) from sensor_data where day(timestamp)=" + str(before_day)+" and "
+    cnt = 0
+    length = len(kwargs)
+    for key, value in kwargs.items():
+        before_day_query += str(key) + "=" + str(value)
+        cnt+=1
+        if (cnt < length):
+            before_day_query += " and "
+    before_day_query += ";"
+    cursor.execute(before_day_query)
+    connection.commit()
+    before_day_activity = cursor.fetchone()
+    sub_activity = before_day - int(before_day_activity[0])
+    if sub_activity > 0 :
+        sub_activity = "+ " +str(sub_activity)
+    else:
+        sub_activity = "- " + str(abs(sub_activity))
+    return str(sub_activity)
+
+def select_avg_sleep(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    #select sum(num) from sensor_data where sensor_id=6 day(timestamp)=today
+    today_activity_query ="select avg(hour(timestamp)) from sensor_data where "
+    cnt = 0
+    length = len(kwargs)
+    for key, value in kwargs.items():
+        today_activity_query += str(key) + "=" + str(value)
+        cnt+=1
+        if (cnt < length):
+            today_activity_query += " and "
+    today_activity_query += ";"
+    print("today activity query", today_activity_query)
+    cursor.execute(today_activity_query)
+    hour = cursor.fetchone()
+
+    activity_query ="select avg(minute(timestamp)) from sensor_data where "
+    cnt = 0
+    length = len(kwargs)
+    for key, value in kwargs.items():
+        activity_query += str(key) + "=" + str(value)
+        cnt+=1
+        if (cnt < length):
+            activity_query += " and "
+    activity_query += ";"
+    cursor.execute(activity_query)
+    minute= cursor.fetchone()
+    
+    return int(hour[0]),int(minute[0])
+
+
+def select_min_max(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    today_query ="select day(now());"
+    #print("today query", today_query)
+    cursor.execute(today_query)
+    connection.commit()
+    today = cursor.fetchone()
+    #print("day :" ,today[0] )
+    #select sum(num) from sensor_data where sensor_id=6 day(timestamp)=today
+    query ="select min(num),max(num) from sensor_data where day(timestamp)=" + str(today[0])+" and "
+    cnt = 0
+    length = len(kwargs)
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+        cnt+=1
+        if (cnt < length):
+            query += " and "
+    query += ";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    
+    return rows
+
+
+
 def select_wake_up(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "select id,hour(timestamp),minute(timestamp) from sensor_data where sensor_id = 3 and "
@@ -297,4 +399,3 @@ def ffff_data(data_name, *args):
     query = "update ffff set fall = " +str(args[1])+ " where id = 1"
     cursor.execute(query)
     connection.commit()
-
