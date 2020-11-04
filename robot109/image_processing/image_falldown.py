@@ -21,9 +21,10 @@ falldown_time = time.time()
 global hasPrinted
 hasPrinted = False
 
-global origin_time, sleeptime
-origin_time = 0
+global sleeptime, sleep_check, wake_check
 sleeptime = 0
+sleep_check = 0
+wake_check = 0
 
 def status_detected(status):
     global blue_color, red_color, green_color
@@ -45,23 +46,22 @@ def status_detected(status):
     return nowStatus, color
 
 def standing_process(beforeStatus):
-    global origin_time, sleeptime
+    global sleeptime, wake_check
     nowStatus, color = status_detected(status.standing)
 
-    if sleeptime >= 10:
-        image_sleep.day_wake_time()
-    origin_time = 0
+    if sleeptime >= 60:
+        wake_check = image_sleep.day_wake_time(wake_check,sleepingtime)
     sleeptime = 0
     return nowStatus, color
 
 
 def lying_process(beforeStatus):
-    global sleeptime
+    global sleeptime, sleep_check
     nowStatus, color = status_detected(status.lying)
-    
     sleeptime = sleeptime+1
-    if sleeptime >= 60:
-        image_sleep.day_sleep_time()
+    print(sleeptime)
+    if sleeptime >= 10:
+        sleep_check = image_sleep.day_sleep_time(sleep_check)
     return nowStatus, color
 
 def falldown_process(beforeStatus):
