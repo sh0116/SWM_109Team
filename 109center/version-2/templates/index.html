@@ -2,407 +2,353 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>109center | Dashboard</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-        name='viewport' />
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="static/css/ready.css">
-    <link rel="stylesheet" href="static/css/demo.css">
-    <script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f3a3a8e297eaddc4e57c1381ad036f3&libraries=services"></script>
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>109center | Dashboard</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+		name='viewport' />
+	<link rel="stylesheet" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<link rel="stylesheet" href="static/css/ready.css">
+	<link rel="stylesheet" href="static/css/demo.css">
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f3a3a8e297eaddc4e57c1381ad036f3&libraries=services"></script>
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="sidebar">
-            <div class="scrollbar-inner sidebar-wrapper">
-                <img src="static/img/109logo.png" style="width: 100%; height: 100%;">
-                <ul class="nav">
-                    <li class="nav-item active">
-                        <a href="/">
-                            <i class="la la-dashboard"></i>
-                            <p>사용자 상태 모니터링</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/contact">
-                            <i class="la la-user-plus"></i>
-                            <p>사용자 정보</p>
-                            <span class="badge badge-count">6</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="main-panel">
-            <div class="content">
-                <div class="container-fluid">
+	<div class="wrapper">
+		<div class="sidebar">
+			<div class="scrollbar-inner sidebar-wrapper">
+				<img src="static/img/109logo.png" style="width: 100%; height: 100%;">
+				<ul class="nav">
+					<li class="nav-item active">
+						<a href="/">
+							<i class="la la-dashboard"></i>
+							<p>사용자 상태 모니터링</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="/contact">
+							<i class="la la-user-plus"></i>
+							<p>사용자 정보</p>
+							<span class="badge badge-count">6</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
 
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title"> 사용자 지도 </h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mapcontainer">
-                                        <div id="map" style="width:100%;height:400px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row row-card-no-pd">
-                        <div class="col-md-6">
-                            <div class="card">
-                                
-                                <div class="card-body">
-                                    <div id="container" style="width:100%;height:400px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card card-stats">
-                                <div class="card-body">
-                                    <p class="fw-bold mt-1">어제 보다 오늘</p>
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="la la-dashboard text-warning"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">수면 시간</p>
-                                                <h4 class="card-title">{{sub_sleeping}} 분</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <div class="icon-big text-center">
-                                                <i class="la la-gratipay text-danger"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">교감 횟수</p>
-                                                <h4 class="card-title">{{sub_touch}} 번</h4>
-                                            </div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title"> 사용자 지도 </h4>
+								</div>
+								<div class="card-body">
+									<div class="mapcontainer">
+										<div id="map" style="width:100%;height:400px;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row row-card-no-pd">
+						<div class="col-md-6">
+							<div class="card">
 
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <div class="icon-big text-center">
-                                                <i class="la la-user-plus text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">활동량</p>
-                                                <h4 class="card-title">{{sub_activity}}</h4>
-                                            </div>
+								<div class="card-body">
+									<div id="container" style="width:100%;height:300px;"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="card card-stats">
+								<div class="card-body">
+									<p class="fw-bold mt-1">사용자 일일 평균</p>
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center icon-warning">
+												<i class="la la-dashboard text-warning"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">수면 시간</p>
+												<h4 class="card-title">{{sub_sleeping}} 분</h4>
+											</div>
+										</div>
+									</div>
+									<hr />
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center">
+												<i class="la la-gratipay text-danger"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">교감 횟수</p>
+												<h4 class="card-title">{{sub_touch}} 번</h4>
+											</div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card card-stats">
-                                <div class="card-body">
-                                    <p class="fw-bold mt-1">어제 보다 오늘</p>
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="la la-dashboard text-warning"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">수면 시간</p>
-                                                <h4 class="card-title">{{sub_sleeping}} 분</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <div class="icon-big text-center">
-                                                <i class="la la-gratipay text-danger"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">교감 횟수</p>
-                                                <h4 class="card-title">{{sub_touch}} 번</h4>
-                                            </div>
+										</div>
+									</div>
+									<hr />
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center">
+												<i class="la la-user-plus text-primary"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">활동량</p>
+												<h4 class="card-title">{{sub_activity}}</h4>
+											</div>
 
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <div class="icon-big text-center">
-                                                <i class="la la-user-plus text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">활동량</p>
-                                                <h4 class="card-title">{{sub_activity}}</h4>
-                                            </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="card card-stats">
+								<div class="card-body">
+									<pre>   </pre>
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center icon-warning">
+												<i class="la la-dashboard text-warning"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">수면 시간</p>
+												<h4 class="card-title">{{sub_sleeping}} 분</h4>
+											</div>
+										</div>
+									</div>
+									<hr />
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center">
+												<i class="la la-gratipay text-danger"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">교감 횟수</p>
+												<h4 class="card-title">{{sub_touch}} 번</h4>
+											</div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+										</div>
+									</div>
+									<hr />
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center">
+												<i class="la la-user-plus text-primary"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">활동량</p>
+												<h4 class="card-title">{{sub_activity}}</h4>
+											</div>
 
-                        </div>
-                        <!-- <div class="col-md-3">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="la la-tint text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-9 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">전체 사용자의 </p> <b class="card-category">평균 기상 시간</b>
-                                                <h4 class="card-title">{{data[0][0]}}<small> ℃</small> / {{data3[0][0]}}<small>%</small></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="col-md-3">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="la la-tint text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-9 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">전체 사용자의 </p> <b class="card-category">평균 취침 시간</b>
-                                                <h4 class="card-title">{{data[0][0]}}<small> ℃</small> / {{data3[0][0]}}<small>%</small></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="la la-tint text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-9 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">전체 사용자의 </p> <b class="card-category">평균 수면 시간</b>
-                                                <h4 class="card-title">{{data[0][0]}}<small> ℃</small> / {{data3[0][0]}}<small>%</small></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="la la-tint text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-9 d-flex align-items-center">
-                                            <div class="numbers">
-                                                <p class="card-category">전체 사용자의 </p> <b class="card-category">평균 활동량</b>
-                                                <h4 class="card-title">{{data[0][0]}}<small> ℃</small> / {{data3[0][0]}}<small>%</small></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
 
 
-                    </div>
+					</div>
 
-                </div>
-            </div>
-        </div>
+				</div>
+			</div>
+		</div>
 
 </body>
 <script language="JavaScript">
-    $(document).ready(function () {
-        var chart = {
-            type: 'column'
-        };
-        var title = {
-            text: '일일 노인 평균 활동량(최근10일)'
-        };
-        var xAxis = {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            crosshair: true
-        };
-        var yAxis = {
-            min: 0,
-            title: {
-                text: '활동량 (act)'
-            }
-        };
-        var tooltip = {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        };
-        var plotOptions = {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        };
-        var credits = {
-            enabled: false
-        };
 
-        var series = [{
-            name: '활동량',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-        }];
+	var avg_hour_each = []
+	var hour_avg = []
+	{% for rows in user_avg_actibity %}
+	var a = parseFloat('{{rows[0]}}')
+	hour_avg.push(a);
+	{% endfor %}
+	var avg, a = 0;
+	var sum = 0;
+	for (var i = 0; i <= 16; i++) {
+		if (a != 2) {
+			sum += hour_avg[i];
+			a++;
+		} else {
+			sum /= 3; avg = sum;
+			avg_hour_each.push(avg);
+			sum = 0;
+			a = 0;
+		}
+	}
+	console.log(avg_hour_each);
 
-        var json = {};
-        json.chart = chart;
-        json.title = title;
-        json.tooltip = tooltip;
-        json.xAxis = xAxis;
-        json.yAxis = yAxis;
-        json.series = series;
-        json.plotOptions = plotOptions;
-        json.credits = credits;
-        $('#container').highcharts(json);
+	$(document).ready(function () {
+		var chart = {
+			type: 'column'
+		};
+		var title = {
+			text: '시간대 별 노인 평균 활동량'
+		};
+		var xAxis = {
+			categories: ['6-9', '9-12', '12-15', '15-18', '18-21'],
+			crosshair: true
+		};
+		var yAxis = {
+			min: 0,
+			title: {
+				text: '활동량 (act)'
+			}
+		};
+		var tooltip = {
+			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				'<td style="padding:0"><b>{point.y:.1f} act</b></td></tr>',
+			footerFormat: '</table>',
+			shared: true,
+			useHTML: true
+		};
+		var plotOptions = {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
+			}
+		};
+		var credits = {
+			enabled: false
+		};
 
-    });
+		var series = [{
+			name: '활동량',
+			color: '#0088ff',
+			data: avg_hour_each
+		}];
+
+		var json = {};
+		json.chart = chart;
+		json.title = title;
+		json.tooltip = tooltip;
+		json.xAxis = xAxis;
+		json.yAxis = yAxis;
+		json.series = series;
+		json.plotOptions = plotOptions;
+		json.credits = credits;
+		$('#container').highcharts(json);
+
+	});
 </script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-    let alarm = new Audio();
-    // path to your alarm audio file
-    var socket = io.connect('http://www.109center.com:5000/');
-    socket.on('message', function (data) {
-        //  console.log(data);
-        swal("낙상이 발생하였습니다", "누구누구", "warning");
-        alarm.play();
-    });
+	let alarm = new Audio();
+	// path to your alarm audio file
+	var socket = io.connect('http://www.109center.com:5000/');
+	socket.on('message', function (data) {
+		//  console.log(data);
+		swal("낙상이 발생하였습니다", "최연정", "warning");
+		alarm.play();
+	});
 
 
 
 </script>
 
 <script type="text/javascript" charset="utf-8">
-    var socket = io.connect('http://www.109center.com:5000/');
-    socket.on('user_info', function (data) {
-        //  console.log(data);
-        swal("새로운 사용자가 등록되었습니다", "누구누구", "success");
+	var socket = io.connect('http://www.109center.com:5000/');
+	socket.on('user_info', function (data) {
+		//  console.log(data);
+		swal("새로운 사용자가 등록되었습니다", "success");
 
-    });
+	});
 </script>
 <script>
 
-    var mapContainer = document.getElementById('map'); // 지도를 표시할 div
-    mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+	var mapContainer = document.getElementById('map'); // 지도를 표시할 div
+	mapOption = {
+		center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		level: 3 // 지도의 확대 레벨
+	};
 
-    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-    var zoomControl = new kakao.maps.ZoomControl();
-    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-    var geocoder = new kakao.maps.services.Geocoder();
-    var newAdd = []
-    var text = []
-    {% for rows in data2 %}
-    newAdd.push('{{rows[4]}}');
-    text.push('{{rows[1]}}');
-    {% endfor %}
-    console.log(text[0]);
-    newAdd.forEach(function (v, i) {
-        geocoder.addressSearch(newAdd[i], function (result, status) {
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	var zoomControl = new kakao.maps.ZoomControl();
+	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	var geocoder = new kakao.maps.services.Geocoder();
+	var newAdd = []
+	var text = []
+	{% for rows in data2 %}
+	newAdd.push('{{rows[4]}}');
+	text.push('{{rows[1]}}');
+	{% endfor %}
+	console.log(text[0]);
+	newAdd.forEach(function (v, i) {
+		geocoder.addressSearch(newAdd[i], function (result, status) {
 
-            // 정상적으로 검색이 완료됐으면
+			// 정상적으로 검색이 완료됐으면 
 
-            if (status === kakao.maps.services.Status.OK) {
+			if (status === kakao.maps.services.Status.OK) {
 
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                var imageSrc = 'static/img/green_maker'
-                // 결과값으로 받은 위치를 마커로 표시합니다
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: coords
-                });
-                marker.id = i + 1;
-                var infowindow = new kakao.maps.InfoWindow({
-                    //content: '<div style="width:150px;text-align:center;padding:6px 0;">'+'<> 이름 : </p>' + text[i] + '</div>' + '<div style = text-align:center;padding:6px 0;>' + newAdd[i] + '</div>'
-                    content: '<div  class=""><div><div><div class="m-2"><span style="font-weight: bold;">이름: </span>'
-                        + text[i] + '</div></div><div class="m-2"><span style="font-weight: bold;">주소:  </span>'
-                        + newAdd[i]
-                });
+				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+				var imageSrc = 'static/img/green_maker'
+				// 결과값으로 받은 위치를 마커로 표시합니다
+				var marker = new kakao.maps.Marker({
+					map: map,
+					position: coords
+				});
+				marker.id = i + 1;
+				var infowindow = new kakao.maps.InfoWindow({
+					//content: '<div style="width:150px;text-align:center;padding:6px 0;">'+'<> 이름 : </p>' + text[i] + '</div>' + '<div style = text-align:center;padding:6px 0;>' + newAdd[i] + '</div>'
+					content: '<div  class=""><div><div><div class="m-2"><span style="font-weight: bold;">이름: </span>'
+						+ text[i] + '</div></div><div class="m-2"><span style="font-weight: bold;">주소:  </span>'
+						+ newAdd[i]
+				});
 
-                map.setCenter(coords);
+				map.setCenter(coords);
 
-                kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-                kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-                kakao.maps.event.addListener(marker, 'click', makeClickListener(marker.id));
+				kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+				kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+				kakao.maps.event.addListener(marker, 'click', makeClickListener(marker.id));
 
 
-            }
-        });
-    });
-    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-    function makeOverListener(map, marker, infowindow) {
-        return function () {
-            infowindow.open(map, marker);
-            console.log(marker.id)
-        };
-    }
+			}
+		});
+	});
+	// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+	function makeOverListener(map, marker, infowindow) {
+		return function () {
+			infowindow.open(map, marker);
+			console.log(marker.id)
+		};
+	}
 
-    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-    function makeOutListener(infowindow) {
-        return function () {
-            infowindow.close();
-        };
-    }
+	// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+	function makeOutListener(infowindow) {
+		return function () {
+			infowindow.close();
+		};
+	}
 
-    function makeClickListener(id) {
-        return function () {
-            window.location.href = "http://www.109center.com:5000/test?user_id=" + id;
+	function makeClickListener(id) {
+		return function () {
+			window.location.href = "http://www.109center.com:5000/test?user_id=" + id;
 
-        }
-    }
+		}
+	}
 
 
 

@@ -25,7 +25,7 @@ def connectRDS(host, port, userName, userPasswd, database):
     #connection.query("set character_set_results=utf8;")
     #connection.query("set character_set_database=utf8;")
         cursor = connection.cursor()
-    except:
+    except: 
         logging.error("connection fail")
         sys.exit(1)
     return connection, cursor
@@ -147,10 +147,10 @@ def select_where(table, num=0, *args, **kwargs):
             result0 = []
             for row0 in row:
                 result0.append(str(row0))
-        #print(str(row0))
-        #print(str(row0).encode('utf-8'))
+		#print(str(row0))
+		#print(str(row0).encode('utf-8'))
             result.append(result0)
-        #print(result0)
+	    #print(result0)
     else: # one
         rows = cursor.fetchone()
         #print(rows)
@@ -227,7 +227,7 @@ def select_realtime(**kwargs):
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchone()
-    #print(rows[0])
+    print(rows[0])
 
     return rows[0]
 
@@ -264,7 +264,7 @@ def select_sub_activity(**kwargs):
     cursor.execute(today_query)
     connection.commit()
     today = cursor.fetchone()
-    #print("day :" ,today[0] )
+    print("day :" ,today[0] )
     #select sum(num) from sensor_data where sensor_id=6 day(timestamp)=today
     today_activity_query ="select SUM(num) from sensor_data where day(timestamp)=" + str(today[0])+" and "
     cnt = 0
@@ -274,14 +274,14 @@ def select_sub_activity(**kwargs):
         cnt+=1
         if (cnt < length):
             today_activity_query += " and "
-    # for key, value in kwargs.items():
-    #     today_activity_query += str(key) + "=" + str(value)
     today_activity_query += ";"
+    print(today_activity_query);
     cursor.execute(today_activity_query)
     #print("today activity query", today_activity_query)
     connection.commit()
     today_activity = cursor.fetchone()
-    before_day = int(today[0] - 1)
+
+    before_day = int(today[0] - 1) #어제 날짜
     before_day_query ="select SUM(num) from sensor_data where day(timestamp)=" + str(before_day)+" and "
     cnt = 0
     length = len(kwargs)
@@ -294,12 +294,13 @@ def select_sub_activity(**kwargs):
     cursor.execute(before_day_query)
     connection.commit()
     before_day_activity = cursor.fetchone()
-    sub_activity = before_day - int(before_day_activity[0])
+    sub_activity = int(today_activity[0]) - int(before_day_activity[0])
     if sub_activity > 0 :
         sub_activity = "+ " +str(sub_activity)
     else:
         sub_activity = "- " + str(abs(sub_activity))
     return str(sub_activity)
+
 
 def select_avg_sleep(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
@@ -352,9 +353,34 @@ def select_min_max(**kwargs):
     query += ";"
     cursor.execute(query)
     connection.commit()
+    #row = cursor.fetchone()
     rows = cursor.fetchall()
     
     return rows
+
+def user_avg_activity():
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select avg(num) from sensor_data where sensor_id=6 and hour(timestamp)>=6 and hour(timestamp)<=21 group by hour(timestamp) order by hour(timestamp); "
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    print(rows)
+    
+    return rows
+
+def ONEuser_avg_activity(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    query ="select avg(num) from sensor_data where sensor_id=6 and hour(timestamp)>=6 and hour(timestamp)<=21 and "
+    for key, value in kwargs.items ():
+        query += str(key) + "=" + str(value)
+    query += " group by hour(timestamp) order by hour(timestamp); "
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    print(rows)
+    
+    return rows
+
 
 
 
