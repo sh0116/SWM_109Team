@@ -25,7 +25,7 @@ def connectRDS(host, port, userName, userPasswd, database):
     #connection.query("set character_set_results=utf8;")
     #connection.query("set character_set_database=utf8;")
         cursor = connection.cursor()
-    except: 
+    except:
         logging.error("connection fail")
         sys.exit(1)
     return connection, cursor
@@ -104,7 +104,7 @@ def select(table, num=0, *args):
     result = []
     if (num == 0): # all
         rows = cursor.fetchall()
-        print(rows)
+        #print(rows)
         if(rows is None): return result # empty set
         for row in rows:
             result0 = []
@@ -147,10 +147,10 @@ def select_where(table, num=0, *args, **kwargs):
             result0 = []
             for row0 in row:
                 result0.append(str(row0))
-		#print(str(row0))
-		#print(str(row0).encode('utf-8'))
+        #print(str(row0))
+        #print(str(row0).encode('utf-8'))
             result.append(result0)
-	    #print(result0)
+        #print(result0)
     else: # one
         rows = cursor.fetchone()
         #print(rows)
@@ -181,7 +181,7 @@ def get_target_data2db(query):
     
 def select_fall_down(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "select id,timestamp from sensor_data where sensor_id=5 and "
+    query = "select id,timestamp,num from sensor_data where sensor_id=5 and "
     for key, value in kwargs.items():
         query += str(key) + "=" + str(value)
     query += " ORDER BY id DESC LIMIT 5;"
@@ -214,10 +214,31 @@ def select_touch(**kwargs):
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchone()
-    print(rows)
+    #print(rows)
 
     return rows[0]
 
+def select_today_realtime(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+
+    today_query ="select day(now());"
+    #print("today query", today_query)
+    cursor.execute(today_query)
+    connection.commit()
+    today = cursor.fetchone()
+
+    query = "select SUM(num) from sensor_data where sensor_id=6 and day(timestamp)="+str(today[0])+" and "
+    for key, value in kwargs.items ():
+        query += str(key) + "=" + str(value)
+    query += ";"
+    #"select count(*) as num from fall_down ;"
+    #print(query)
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchone()
+
+    return rows[0]
+    
 def select_realtime(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query ="select num from sensor_data where sensor_id=6 and "
@@ -275,12 +296,11 @@ def select_sub_activity(**kwargs):
         if (cnt < length):
             today_activity_query += " and "
     today_activity_query += ";"
-    print(today_activity_query);
     cursor.execute(today_activity_query)
     #print("today activity query", today_activity_query)
     connection.commit()
     today_activity = cursor.fetchone()
-
+    
     before_day = int(today[0] - 1) #어제 날짜
     before_day_query ="select SUM(num) from sensor_data where day(timestamp)=" + str(before_day)+" and "
     cnt = 0
@@ -294,6 +314,7 @@ def select_sub_activity(**kwargs):
     cursor.execute(before_day_query)
     connection.commit()
     before_day_activity = cursor.fetchone()
+    print(before_day_activity[0])
     sub_activity = int(today_activity[0]) - int(before_day_activity[0])
     if sub_activity > 0 :
         sub_activity = "+ " +str(sub_activity)
@@ -314,7 +335,7 @@ def select_avg_sleep(**kwargs):
         if (cnt < length):
             today_activity_query += " and "
     today_activity_query += ";"
-    print("today activity query", today_activity_query)
+    #print("today activity query", today_activity_query)
     cursor.execute(today_activity_query)
     hour = cursor.fetchone()
 
@@ -364,7 +385,7 @@ def user_avg_activity():
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
-    print(rows)
+    #print(rows)
     
     return rows
 
@@ -377,11 +398,37 @@ def ONEuser_avg_activity(**kwargs):
     cursor.execute(query)
     connection.commit()
     rows = cursor.fetchall()
-    print(rows)
+    #print(rows)
     
     return rows
 
+def select_question(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    today_query ="select day(now());"
+    cursor.execute(today_query)
+    connection.commit()
+    today = cursor.fetchone()
 
+    query ="select a1,a2,a3,a4 from user_qa where day(timestamp)=" + str(today[0])+" and "
+    cnt = 0
+    length = len(kwargs)
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+        cnt+=1
+        if (cnt < length):
+            query += " and "
+    query += ";"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    A = []
+    for n in rows:
+        for f in n:
+            if f == 0:
+                A.append('X')
+            else:
+                A.append('O')
+    return A
 
 
 def select_wake_up(**kwargs):
@@ -392,9 +439,9 @@ def select_wake_up(**kwargs):
     query += " order by id desc limit 1;"
     cursor.execute(query)
     connection.commit()
-    print(query)
+    #print(query)
     rows = cursor.fetchall()
-    print(rows)
+    #print(rows)
     return rows
 
 def select_sleep(**kwargs):
@@ -425,3 +472,4 @@ def ffff_data(data_name, *args):
     query = "update ffff set fall = " +str(args[1])+ " where id = 1"
     cursor.execute(query)
     connection.commit()
+
