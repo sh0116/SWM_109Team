@@ -62,7 +62,7 @@
                                     <div class="card-body">
                                         <p class="text-muted "><b>이름 : </b> {{data1[0].1}} </p>
                                         <p class="text-muted "><b>생년월일 : </b>{{data1[0].3}}</p>
-                                        <p class="text-muted "><b>성별 : </b> {{data1[0][2]}}</p>
+                                        <p class="text-muted "><b>성별 : </b> {{gender}}</p>
                                         <p class="text-muted "><b>주소 : </b> {{data1[0].4}} </p>
                                         <p class="text-muted "><b>연락처 : </b>{{data1[0].5}}</p>
 
@@ -133,7 +133,7 @@
                                             <div class="col-8 d-flex align-items-center">
                                                 <div class="numbers">
                                                     <p class="card-category">총 낙상 횟수</p>
-                                                    <h4 class="card-title" style="text-align:center">{{row1.0}} 번</h4>
+                                                    <h4 class="card-title" style="text-align:center">{{row1[0]}} 번</h4>
 
                                                 </div>
                                             </div>
@@ -352,7 +352,7 @@
                         <div class="card card-tasks">
                             <div class="card-header ">
                                 <h4 class="card-title">사용자 안부 전화 지표</h4>
-                                <p class="card-category">To Do List</p>
+                                <p class="card-category">오후 14:00 기준입니다.</p>
                             </div>
                             <div class="card-body ">
                                 <div class="table-full-width">

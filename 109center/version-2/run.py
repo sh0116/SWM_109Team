@@ -141,8 +141,22 @@ def index():
     user_info = dbAPI.select_where("user_info",0,"*",id=1)
     all_user_info = dbAPI.select("user_info",0, "*")
     user_avg_actibity = dbAPI.user_avg_activity()
-    
-    return render_template('index.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,row1 = count_fall, data3 = humidity,user_avg_actibity=user_avg_actibity)
+    daily_avg_activity = dbAPI.select_user_avg(sensor_id=6)
+    daily_avg_touch = dbAPI.select_user_avg(sensor_id = 7)
+    daily_avg_wake = dbAPI.select_daily_sleep(sensor_id = 3)
+    daily_avg_sleep = dbAPI.select_daily_sleep(sensor_id = 4)
+    daily_sleeptime= dbAPI.select_user_avg(sensor_id = 3)
+    daily_time = []
+    if daily_sleeptime >= 60:
+        daily_time.append(daily_sleeptime/60)
+        daily_time.append(daily_sleeptime - daily_time[0])
+    else:
+        daily_time.append('0')
+        daily_time.append(daily_sleeptime)
+
+    return render_template('index.html',row = graph_fall, data = temperature, data1 = user_info,
+    data2 = all_user_info ,row1 = count_fall, data3 = humidity,user_avg_actibity=user_avg_actibity,daily_avg_activity=daily_avg_activity,
+    daily_avg_touch=daily_avg_touch,daily_avg_wake=daily_avg_wake,daily_avg_sleep=daily_avg_sleep,daily_time=daily_time)
 
 @app.route('/map')
 def map():
@@ -172,6 +186,12 @@ def test():
     temperature = dbAPI.select_where("sensor_data",0,"num", user_id = int(temp1), sensor_id = 1)
     humidity = dbAPI.select_where("sensor_data",0,"num",sensor_id = 2, user_id = int(temp1))
     user_info = dbAPI.select_where("user_info",0,"*",id=int(temp1))
+    
+    if (user_info[0][2] == 'f' or user_info[0][2] == 'F'):
+        gender = '여성'
+    else:
+        gender = '남성'
+        
     all_user_info = dbAPI.select("user_info",0, "*")
     prot_info = dbAPI.select_prot_info(int(temp1))
     avg_realtime = int(dbAPI.select_avg_realtime(user_id = int(temp1)))
@@ -190,7 +210,7 @@ def test():
     return render_template('test.html',row = graph_fall, data = temperature, data1 = user_info, data2 = all_user_info ,
     row1 = count_fall, data3 = humidity,wake_up = wake_up, sleep = sleep, touch_count = touch_count, prot_info = prot_info,avg_realtime = avg_realtime,
     latest_realtime = latest_realtime, user_activity = user_activity,sub_activity = sub_activity, sub_touch = sub_touch,sub_sleeping = sub_sleeping,
-    temper_min_max=temper_min_max,avg_wake=avg_wake,avg_sleep=avg_sleep,ONEuser_avg_activity = dbAPI.ONEuser_avg_activity(user_id=int(temp1)),qa = qa)
+    temper_min_max=temper_min_max,avg_wake=avg_wake,avg_sleep=avg_sleep,ONEuser_avg_activity = dbAPI.ONEuser_avg_activity(user_id=int(temp1)),qa = qa,gender = gender)
 
 
 @app.route('/contact')
