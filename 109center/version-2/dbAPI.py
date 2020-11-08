@@ -203,7 +203,20 @@ def select_fall_down_count(**kwargs):
     connection.commit()
     rows = cursor.fetchone()
 
-    return rows
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    all_query ="select count(id) as num from sensor_data where sensor_id=5 group by user_id;"
+    cursor.execute(all_query)
+    connection.commit()
+    count = cursor.fetchall()
+    sum = 0
+    for n in count:
+        for f in n:
+            sum += f
+    user_count = sum/4
+
+
+
+    return rows[0], user_count
 
 def select_touch(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
@@ -354,6 +367,36 @@ def select_avg_sleep(**kwargs):
     return int(hour[0]),int(minute[0])
 
 
+def select_daily_sleep(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    today_query ="select day(now());"
+    cursor.execute(today_query)
+    connection.commit()
+    today = cursor.fetchone()
+    query = "select hour(timestamp),minute(timestamp) from sensor_data where day(timestamp) = " + str(today[0]-1) + " and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " group by user_id;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    A = []
+    sum = 0
+    avg = 0
+    for n in rows:
+        sum += n[0]*3600
+        sum += n[1]*60
+        A.append(sum)
+        avg += sum
+        sum = 0
+    time = divmod(avg, 14400)
+    minute = str(time[1]*0.7)
+    
+    return int(time[0]), minute[0:2]
+
+    
+
+
 def select_min_max(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     today_query ="select day(now());"
@@ -431,6 +474,28 @@ def select_question(**kwargs):
     return A
 
 
+def select_user_avg(**kwargs):
+    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
+    today_query ="select day(now());"
+    cursor.execute(today_query)
+    connection.commit()
+    today = cursor.fetchone()
+    query = "select sum(num) from sensor_data where day(timestamp) = " + str(today[0]) + " and "
+    for key, value in kwargs.items():
+        query += str(key) + "=" + str(value)
+    query += " group by user_id;"
+    cursor.execute(query)
+    connection.commit()
+    rows = cursor.fetchall()
+    A = []
+    sum = 0
+    for n in rows:
+        for f in n:
+            sum += f
+    sum /= 4
+
+    return int(sum)
+
 def select_wake_up(**kwargs):
     connection, cursor = connectRDS(host, port, userName, userPasswd, database)
     query = "select id,hour(timestamp),minute(timestamp) from sensor_data where sensor_id = 3 and "
@@ -465,11 +530,4 @@ def compare_sleep_time(**kwargs):
     connection.commit()
     rows = cursor.fetchall()
     return rows
-
-
-def ffff_data(data_name, *args):
-    connection, cursor = connectRDS(host, port, userName, userPasswd, database)
-    query = "update ffff set fall = " +str(args[1])+ " where id = 1"
-    cursor.execute(query)
-    connection.commit()
 
