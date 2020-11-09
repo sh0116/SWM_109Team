@@ -15,6 +15,7 @@ class ssh extends StatefulWidget {
 class _sshState extends State<ssh> {
   String _result = '';
   List _array;
+  String _ip = '';
   String _ssid = '';
   String _psk = '';
   String _userId = '';
@@ -27,13 +28,13 @@ class _sshState extends State<ssh> {
 
   Future<void> onClickCmd() async {
     var client = new SSHClient(
-      host: "10.0.0.5",
+      host: _ip,
       //host: "172.16.101.11",
       port: 22,
       username: "pi",
       passwordOrKey: "raspberry",
     );
-
+    //print("ssh ip " + _ip);
     String result;
     //try {
     result = await client.connect();
@@ -71,8 +72,33 @@ class _sshState extends State<ssh> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget> [
-          //Text('Login - protector'),
-          //SizedBox(height: 20),
+          Text('네트워크 연결', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+          SizedBox(height: 40),
+          Text('네트워크 연결을 위해'),
+          SizedBox(height: 10),
+          Text('\'RPi WiFi\'에 연결해주시고'),
+          SizedBox(height: 10),
+          Text('연결된 IP 주소를 입력해주세요'),
+          SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('IP 주소'),
+              Container(
+                child: TextField(
+                  controller: TextEditingController(),
+                  style: TextStyle(fontSize: 21, color: Colors.black),
+                  textAlign: TextAlign.center,
+                  onChanged: (String str){
+                    _ip = str;
+                  },
+                ),
+                width: 170,
+                padding: EdgeInsets.only(left: 16),
+              )
+            ],
+          ),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
