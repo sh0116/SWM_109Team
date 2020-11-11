@@ -1,9 +1,8 @@
-
 <div align="center"><img src="./images/109_logo_ver.png" width="300">
 </div>
 
 
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![RPi](https://img.shields.io/badge/Raspberry%20Pi-4B-brightgreen)
+![RPi](https://img.shields.io/badge/Raspberry%20Pi-4B-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.1.2-orange)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-red)
@@ -14,9 +13,12 @@
 
 # Overview
 
-// 백구 사진
 
 SW Maestro 11기 109팀이 진행하는 '독거노인을 위한 돌봄서비스 반려로봇' 프로젝트는 혼자 거주하는 어르신을 대상으로 강아지 외형의 로봇을 보급하여 생활패턴을 케어하고 위급상황을 감지하는, 정신적/신체적 케어서비스를 제공합니다.
+
+
+<div align="center"><img src="./images/109info.png" width=600 ></div>
+
 
 # Development
 ### 1. 백구 로봇
@@ -26,9 +28,6 @@ SW Maestro 11기 109팀이 진행하는 '독거노인을 위한 돌봄서비스 
 pip3 install -r requirements.txt
 python3 main.py
 ```
-실행 화면
-
-// 대충 백구 막 꼬리 흔들구 어쩌구 하느 것들 gif로!
 
 options
 
@@ -43,13 +42,13 @@ options
 
 [www.109center.com:5000/](url)
 
-// 웹 캡쳐 및 그래프 추가
+<div><img src="./images/map.png" width=400 >&nbsp;&nbsp;&nbsp;<img src="./images/realtime.gif" width=400 ></div>
 
 ### 3. 보호자용 앱
 
-// 구글 플레이스토어 링크
+[https://play.google.com/store/apps/details?id=swm.app109](url)
 
-// 앱 캡쳐
+<div><img src="./images/app_menu.png" width=150 >&nbsp;&nbsp;<img src="./images/app_dash1.png" width=150 >&nbsp;&nbsp;<img src="./images/app_meidicine_input.png" width=150 ></div>
 
 # Versions
 
@@ -77,15 +76,13 @@ options
 # Others
 - 특허 및 상표권 출원
 
-// 출원번호
-
-- SW 라이센스 (SW 프로그램 저작권 등록)
-
-// 등록번호
+출원번호 : 40-2020-0199523
 
 - MOU 체결 (with 꼬마빌리지)
 
-// 현수막 사진 및 현장 사진
+<div><img src="./images/mou.jpeg" width="200"></div>
+
+- SW 프로그램 저작권 등록
 
 # Contribution
 <div align="center"><img src="./images/109_logo.png" width="200">&nbsp;&nbsp;&nbsp;<img src="./images/swm_logo.png" width="150">&emsp;<img src="./images/ict_logo.jpeg " width="300">
