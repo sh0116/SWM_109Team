@@ -1,5 +1,5 @@
 <div align="center"><img src="../../images/109_logo_ver.png" width="300">
-
+</div>
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
 ![WebRtcvad](https://img.shields.io/badge/WebRtcvad-2.0.10-orange)
 ![Snowboy](https://img.shields.io/badge/Snowboy-1.3.0-9cf)
