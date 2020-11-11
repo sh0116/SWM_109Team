@@ -1,0 +1,194 @@
+[33mcommit 554e56ab521e868fcc87eccb6dcb39e92951d26e[m[33m ([m[1;36mHEAD -> [m[1;32missue1[m[33m)[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Sat Aug 22 12:54:18 2020 +0900
+
+    add wakeup function and describe graph
+
+[33mcommit 92b0313e2a2c48340f3dfe22cc55e56ba2cfabbf[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Sat Aug 22 05:00:22 2020 +0900
+
+    add alert_falldown and wakeup_post
+
+[33mcommit 66c9d7eaab406cbfb174a8fd0c92aa480c90dbd4[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Sat Aug 22 04:58:02 2020 +0900
+
+    add wakeup function
+
+[33mcommit da016e91ab46434f6eba57c209364221e56996c8[m
+Author: 최연정 <danbicyy@naver.com>
+Date:   Wed Aug 19 17:47:55 2020 +0900
+
+    Update README.md
+
+[33mcommit f43239a109ce2acfe2145beee1376eb40cc9a96d[m
+Author: 김석현 <seokhyeon116@naver.com>
+Date:   Wed Aug 19 13:50:28 2020 +0900
+
+    Update README.md
+
+[33mcommit c56f60d2e9284f0408e5aee19dff4a9ef869e5f7[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Wed Aug 19 12:00:58 2020 +0900
+
+    README
+
+[33mcommit 8f6a284203a12e2a3fbd812c8f7f6dcbb37f0d75[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Wed Aug 19 10:44:21 2020 +0900
+
+    README
+
+[33mcommit ba8fe46779a6741589634d361c0ed1ba05b94977[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Wed Aug 19 10:39:30 2020 +0900
+
+    README
+
+[33mcommit e85eecaa32220a1588262f8148bceab2d2b3dfd6[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Wed Aug 19 10:36:41 2020 +0900
+
+    README
+
+[33mcommit 9f692a2cfca1fc294987f7059a173d8481a219e0[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Wed Aug 19 10:34:12 2020 +0900
+
+    README
+
+[33mcommit 2541f7227814d13ad8686cace3178f53eda13470[m
+Merge: cd55f60 afae8e6
+Author: danbicyy <danbicyy@naver.com>
+Date:   Tue Aug 18 03:06:27 2020 +0900
+
+    Merge branch 'issue1' of https://git.swmgit.org/swmaestro/109 into issue1
+
+[33mcommit cd55f60ff39b3cd9cc45418b7bb46413c480f15b[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Tue Aug 18 03:05:12 2020 +0900
+
+    add function
+
+[33mcommit afae8e6fdfb68c0f263f173b1124583ea663149e[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Tue Aug 11 20:47:42 2020 +0900
+
+    insert into db when detecting fall down
+
+[33mcommit 4aef2c17410a7a28a734de305699f7b5985f6218[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Tue Aug 11 19:02:19 2020 +0900
+
+    ui prototype in flutter
+
+[33mcommit 34f9a2ba123cb111dfee362eb61e6f86c775645a[m
+Merge: f1302c9 76f68fe
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Tue Aug 11 14:00:26 2020 +0900
+
+    updated db api
+
+[33mcommit 76f68fed1d055b9a86cdcf7a418fdc4120118bf7[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Tue Aug 11 13:54:50 2020 +0900
+
+    optimized db api
+
+[33mcommit f1302c95b908404b91ed41eba3834cadc78a7741[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Tue Aug 11 05:25:44 2020 +0900
+
+    Web map modify
+
+[33mcommit 2c4ba3948aee3f659fad84788eade665cca6de33[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Fri Jul 31 01:55:23 2020 +0900
+
+    login function with get method in flutter
+
+[33mcommit ee3120ee55390bbccabb1f5bbc52eff8a060926a[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Fri Jul 31 01:34:35 2020 +0900
+
+    login function with get method in flutter
+
+[33mcommit f3ddd00b31f099861e5c3d9d89be0f18b2c28cf2[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 21:30:51 2020 +0900
+
+    api for database
+
+[33mcommit ef44833a67d121d6e749b166d41f5970955a00e6[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 21:27:16 2020 +0900
+
+    api for database
+
+[33mcommit c8205b23354de0a450a5b5cb04f039b74c5b18f5[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 21:20:45 2020 +0900
+
+    register page in flutter
+
+[33mcommit 72a1fa1f8187cfc7c013a574fe383cca7010bbe7[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 21:14:35 2020 +0900
+
+    login page in flutter
+
+[33mcommit a61f74619441656b17fe58f01ede880b7aa53416[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 20:15:36 2020 +0900
+
+    register page in flutter
+
+[33mcommit 1531a47d508445fa5f121187c951ffcab38f3d73[m
+Merge: e220a0e 52946ef
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 00:12:30 2020 +0900
+
+    Merge branch 'issue1' into gonji
+
+[33mcommit 52946ef55386173e004f7d2cefef097e7ebaa249[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 29 00:11:55 2020 +0900
+
+    post user info into rds in flutter
+
+[33mcommit 70f1e3231b20382a8e5c2993f64349de2a00961a[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Mon Jul 27 03:21:42 2020 +0900
+
+    Flask WebServer UI
+
+[33mcommit 6661a1e3fb7a00058e29de9f403173b2b1071fab[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Wed Jul 22 15:06:28 2020 +0900
+
+    flutter project init
+
+[33mcommit 5854ffd181df39e05183886b3825f591da15e304[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Sun Jul 19 16:31:57 2020 +0900
+
+    detecting falldown with yolo
+
+[33mcommit a3e3f1a45f523b6ee997b85286f16360964e51b8[m
+Author: danbicyy <danbicyy@naver.com>
+Date:   Sun Jul 19 00:56:47 2020 +0900
+
+    person detect (face + eye)
+
+[33mcommit e220a0e293261a65edfe6d5ad15d8743c11a2ee6[m
+Author: hyunjigonji <guswl5404@hanyang.ac.kr>
+Date:   Fri Jul 17 15:11:16 2020 +0900
+
+    detecting falldown with yolo
+
+[33mcommit c1a7e2cbbdbce8b69970a8f3fb58111ac44def61[m
+Author: hyunji <wew9955@naver.com>
+Date:   Fri Jul 10 19:59:34 2020 +0900
+
+    add README
