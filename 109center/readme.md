@@ -1,12 +1,13 @@
-//로고
+<div align="center"><img src="./images/109_logo_ver.png" width="300">
+</div>
 
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-red)
 ![Mysql](https://img.shields.io/badge/MySQL-5.7.32-blueviolet)
-[![Website](https://img.shields.io/badge/WebSite-HERE-yellow)](http://109robot.com:5000/) 
+![Website](https://img.shields.io/badge/WebSite-HERE-yellow)]
 ![Bootrtap](https://img.shields.io/badge/bootstrap-Flask--Bootstrap%203.3.7.1-brightgreen)
 
-Flask는 Python으로 구동되는 웹 어플리케이션 프레임워크이다. Django 프레임워크보다 가볍고, 스케일아 작은 서버부터 스케일 큰 서버를 만들 수가 있으며, Jinja와 Werkzeug를 포함하고 있습니다. 
+Flask는 Python으로 구동되는 웹 어플리케이션 프레임워크이다. Django 프레임워크보다 가볍고, 스케일이 작은 서버부터 큰 서버까지 만들 수가 있으며, Jinja와 Werkzeug를 포함하고 있습니다. 
 
 부트스트랩은 트위터에서 사용하는 각종 레이아웃, 버튼, 입력창 등의 디자인을 CSS와 Javascript로 만들어 놓은 것이다. 웹 디자이너나 개발자 사이에서는 웹 디자인의 혁명이라고 불릴 정도로 폭발적은 반응을 얻는 프레임워크입니다.
 
