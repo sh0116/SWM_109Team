@@ -6,8 +6,8 @@
 [![PlayStore](https://img.shields.io/badge/Google%20Play%20Store-HERE-red)](https://play.google.com/store/apps/details?id=swm.app109)
 
 # Flutter 
+<img src="../images/app_flutter.png" width="300">
 
-// 플러터 로고
 
 Flutter는 Google에서 개발한 크로스 플랫폼 모바일 앱 개발 프레임워크입니다. 저희 팀은 아래와 같은 이유로 Flutter 플랫폼을 활용하여 앱 개발을 하였습니다.
 
@@ -17,7 +17,13 @@ Flutter는 Google에서 개발한 크로스 플랫폼 모바일 앱 개발 프�
 - 직접 컴파일되서 렌더링하기 때문에 성능이 빠름
 
 # Development
+
+<img src="../images/app_gif.gif" width="200">
+
 ### 1. 로봇 초기 설정
+
+<img src="../images/app_login.png" width="170">&nbsp;&nbsp;<img src="../images/app_ssh.png" width="170">
+
 **1. 보호자 및 사용자 등록**
  
 보호자의 이름, 연락처를 이용하여 등록하고
@@ -34,6 +40,7 @@ Flutter는 Google에서 개발한 크로스 플랫폼 모바일 앱 개발 프�
 
 ### 2. 사용자 상태 모니터링
 
+<img src="../images/app_dash1.png" width="170">&nbsp;&nbsp;<img src="../images/app_dash2.png" width="170">
 
 **1. 보호자용 관제 대시보드 접속**
 
@@ -43,6 +50,8 @@ Flutter는 Google에서 개발한 크로스 플랫폼 모바일 앱 개발 프�
 
 
 ### 3. 사용자 약 정보 입력
+
+<img src="../images/app_medicine.png" width="170">&nbsp;&nbsp;<img src="../images/app_meidicine_input.png" width="170">
 
 **1. 사용자 약 정보 확인**
 
