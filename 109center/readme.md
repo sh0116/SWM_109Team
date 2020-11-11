@@ -4,7 +4,7 @@
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-red)
 ![Mysql](https://img.shields.io/badge/MySQL-5.7.32-blueviolet)
-![Website](https://img.shields.io/badge/WebSite-HERE-yellow)]
+![Website](https://img.shields.io/badge/WebSite-HERE-yellow)
 ![Bootrtap](https://img.shields.io/badge/bootstrap-Flask--Bootstrap%203.3.7.1-brightgreen)
 
 Flask는 Python으로 구동되는 웹 어플리케이션 프레임워크이다. Django 프레임워크보다 가볍고, 스케일이 작은 서버부터 큰 서버까지 만들 수가 있으며, Jinja와 Werkzeug를 포함하고 있습니다. 
@@ -39,7 +39,6 @@ python3 run.py
 ### 백구 센터 메인 페이지
 >index.html
 
-
 **1. 전체 사용자 지도**
 
 kakao map api를 통해 마커에 user_id를 입력하여 전체 정보를 띄운다.
@@ -57,6 +56,10 @@ kakao map api를 통해 마커에 user_id를 입력하여 전체 정보를 띄�
 
 또한 노인의 생활 패턴을 파악하기 위해 필요한 데이터를 시각화 한다.
 
+<div><img src="../images/index.png" width="500"></div>
+
+
+
 
 
 
@@ -69,6 +72,8 @@ kakao map api를 통해 마커에 user_id를 입력하여 전체 정보를 띄�
 
 백구 로봇에서 정제된 활동량을 서버로 전송 받아 가장 최신의 데이터를 30분 단위 당 실시간 그래프로 작성한다.
 
+<div><img src="../images/realtime.gif" width="500">
+</div>
 
 
 **2. 센서 데이터 수집**
@@ -88,3 +93,5 @@ kakao map api를 통해 마커에 user_id를 입력하여 전체 정보를 띄�
 개인 사용자의 시간대 별 평균 활동량을 시각화 한다. 
 
 백구 로봇을 통해 얻어온 안부 전화 지표를 활용하여 2pm을 기준으로 답변 받도록 한다.
+
+<div><img src="../images/map.png" width="500"></div>
