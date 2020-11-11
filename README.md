@@ -80,7 +80,7 @@ options
 
 - MOU 체결 (with 꼬마빌리지)
 
-<div><img src="./images/MOU.jpeg" width="200"></div>
+<div><img src="./images/MOU.jpeg" width="400"></div>
 
 - SW 프로그램 저작권 등록
 
