@@ -1,13 +1,16 @@
-<p align="center"><img src="./images/109_logo.png" width="400"></p>
 
-![RPi](https://img.shields.io/badge/Raspberry%20Pi-4B-brightgreen)
+<div align="center"><img src="./images/109_logo_ver.png" width="300">
+</div>
+
+
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![RPi](https://img.shields.io/badge/Raspberry%20Pi-4B-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.1.2-orange)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-red)
 ![Snowboy](https://img.shields.io/badge/Snowboy-1.3.0-9cf)
 ![Flutter](https://img.shields.io/badge/Flutter-1.22.2-green)
 ![Mysql](https://img.shields.io/badge/MySQL-5.7.32-blueviolet)
-[![Website](https://img.shields.io/badge/WebSite-HERE-yellow)](http://109robot.com:5000/) 
+![Website](https://img.shields.io/badge/WebSite-HERE-yellow)
 
 # Overview
 
@@ -85,4 +88,5 @@ options
 // 현수막 사진 및 현장 사진
 
 # Contribution
-백구 로고, 소마 로고, 과기부 로고!
+<div align="center"><img src="./images/109_logo.png" width="200">&nbsp;&nbsp;&nbsp;<img src="./images/swm_logo.png" width="150">&emsp;<img src="./images/ict_logo.jpeg " width="300">
+</div>
