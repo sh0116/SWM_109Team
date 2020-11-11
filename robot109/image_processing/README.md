@@ -1,15 +1,15 @@
-//로고
+<div align="center"><img src="../../images/109_logo_ver.png" width="300">
+</div>
 
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.1.2-orange) 
 ![TF Lite](https://img.shields.io/badge/TensorFlow%20Lite-2.1.0-yellow)
 
-//낙상 gif
 
 # Development
 ### 1. 낙상 인식 알고리즘
 
-//Flowchart
+<img src="../../images/image_flowchart.png" width="500">
 
 **1. Bounding Box로 비율 계산**
  
@@ -19,6 +19,8 @@ W(width)와 H(height)를 기준으로 세 가지 상태로 분류한다.
 - H < W/2: 완전히 누운 상태
 
 **2. Head Point 추출**
+
+<img src="../../images/image_head.png" width="800">
 
 상태가 변하면서 X축 변화폭이 큰 쪽을 Head Point로 선택한다.
 > 1. '서 있는 상태'에서 추출된 (x_min+x_max)/2 = x_center를 임시 Head Point(x_center, y_min)로 설정
@@ -33,6 +35,8 @@ W(width)와 H(height)를 기준으로 세 가지 상태로 분류한다.
 시간 차이가 임계치보다 빠르면 1차적으로 낙상으로 인식한다.
 
 **4. 속도 계산**
+
+<img src="../../images/image_speed.png" width="500">
 
 사용자의 키를 기반으로 실제 이동거리를 구하여 속도를 계산한다.
 
