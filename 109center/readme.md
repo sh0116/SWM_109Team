@@ -1,4 +1,4 @@
-<div align="center"><img src="./images/109_logo_ver.png" width="300">
+<div align="center"><img src="../images/109_logo_ver.png" width="300">
 </div>
 
 ![Python](https://img.shields.io/badge/Python-3.7.4-blue)
