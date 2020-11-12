@@ -15,6 +15,7 @@ class ssh extends StatefulWidget {
 class _sshState extends State<ssh> {
   String _result = '';
   List _array;
+  String _ip = '';
   String _ssid = '';
   String _psk = '';
   String _userId = '';
@@ -27,13 +28,13 @@ class _sshState extends State<ssh> {
 
   Future<void> onClickCmd() async {
     var client = new SSHClient(
-      // host: "192.168.4.1",
-      host: "172.16.101.11",
+      host: _ip,
+      //host: "172.16.101.11",
       port: 22,
       username: "pi",
       passwordOrKey: "raspberry",
     );
-
+    //print("ssh ip " + _ip);
     String result;
     //try {
     result = await client.connect();
@@ -42,14 +43,14 @@ class _sshState extends State<ssh> {
       await client.execute("echo '\tssid=\"" + _ssid + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '\tpsk=\"" + _psk + "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '\tkey_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
+      await client.execute("echo '\tscan_ssid=1' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf");
       await client.execute("echo '" + _ssid + "' | sudo tee -a /etc/ssid_list.txt");
       await client.execute("echo '" + _userId + "' | sudo tee -a ~/robot109/data/user_info.txt");
       await client.execute("sudo reboot");
     }
     client.disconnect();
-    Navigator.pop(context);
-    Navigator.pop(context);
+    print("register");
     //}
     //} on PlatformException catch (e) {
     //print('Error: ${e.code}\nError Message: ${e.message}');
@@ -71,8 +72,33 @@ class _sshState extends State<ssh> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget> [
-          //Text('Login - protector'),
-          //SizedBox(height: 20),
+          Text('네트워크 연결', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+          SizedBox(height: 40),
+          Text('네트워크 연결을 위해'),
+          SizedBox(height: 10),
+          Text('\'RPi WiFi\'에 연결해주시고'),
+          SizedBox(height: 10),
+          Text('연결된 IP 주소를 입력해주세요'),
+          SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('IP 주소'),
+              Container(
+                child: TextField(
+                  controller: TextEditingController(),
+                  style: TextStyle(fontSize: 21, color: Colors.black),
+                  textAlign: TextAlign.center,
+                  onChanged: (String str){
+                    _ip = str;
+                  },
+                ),
+                width: 170,
+                padding: EdgeInsets.only(left: 16),
+              )
+            ],
+          ),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -110,11 +136,33 @@ class _sshState extends State<ssh> {
               )
             ],
           ),
-          SizedBox(height: 50),
-          RaisedButton(
-              child: Text("등록"),
-              onPressed: onClickCmd,
-              color: Colors.blue
+          SizedBox(height: 100),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                child: Text("등록", style: TextStyle(fontSize: 20, color: Colors.white)),
+                onPressed: onClickCmd,
+                padding: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0)
+                ),
+                color: Colors.blue,
+              ),
+              SizedBox(width: 40),
+              RaisedButton(
+                child: Text("돌아가기", style: TextStyle(fontSize: 20, color: Colors.white)),
+                onPressed: (){
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                padding: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(50.0)
+                ),
+                color: Colors.blue,
+              )
+            ]
           ),
           //SizedBox(height: 50),
           //Text(_result),

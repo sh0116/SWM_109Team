@@ -22,20 +22,28 @@ class _menuState extends State<menu> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height: 100),
+            Image.asset("images/logo2.png", width: 250),
+            SizedBox(height: 70),
             RaisedButton(
-              child: Text('초기 설정'),
+              child: Text('          초기 설정          ', style: TextStyle(fontSize: 25, color: Colors.white)),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
                   return userInfo();
                 })
                 );
               },
+              padding: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0)
+              ),
+              color: Colors.blue,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 50),
             RaisedButton(
-              child: Text('사용자 상태 모니터링'),
+              child: Text('  사용자 상태 모니터링  ', style: TextStyle(fontSize: 25, color: Colors.white)),
               //child: Icon(Icons.watch_later_sharp),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
@@ -43,16 +51,26 @@ class _menuState extends State<menu> {
                 })
                 );
               },
+              padding: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0)
+              ),
+              color: Colors.blue,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 50),
             RaisedButton(
-              child: Text('약 정보'),
+              child: Text('           약 정보           ', style: TextStyle(fontSize: 25, color: Colors.white)),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context){
                   return selectMedicineUser();
                 })
                 );
               },
+              padding: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0)
+              ),
+              color: Colors.blue,
             )
           ],
         )

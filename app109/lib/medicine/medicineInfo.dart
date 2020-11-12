@@ -153,7 +153,7 @@ class _medicineInfoState extends State<medicineInfo> {
                         child: RaisedButton(
                           child: Text(
                             '시간 선택하기',
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () async {
                             DatePicker.showTime12hPicker(context,
@@ -176,6 +176,10 @@ class _medicineInfoState extends State<medicineInfo> {
                               //currentTime: DateTime.now(), locale: LocaleType.ko);
                             );
                           },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(50.0)
+                          ),
+                          color: Colors.blue,
                         ),
                         height: 40,
                         padding: EdgeInsets.only(left: 16),
@@ -191,7 +195,7 @@ class _medicineInfoState extends State<medicineInfo> {
                         child: RaisedButton(
                           child: Text(
                             '시간 선택하기',
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () async {
                             DatePicker.showTime12hPicker(context,
@@ -214,6 +218,10 @@ class _medicineInfoState extends State<medicineInfo> {
                               //currentTime: DateTime.now(), locale: LocaleType.ko);
                             );
                           },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(50.0)
+                          ),
+                          color: Colors.blue,
                         ),
                         height: 40,
                         padding: EdgeInsets.only(left: 16),
@@ -229,7 +237,7 @@ class _medicineInfoState extends State<medicineInfo> {
                         child: RaisedButton(
                           child: Text(
                             '시간 선택하기',
-                            style: TextStyle(color: Colors.blue),
+                            style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () async {
                             DatePicker.showTime12hPicker(context,
@@ -252,16 +260,20 @@ class _medicineInfoState extends State<medicineInfo> {
                               //currentTime: DateTime.now(), locale: LocaleType.ko);
                             );
                           },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(50.0)
+                          ),
+                          color: Colors.blue,
                         ),
                         height: 40,
                         padding: EdgeInsets.only(left: 16),
                       )
                     ],
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 80),
                   Container(
                     child: RaisedButton(
-                        child: Text('등록'),
+                        child: Text('      등록      ', style: TextStyle(fontSize: 25, color: Colors.white)),
                         onPressed: () async {
                           setState(() {});
                           Map<String, dynamic> jsonBody = {
@@ -281,7 +293,12 @@ class _medicineInfoState extends State<medicineInfo> {
                           await postData('medicine_data', jsonBody).then((val) async {
                             Navigator.pop(context);
                           });
-                        }
+                        },
+                        padding: EdgeInsets.all(20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(50.0)
+                        ),
+                        color: Colors.blue,
                     ),
                   ),
                   SizedBox(height: 50),
