@@ -55,16 +55,18 @@ def main():
         #check_touch(input_head, input_body)
         if (prev_head_touch and (not prev_body_touch)) and body_touch:
             print("head to body")
-            touch_count += 1
+            # touch_count += 1
             # shake tail
-            tail_servo_main.shake_tail(body_servo, tail_servo)
+            #tail_servo_main.shake_tail(body_servo, tail_servo)
         elif (prev_body_touch and (not prev_head_touch)) and head_touch:
             print("body to head")
-            touch_count += 1 
+            # touch_count += 1 
         elif (not prev_head_touch) and head_touch:
             print("only head")
         elif (not prev_body_touch) and body_touch:
             print("only body")
+            tail_servo_main.shake_tail(body_servo, tail_servo)
+            touch_count += 1
 
         #update previous input
         prev_head_touch = head_touch

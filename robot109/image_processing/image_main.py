@@ -13,6 +13,9 @@ import time
 import dataCenter
 import requests
 
+from multiprocessing import Process
+from sensor import sound_main
+
 global beforeStatus, nowStatus
 beforeStatus = image_falldown.status.standing
 nowStatus = image_falldown.status.standing
@@ -26,6 +29,10 @@ realtime = 0
 hourrealtime = 0
 nowTime = time.time()
 hourTime = time.time()
+
+global sound
+global sound_process
+sound = False
 
 def realtime_count(Cpx,Cpy,Bpx,Bpy):
     global realtime, nowTime, hourrealtime, hourTime
@@ -93,10 +100,11 @@ def main():
             #print("nothing detected | {} {} {} ".format(isTurned1, isTurned2, isTurned3))
             notShowTime = time.time()
             diffTime = notShowTime - showTime
-            if diffTime >= dataCenter.head_interval: # turn head again
+            #print("{} {} {}".format(diffTime, notShowTime, showTime))
+            if diffTime >= dataCenter.head_interval*3: # turn head again
+                #print("head interval")
                 isTurned1 = isTurned2 = isTurned3 = False
                 showTime = time.time()
-                continue
             if diffTime >= dataCenter.head_interval: # turn head 30 minutes after nothing detected
                 if isHeadClean: 
                     head_servo = head_servo_main.setup_head(dataCenter.head_pin)
@@ -111,12 +119,24 @@ def main():
                         if not isTurned3:
                             head_servo_main.turn_head_center(head_servo)
                             isTurned3= True
+                global sound
+                if not sound:
+                        print("*******************************")
+                        global sound_process
+                        sound_process = Process(target=sound_main.main)
+                        sound_process.start()
+                        sound = True
+
         for out in outs: # anything detected 
+            if sound:
+                sound_process.terminate()
             if out['class_id'] == 0 and out['score'] > minConfidence: # person detected
                 # refresh head servo variables
                 if isTurned1 or isTurned2 or isTurned3:
                     isTurned1 = isTurned2 = isTurned3 = False
                     head_servo_main.cleanup_head(dataCenter.head_pin)
+                    #head_servo.stop()
+                    print("cleanup")
                     isHeadClean = True
                 showTime = time.time()
                 #print("person detected")
