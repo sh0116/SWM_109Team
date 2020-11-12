@@ -1,0 +1,71 @@
+#!/bin/bash -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+printf "My IP address is %sn" "$_IP"
+fi
+#Wifi config - if no prefered Wifi generate a hotspot
+#RPi Network Conf Bootstrapper
+ 
+createAdHocNetwork()
+{
+    echo "Creating RPI Hotspot network" >> ~/my_dir/log/boot.log
+    ifconfig wlan0 down
+    ifconfig wlan0 10.0.0.5  netmask 255.255.255.0 up
+    service dnsmasq start
+    service hostapd start
+    echo " ">> ~/my_dir/log/boot.log
+    echo "Hotspot network created" >> ~/my_dir/log/boot.log
+    echo " ">> ~/my_dir/log/boot.log
+}
+ 
+echo "=================================" >> ~/my_dir/log/boot.log
+echo "RPi Network Conf Bootstrapper" >> ~/my_dir/log/boot.log
+echo "=================================" >> ~/my_dir/log/boot.log
+echo "Scanning for known WiFi networks" >> ~/my_dir/log/boot.log
+
+
+connected=false
+
+while read ssid; do
+    echo [$ssid]
+    echo " " >> ~/my_dir/log/boot.log
+    echo "checking if ssid available:" $ssid >> ~/my_dir/log/boot.log
+    echo " " >> ~/my_dir/log/boot.log
+    if iwlist wlan0 scan | grep $ssid > /dev/null
+    then
+        echo "First WiFi in range has SSID:" $ssid >> ~/my_dir/log/boot.log
+        echo "Starting supplicant for WPA/WPA2" >> ~/my_dir/log/boot.log
+        wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf > /dev/null 2>&1
+        echo "Obtaining IP from DHCP" >> ~/my_dir/log/boot.log
+        if dhclient -1 wlan0
+        then
+            echo "Connected to WiFi" >> ~/my_dir/log/boot.log
+            connected=true
+            break
+        else
+            echo "DHCP server did not respond with an IP lease (DHCPOFFER)" >> ~/my_dir/log/boot.log
+            wpa_cli terminate
+            break
+        fi
+    else
+        echo "Not in range, WiFi with SSID:" $ssid >> ~/my_dir/log/boot.log
+    fi
+done < /etc/ssid_list.txt
+
+ 
+if ! $connected; then
+    createAdHocNetwork
+fi
+exit 0

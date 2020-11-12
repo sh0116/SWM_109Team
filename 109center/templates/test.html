@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>109center | Dashboard</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="static/css/ready.css">
+    <link rel="stylesheet" href="static/css/demo.css">
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f3a3a8e297eaddc4e57c1381ad036f3&libraries=services"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="scrollbar-inner sidebar-wrapper">
+                <img src="static/img/109logo.png" style="width: 100%; height: 100%;">
+                <ul class="nav">
+                    <li class="nav-item active">
+                        <a href="/">
+                            <i class="la la-dashboard"></i>
+                            <p>사용자 상태 모니터링</p>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <h4 class="page-title">사용자 상태 모니터링</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title"> 전체 사용자 지도 </h4>
+
+                                </div>
+                                <div class="card-body">
+                                    <div class="mapcontainer">
+                                        <div id="map" style="width:100%;height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">사용자 정보</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="text-muted "><b>이름 : </b> {{data1[0].1}} </p>
+                                        <p class="text-muted "><b>생년월일 : </b>{{data1[0].3}}</p>
+                                        <p class="text-muted "><b>성별 : </b> {{gender}}</p>
+                                        <p class="text-muted "><b>주소 : </b> {{data1[0].4}} </p>
+                                        <p class="text-muted "><b>연락처 : </b>{{data1[0].5}}</p>
+
+                                        <div class="card-footer">
+                                            <pre class=" text-muted">       </pre>
+                                            <p class=" text-muted"><b>보호자 :</b> {{prot_info[0][0]}}</p>
+                                            <p class="text-muted "><b>연락처 : </b>{{prot_info[0][1]}}</p>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="container-fluid" id="data-container" style="width:100%;height:400px;"></div>
+                            </div>
+
+                            <div class="col-md-3 pt-3">
+                                <div class="card card-stats card-warning">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-street-view"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">분당 평균 활동량</p>
+                                                    <h4 class="card-title" style="text-align:center">{{avg_realtime}}
+                                                        act</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 pt-3">
+                                <div class="card card-stats card-success">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-bar-chart"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">최근 5분 활동량</p>
+                                                    <h4 class="card-title" style="text-align:center">{{latest_realtime}}
+                                                        act</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 pt-3">
+                                <div class="card card-stats card-danger">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-ambulance text-warning"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-8 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">총 낙상 횟수</p>
+                                                    <h4 class="card-title" style="text-align:center">{{row1[0]}} 번</h4>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 pt-3">
+                                <div class="card card-stats card-primary">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-paw "></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-8 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">총 교감 횟수</p>
+                                                    <h4 class="card-title" style="text-align:center">{{touch_count}} 번
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card card-stats">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="icon-big text-center icon-warning">
+                                                    <i class="la la-tint text-primary"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">현재의 </p> <b class="card-category">온 /
+                                                        습도</b>
+                                                    <h4 class="card-title">{{data[0][0]}}<small> ℃</small> /
+                                                        {{data3[0][0]}}<small>%</small></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card card-stats">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-fire text-danger"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">오늘의 </p> <b class="card-category">최저 / 최고
+                                                        온도</b>
+                                                    <h4 class="card-title">{{temper_min_max[0].0}} <small> ℃</small> /
+                                                        {{temper_min_max[0].1}}<small> ℃</small></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-clock-o"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">오늘의 </p> <b class="card-category">기상 시간
+                                                        (평균)</b>
+                                                    <h4 class="card-title">{{wake_up[0].1}} : {{wake_up[0].2}} /
+                                                        {{avg_wake[0]}} : {{avg_wake[1]}}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card card-stats">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="icon-big text-center">
+                                                    <i class="la la-hotel"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="numbers">
+                                                    <p class="card-category">어제의 </p> <b class="card-category">취침 시간</b>
+                                                    <h4 class="card-title">{{sleep[0].1}} : {{sleep[0].2}} /
+                                                        {{avg_sleep[0]}} : {{avg_sleep[1]}}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-card-no-pd">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">오늘 누적 활동량</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="task-complete" class="chart-circle mt-4 mb-3"></div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="legend"><i class="la la-circle text-primary"></i> 누적 활동량 달성률 </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-stats">
+                                <div class="card-body">
+                                    <p class="fw-bold mt-1">어제 보다 오늘</p>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center icon-warning">
+                                                <i class="la la-dashboard text-warning"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-7 d-flex align-items-center">
+                                            <div class="numbers">
+                                                <p class="card-category">수면 시간</p>
+                                                <h4 class="card-title">{{sub_sleeping}} 분</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="la la-gratipay text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-7 d-flex align-items-center">
+                                            <div class="numbers">
+                                                <p class="card-category">교감 횟수</p>
+                                                <h4 class="card-title">{{sub_touch}} 번</h4>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="icon-big text-center">
+                                                <i class="la la-user-plus text-primary"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-7 d-flex align-items-center">
+                                            <div class="numbers">
+                                                <p class="card-category">활동량</p>
+                                                <h4 class="card-title">{{sub_activity}}</h4>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card">
+                                    <div class="card-title">최근 낙상 기록</div>
+                                    <div class="card-body">
+                                        <table class="table mt-3">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Date</th>
+                                                    <th>낙상 속도</th>
+                                                </tr>
+                                            </thead>
+                                            {% for n in row %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ loop.index }} </td>
+                                                    <td>{{n[1]}}</td>
+                                                    <td>{{n[2]}} m/s</td>
+                                                </tr>
+
+                                            </tbody>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="user_chart" style="width:100%;height:350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-tasks">
+                            <div class="card-header ">
+                                <h4 class="card-title">사용자 안부 전화 지표</h4>
+                                <p class="card-category">오후 14:00 기준입니다.</p>
+                            </div>
+                            <div class="card-body ">
+                                <div class="table-full-width">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                            
+                                                </th>
+                                                <th>Q. 질문 리스트</th>
+                                                <th>A. 답변</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input task-select" type="checkbox">
+                                                            <span class="form-check-sign"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>오늘 잠은 잘 주무셨나요?</td>
+                                                <td class="td-actions">
+                                                    {{qa[0]}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input task-select" type="checkbox">
+                                                            <span class="form-check-sign"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>오늘 이상 체온이 있으신가요?</td>
+                                                <td class="td-actions">
+                                                    {{qa[1]}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input task-select" type="checkbox">
+                                                            <span class="form-check-sign"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>오늘 아픈 곳이 있으신가요?</td>
+                                                <td class="td-actions">
+                                                    {{qa[2]}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input task-select" type="checkbox">
+                                                            <span class="form-check-sign"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>오늘 식사는 잘 하셨나요?</td>
+                                                <td class="td-actions">
+                                                    {{qa[3]}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+</body>
+<script language="JavaScript">
+
+    var avg_hour_each = []
+    var hour_avg = []
+    {% for rows in ONEuser_avg_activity %}
+    var a = parseFloat('{{rows[0]}}')
+    hour_avg.push(a);
+    console.log("활동량", a)
+    {% endfor %}
+    console.log(hour_avg)
+    var avg, a = 0;
+    var sum = 0;
+    for (var i = 0; i <= 16; i++) {
+        if (a != 2) {
+            sum += hour_avg[i];
+            a++;
+        } else {
+            sum /= 3; avg = sum;
+            avg_hour_each.push(avg);
+            sum = 0;
+            a = 0;
+        }
+    }
+    console.log("활동량", avg_hour_each)
+    $(document).ready(function () {
+        var chart = {
+            type: 'column'
+        };
+        var title = {
+            text: '시간대 별 노인 평균 활동량'
+        };
+        var xAxis = {
+            categories: ['6-9', '9-12', '12-15', '15-18', '18-21'],
+            crosshair: true
+        };
+        var yAxis = {
+            min: 0,
+            title: {
+                text: '활동량 (act)'
+            }
+        };
+        var tooltip = {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} act</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        };
+        var plotOptions = {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        };
+        var credits = {
+            enabled: false
+        };
+
+        var series = [{
+            name: '활동량',
+            color: '#0088ff',
+            data: avg_hour_each
+        }];
+
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.tooltip = tooltip;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.series = series;
+        json.plotOptions = plotOptions;
+        json.credits = credits;
+        $('#user_chart').highcharts(json);
+
+    });
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    let alarm = new Audio();
+    // path to your alarm audio file
+    var socket = io.connect('http://www.109center.com:5000/');
+    socket.on('message', function (data) {
+        //  console.log(data);
+        swal("낙상이 발생하였습니다", "누구누구", "warning");
+        alarm.play();
+    });
+
+
+
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://www.109center.com:5000/');
+    socket.on('user_info', function (data) {
+        //  console.log(data);
+        swal("새로운 사용자가 등록되었습니다", "누구누구", "success");
+
+    });
+</script>
+<script>
+
+    var mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    var zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+    var geocoder = new kakao.maps.services.Geocoder();
+    var newAdd = []
+    var text = []
+    var activity = []
+    {% for rows in data2 %}
+    newAdd.push('{{rows[4]}}');
+    text.push('{{rows[1]}}');
+    {% endfor %}
+    console.log(text[0]);
+    newAdd.forEach(function (v, i) {
+        geocoder.addressSearch(newAdd[i], function (result, status) {
+
+            // 정상적으로 검색이 완료됐으면
+
+            if (status === kakao.maps.services.Status.OK) {
+
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                var imageSrc = 'static/img/green_maker'
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: coords
+                });
+                marker.id = i + 1;
+                var infowindow = new kakao.maps.InfoWindow({
+                    //content: '<div style="width:150px;text-align:center;padding:6px 0;">'+'<> 이름 : </p>' + text[i] + '</div>' + '<div style = text-align:center;padding:6px 0;>' + newAdd[i] + '</div>'
+                    content: '<div  class=""><div><div><div class="m-2"><span style="font-weight: bold;">이름: </span>'
+                        + text[i] + '</div></div><div class="m-2"><span style="font-weight: bold;">주소:  </span>'
+                        + newAdd[i]
+                });
+
+                map.setCenter(coords);
+
+                kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+                kakao.maps.event.addListener(marker, 'click', makeClickListener(marker.id));
+
+
+            }
+        });
+    });
+    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+    //'<br></div></div><div><div class="m-2"><span style="font-weight: bold;">현재 활동량: </span>'+ '{{avg_realtime}}' + '</div></div></div>
+    function makeOverListener(map, marker, infowindow) {
+        return function () {
+            infowindow.open(map, marker);
+            console.log(marker.id)
+        };
+    }
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+    function makeOutListener(infowindow) {
+        return function () {
+            infowindow.close();
+        };
+    }
+
+    function makeClickListener(id) {
+        return function () {
+            window.location.href = "http://www.109center.com:5000/test?user_id=" + id;
+
+        }
+    }
+
+</script>
+
+<script src="static/js/core/jquery.3.2.1.min.js"></script>
+<script src="static/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="static/js/core/popper.min.js"></script>
+<script src="static/js/core/bootstrap.min.js"></script>
+<script src="static/js/plugin/chartist/chartist.min.js"></script>
+<script src="static/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js"></script>
+<script src="static/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+<script src="static/js/plugin/jquery-mapael/jquery.mapael.min.js"></script>
+
+<script src="static/js/plugin/chart-circle/circles.min.js"></script>
+<script src="static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="static/js/ready.min.js"></script>
+<script src="static/js/demo.js?v18"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<script src="/static/js/highcharts.js?37"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+</html>
