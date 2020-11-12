@@ -15,9 +15,9 @@ FIRE_TEMP = 35
 def request_temper():
     humid, temper = get_temp()
     temperature_data = {'user_id' : dataCenter.user_id , 'sensor_id' : dataCenter.temperature, 'num': temper, 'day' : 'sunday'}
-    requests.post(dataCenter.URL, json=temperature_data)
+    if temper > 0: requests.post(dataCenter.URL, json=temperature_data)
     humidity_data = {'user_id' : dataCenter.user_id , 'sensor_id' : dataCenter.humidity, 'num' : humid, 'day' : 'sunday'}
-    requests.post(dataCenter.URL, json=humidity_data)
+    if humid > 0: requests.post(dataCenter.URL, json=humidity_data)
 
 def get_temp():
     global MAX_TEMP, MIN_TEMP

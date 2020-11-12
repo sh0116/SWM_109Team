@@ -14,7 +14,7 @@ temp_interval = 5 # 5 seconds
 touch_interval = 10 # 10 seconds
 activ_interval = 10 # 10 seconds
 hour_activ_interval = 60 # 1 min
-head_interval = 15 # 15 seconds
+head_interval = 5 # 15 seconds
 
 # sensor id
 temperature = 1

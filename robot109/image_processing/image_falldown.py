@@ -124,16 +124,16 @@ def falldown_process(beforeStatus, personPoint, standingPoint, beforeCenterPoint
     centerPointY = int((fallMinY + fallMaxY)/2)
 
     # calculate head point
-    headPointX = centerPoint[0] # CenterPointX
+    headPointX = centerPointX # CenterPointX
     headPointY = personPoint[2] # fallMinY
 
     now_time = time.time()
     diff_time = now_time - standingTime
     if diff_time <= 1:
-        nowStatus, color = status_detected(status.falldown)
+        nowStatus, color, headPoint = status_detected(status.falldown)
 
         beforeCenterPointX = beforeCenterPoint[0]
-        beforeCenterPointY = beforeCenterPoint[1]
+        beforeCenterPointY = beforeCenterPoint[1] 
 
         # calculate head point
         headPointX = fallMinX if abs(fallMaxX - standingMaxX) < abs(fallMinX - standingMinX) else fallMaxX
@@ -166,7 +166,7 @@ def falldown_process(beforeStatus, personPoint, standingPoint, beforeCenterPoint
             nowStatus, color = status_detected(status.falldown)
             print("fall down 333")
     else: # lying
-        nowStatus, color = lying_process(beforeStatus, personPoint)
+        nowStatus, color, headPoint = lying_process(beforeStatus, personPoint, standingPoint)
 
         beforeCenterPointX = beforeCenterPoint[0]
         beforeCenterPointY = beforeCenterPoint[1]

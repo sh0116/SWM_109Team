@@ -3,9 +3,9 @@ import time
 import numpy as np
 import socket
 import sys
-import dataCenter
+#import dataCenter
 
-#GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BOARD)
 
 # variables
 global SERVO_MAX_DUTY, SERVO_MIN_DUTY
@@ -27,7 +27,7 @@ def setup_tail(body_pin, tail_pin):
     GPIO.setup(tail_pin, GPIO.OUT)
     body_servo = GPIO.PWM(body_pin, 50)
     tail_servo = GPIO.PWM(tail_pin, 50)
-    body_servo.start(3)
+    body_servo.start(7)
     tail_servo.start(7.5)
 
     return body_servo, tail_servo
@@ -44,13 +44,13 @@ def changeServo(servo, duty, sleepTime=DEFAULT_SLEEP):
 def down_tail(body_servo, tail_servo, sleepTime=DEFAULT_SLEEP):
     global UP_DOWN_SLEEP
     changeServo(tail_servo, 7.5, sleepTime)
-    for i in np.arange(6.0,3.0,-0.05):
+    for i in np.arange(3.0,7.0,0.1):
         changeServo(body_servo, i,sleepTime=UP_DOWN_SLEEP)
 
 def up_tail(body_servo, tail_servo, sleepTime=DEFAULT_SLEEP):
-    global UP_DOWN_SLEEP
+    global UP_DOWsuN_SLEEP
     changeServo(tail_servo, 7.5,sleepTime)
-    for i in np.arange(3.0,6.0,0.1):
+    for i in np.arange(7.0,3.0,-0.1):
         changeServo(body_servo, i,sleepTime=UP_DOWN_SLEEP)
 
 def shake_tail(body_servo, tail_servo, sleepTime=DEFAULT_SLEEP, count=DEFAULT_COUNT):
@@ -82,14 +82,17 @@ def shake_tail(body_servo, tail_servo, sleepTime=DEFAULT_SLEEP, count=DEFAULT_CO
     for idx,j in enumerate(shakeRange):
         changeServo(tail_servo,j,sleepCur)
         sleepCur=sleepStart+((sleepEnd-sleepStart)/len(shakeRange))*idx
-    changeServo(body_servo,6.0)
+    #changeServo(body_servo,6.0)
     #GPIO.cleanup(body_pin)
     #GPIO.cleanup(tail_pin)
 
 def main():
-    body_servo, tail_servo = setup_tail(dataCenter.body_pin, dataCenter.tail_pin)
+    body_servo, tail_servo = setup_tail(36, 38)
+    #body_servo, tail_servo = setup_tail(dataCenter.body_pin, dataCenter.tail_pin)
     shake_tail(body_servo, tail_servo)
-    cleanup_tail(dataCenter.body_pin, dataCenter.tail_pin)
+    down_tail(body_servo, tail_servo)
+    cleanup_tail(36, 38)
+    #cleanup_tail(dataCenter.body_pin, dataCenter.tail_pin)
 
 if __name__ == "__main__":
     main()
