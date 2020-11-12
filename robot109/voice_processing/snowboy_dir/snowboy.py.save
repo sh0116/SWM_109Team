@@ -1,0 +1,72 @@
+import snowboydecoder
+import wave
+import numpy as np
+import pyaudio
+
+def detected_callback():
+	print("hotword detected")
+
+	CHUNK = 1024
+	FORMAT = pyaudio.paInt16
+	CHANNELS = 1
+	RATE = 44100
+	RECORD_SECONDS = 5
+	WAVE_OUTPUT_FILENAME = "Temp.wav"
+
+	p = pyaudio.PyAudio()
+	
+	stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK)
+
+	print("Start to record the audio.")
+
+	frames = []
+	data_print = 0
+	temp = 100
+
+	while(True):
+	    data_print = np.fromstring(stream.read(CHUNK),dtype=np.int16)
+	    if int(np.average(np.abs(data_print))) > 350:
+	        while(True):
+	            data = stream.read(CHUNK)
+	            frames.append(data)
+        	    data_print = np.fromstring(stream.read(CHUNK),dtype=np.int16)
+	            if int(np.average(np.abs(data_print))) < 150:
+        	        temp -= 1
+                	if temp == 0:
+	                    break
+        	break
+
+                
+
+
+
+
+
+
+	print("Recording is finished.")
+
+	stream.stop_stream()
+	stream.close()
+	p.terminate()
+
+	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+	wf.setnchannels(CHANNELS)
+	wf.setsampwidth(p.get_sample_size(FORMAT))
+	wf.setframerate(RATE)
+	wf.writeframes(b''.join(frames))
+	wf.close()
+	
+
+def main():
+	
+	detector = snowboydecoder.HotwordDetector("baekgu.pmdl", sensitivity=0.5, audio_gain=3)
+	print("---Start---")
+	detector.start(detected_callback)
+	
+if __name__ == "__main__":
+	main()
+

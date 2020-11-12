@@ -32,9 +32,10 @@ class _userInfoState extends State<userInfo> {
       body: SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 40),
-                Text('사용자 정보 입력', style: TextStyle(fontSize: 25)),
+                SizedBox(height: 100),
+                Text('사용자 정보 입력', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -97,10 +98,7 @@ class _userInfoState extends State<userInfo> {
                     Text('생년월일'),
                     Container(
                       child: RaisedButton(
-                        child: Text(
-                          '날짜 선택하기',
-                          style: TextStyle(color: Colors.blue),
-                        ),
+                        child: Text('  날짜 선택하기  ', style: TextStyle(fontSize: 15, color: Colors.white)),
                         onPressed: () {
                           DatePicker.showDatePicker(context,
                               showTitleActions: true,
@@ -116,6 +114,11 @@ class _userInfoState extends State<userInfo> {
                               },
                               currentTime: DateTime.now(), locale: LocaleType.ko);
                         },
+                        padding: EdgeInsets.all(10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(50.0)
+                        ),
+                        color: Colors.blue,
                       ),
                       height: 40,
                       padding: EdgeInsets.only(left: 16),
@@ -160,10 +163,10 @@ class _userInfoState extends State<userInfo> {
                     )
                   ],
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 100),
                 Container(
                   child: RaisedButton(
-                      child: Text('등록'),
+                      child: Text('    등록    ', style: TextStyle(fontSize: 30, color: Colors.white)),
                       onPressed: () async {
                         Map<String, dynamic> jsonBody = {'name': "'"+_userName+"'",'gender': "'"+_userGender+"'",'birth': "'"+_userBirthday+"'",'address': "'"+_userAddress+"'",'contact': "'"+_userContact+"'",'prot_id': "'"+getProtId()+"'"};
                         await postData('user_info', jsonBody).then((val) async {
@@ -180,8 +183,13 @@ class _userInfoState extends State<userInfo> {
                           });
                         });
                         //print(_userName + _userContact);
-                      }
-                  ),
+                      },
+                      padding: EdgeInsets.all(20),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(50.0)
+                      ),
+                      color: Colors.blue,
+                    ),
                 ),
               ]
           )

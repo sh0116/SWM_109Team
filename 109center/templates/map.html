@@ -44,14 +44,13 @@
 		<div class="main-panel">
 			<div class="content">
 				<div class="container-fluid">
-					<h4 class="page-title">Dashboard</h4>
+					<h4 class="page-title">사용자 상태 모니터링</h4>
 					<div class="row">
 						<div class="col-12">
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title"> 사용자 지도 </h4>
-									<p class="card-category">
-										Map of the distribution of users around the world</p>
+									<h4 class="card-title"> 전체 사용자 지도 </h4>
+
 								</div>
 								<div class="card-body">
 									<div class="mapcontainer">
@@ -72,17 +71,23 @@
 										<p class="text-muted "><b>성별 : </b> {{data1[0][2]}}</p>
 										<p class="text-muted "><b>주소 : </b> {{data1[0].4}} </p>
 										<p class="text-muted "><b>연락처 : </b>{{data1[0].5}}</p>
-										<p class="text-muted"><b>보호자 :</b> {{data1[0][1]}}</p>
-										<p class="text-muted "><b>비상 연락망 : </b>{{data1[0].5}}</p>
-										
+
+										<div class="card-footer">
+											<div class="card-body">
+												<p class=" text-muted"><b>보호자 :</b> {{prot_info[0][0]}}</p>
+												<p class="text-muted "><b>비상 연락망 : </b>{{prot_info[0][1]}}</p>
+											</div>
+										</div>
+
+
 									</div>
 								</div>
 							</div>
 							<div class="col-lg-8">
-								<div class="container-fluid" id="data-container" style="width:100%;height:300px;"></div>
+								<div class="container-fluid" id="data-container" style="width:100%;height:400px;"></div>
 							</div>
 
-							<div class="col-md-3">
+							<div class="col-md-3 pt-3">
 								<div class="card card-stats card-warning">
 									<div class="card-body ">
 										<div class="row">
@@ -93,7 +98,7 @@
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-													<p class="card-category">평균 활동량</p>
+													<p class="card-category">시간당</p> 평균 활동량</p>
 													<h4 class="card-title">1,294</h4>
 												</div>
 											</div>
@@ -101,7 +106,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 pt-3">
 								<div class="card card-stats card-success">
 									<div class="card-body ">
 										<div class="row">
@@ -112,15 +117,15 @@
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-													<p class="card-category">지난 활동량</p>
-													<h4 class="card-title">$ 1,345</h4>
+													<p class="card-category">최근 3시간 </p> 활동량</p>
+													<h4 class="card-title">1,345</h4>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 pt-3">
 								<div class="card card-stats card-danger">
 									<div class="card-body">
 										<div class="row">
@@ -131,27 +136,27 @@
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-													<p class="card-category">기상 시간</p>
-													<h4 class="card-title">1303</h4>
+													<p class="card-category">오늘의 </p>기상 시간</p>
+													<h4 class="card-title">13 : 03</h4>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-3 pt-3">
 								<div class="card card-stats card-primary">
 									<div class="card-body ">
 										<div class="row">
 											<div class="col-5">
 												<div class="icon-big text-center">
-													<i class="la la-check-circle"></i>
+													<i class="la la-hotel"></i>
 												</div>
 											</div>
 											<div class="col-7 d-flex align-items-center">
 												<div class="numbers">
-													<p class="card-category">취침 시간</p>
-													<h4 class="card-title">576</h4>
+													<p class="card-category">어제의 </p>취침 시간</p>
+													<h4 class="card-title">21 : 45</h4>
 												</div>
 											</div>
 										</div>
@@ -240,19 +245,14 @@
 					<div class="row row-card-no-pd">
 						<div class="col-md-3">
 							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">오늘 누적 활동량</h4>
+								</div>
 								<div class="card-body">
-									<p class="fw-bold mt-1">오늘 누적 활동량</p>
-									<h4><b>$ 3,018</b></h4>
-									<img src="static/img/humidity.png" style="width: 90px;">
-
+									<div id="task-complete" class="chart-circle mt-4 mb-3"></div>
 								</div>
 								<div class="card-footer">
-									<ul class="nav">
-										<li class="nav-item"><a class="btn btn-default btn-link" href="#"><i
-													class="la la-history"></i> History</a></li>
-										<li class="nav-item ml-auto"><a class="btn btn-default btn-link" href="#"><i
-													class="la la-refresh"></i> Refresh</a></li>
-									</ul>
+									<div class="legend"><i class="la la-circle text-primary"></i> 누적 활동량 달성률 </div>
 								</div>
 							</div>
 						</div>
@@ -263,12 +263,12 @@
 									<div class="row">
 										<div class="col-5">
 											<div class="icon-big text-center icon-warning">
-												<i class="la la-pie-chart text-warning"></i>
+												<i class="la la-dashboard text-warning"></i>
 											</div>
 										</div>
 										<div class="col-7 d-flex align-items-center">
 											<div class="numbers">
-												<p class="card-category">Number</p>
+												<p class="card-category">수면 시간</p>
 												<h4 class="card-title">150GB</h4>
 											</div>
 										</div>
@@ -277,15 +277,30 @@
 									<div class="row">
 										<div class="col-5">
 											<div class="icon-big text-center">
-												<i class="la la-heart-o text-primary"></i>
+												<i class="la la-gratipay text-danger"></i>
 											</div>
 										</div>
 										<div class="col-7 d-flex align-items-center">
 											<div class="numbers">
-												<p class="card-category">Followers</p>
+												<p class="card-category">교감 횟수</p>
+												<h4 class="card-title">+ {{touch_count[0]}}</h4>
+											</div>
+
+										</div>
+									</div>
+									<hr />
+									<div class="row">
+										<div class="col-5">
+											<div class="icon-big text-center">
+												<i class="la la-user-plus text-primary"></i>
+											</div>
+										</div>
+										<div class="col-7 d-flex align-items-center">
+											<div class="numbers">
+												<p class="card-category">활동량</p>
 												<h4 class="card-title">+45K</h4>
 											</div>
-											
+
 										</div>
 									</div>
 								</div>
@@ -294,9 +309,7 @@
 						<div class="col-md-6">
 							<div class="card">
 								<div class="card">
-									<div class="card-header">
-										<div class="card-title">최근 낙상 기록</div>
-									</div>
+									<div class="card-title">최근 낙상 기록</div>
 									<div class="card-body">
 										<table class="table mt-3">
 
@@ -332,7 +345,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 	let alarm = new Audio();
-	 // path to your alarm audio file
+	// path to your alarm audio file
 	var socket = io.connect('http://www.109center.com:5000/');
 	socket.on('message', function (data) {
 		//  console.log(data);
@@ -424,9 +437,8 @@
 		}
 	}
 
-
-
 </script>
+
 <script src="static/js/core/jquery.3.2.1.min.js"></script>
 <script src="static/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script src="static/js/core/popper.min.js"></script>
@@ -439,13 +451,13 @@
 <script src="static/js/plugin/chart-circle/circles.min.js"></script>
 <script src="static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <script src="static/js/ready.min.js"></script>
-<script src="static/js/demo.js"></script>
+<script src="static/js/demo.js?v6"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<script src="/static/js/highcharts.js?23"></script>
+<script src="/static/js/highcharts.js?32"></script>
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

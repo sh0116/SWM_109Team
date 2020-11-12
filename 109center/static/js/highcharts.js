@@ -9,13 +9,13 @@ function requestData() {
         url: '/live-data',
         success: function(point) {
             var series = chart.series[0],
-                shift = series.data.length > 23; // shift if the series is
+                shift = series.data.length > 12; // shift if the series is
                                                  // longer than 20
             // add the point
             chart.series[0].addPoint(point, true, shift);
 
             // call it again after one second
-            setTimeout(requestData, 1000);
+            setTimeout(requestData, 10000);
         },
         cache: false
     });
@@ -59,7 +59,7 @@ $(document).ready(function() {
             gridLineWidth: 1,
             minPadding: 0.2,
             maxPadding: 0.2,
-            max:300,
+            max:100,
             min:0
         },
         
