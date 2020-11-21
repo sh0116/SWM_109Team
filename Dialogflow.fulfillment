@@ -1,0 +1,118 @@
+// See https://github.com/dialogflow/dialogflow-fulfillment-nodejs
+// for Dialogflow fulfillment library docs, samples, and to report issues
+'use strict';
+ 
+const functions = require('firebase-functions');
+const {WebhookClient} = require('dialogflow-fulfillment');
+const {Card, Suggestion} = require('dialogflow-fulfillment');
+ 
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+ 
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response });
+  console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
+  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+ 
+  function Welcome_109(agent) {
+    agent.add(`안뇽`);
+  }
+ 
+  function Ask_Weather(agent) {
+    var day = agent.parameters.date_109;
+    var location = agent.parameters.location_109;
+    if(!day){
+      day = '오늘';
+    }
+    agent.add("call"+ ","+"call_weather");
+  }
+  
+  function Play_Music(agent) {
+    agent.add("call"+ ","+"call_music" + ","+"송가인-가인이어라.mp3");
+  }
+  
+  function Control_Volume(agent) {
+    var sound_size2small = agent.parameters.sound_size2small;
+    var sound_size2big = agent.parameters.sound_size2big;
+    
+    if(!sound_size2small){
+   	  if(!sound_size2big){
+        agent.add("Control_Volume, None");	
+   	  }
+      else{
+        agent.add("Control_Volume, big");	
+      }
+    }
+    else{
+      if(!sound_size2big){
+        agent.add("Control_Volume, None");	
+   	  }
+      else{
+        agent.add("Control_Volume, small");	
+      }
+    }
+  }
+  function Ask_temp(agent) {
+    var number = agent.parameters.number;
+    var temp_109 = agent.parameters.temp_109;
+    if(!number){
+      agent.add(temp_109);	
+    }	
+    else{
+      agent.add(number);
+    }
+  }
+  function Ask_emergency(agent) {
+    agent.add("call"+ ","+"call_emergency");	
+  }
+  function call_Ask_Lotto(agent) {
+    agent.add("call"+ ","+"call_lotto_Info");	
+  }
+  
+  function TrueandFalse(yes,no){
+    var yes_bool = true;
+    var no_bool = true;
+    if(!yes){
+      yes_bool = false;
+    }
+    if(!no){
+      no_bool = false;
+    }
+    return [yes_bool,no_bool];
+  }
+  
+  function YesorNo(agent){
+    var yes = agent.parameters.ans_yes;
+    var no = agent.parameters.ans_no;
+    var bool_list = TrueandFalse(yes,no);
+    //bool_list[0] == 긍정 , bool_list[1] == 부정
+    if(bool_list[0]&&!bool_list[1]){
+      //긍정일때
+      agent.add("bool"+','+"positive");	
+    }
+    else if(!bool_list[0]&&bool_list[1]){
+      //부정일때
+      agent.add("bool"+','+"negative");	
+    }
+    else{
+      //긍정과 부정일때 and 둘다 아닐때
+      agent.add("bool"+','+"unknown");	
+    }
+  }
+  
+  
+  let intentMap = new Map();
+  intentMap.set('Welcome_109', Welcome_109);
+  intentMap.set('Play_Music', Play_Music);
+  intentMap.set('Control_Volume', Control_Volume);
+  intentMap.set('Ask_Weather', Ask_Weather);
+  intentMap.set('Ask_Lotto', call_Ask_Lotto);
+  intentMap.set('Ask_emergency', Ask_emergency);
+  intentMap.set('Ask_temp', Ask_temp);
+  
+  intentMap.set('Ask_dq', YesorNo);
+  intentMap.set('Ask_feeling', YesorNo);
+  intentMap.set('Ask_checkouting', YesorNo);
+  intentMap.set('Ask_eat', YesorNo);
+  intentMap.set('Ask_medicine', YesorNo);
+  agent.handleRequest(intentMap);
+});
