@@ -3,11 +3,11 @@ import sys
 
 def DB_AUTH():
     # RDS MYSQL information
-    host = "db109.cpehjs7hbg19.ap-northeast-2.rds.amazonaws.com"
+    host = ""
     port = 3306
-    userName = "admin"
-    userPasswd = "admin109"
-    database = "robot1"
+    userName = ""
+    userPasswd = ""
+    database = ""
 
     try:
         connection = pymysql.connect(host, user=userName, passwd=userPasswd, db=database, port=port, use_unicode=True, charset='utf8')
