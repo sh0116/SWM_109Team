@@ -50,7 +50,7 @@ def sample_recognize(local_file_path):
 def get_STT():
     #start = time.time()
     import os
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/pi/my_dir/NLP/ApisNLP/swm109-project-e282b0bbf05f.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ""
     local_file_path = "/home/pi/my_dir/NLP/voice_file/record.wav"
     return sample_recognize(local_file_path)
     
