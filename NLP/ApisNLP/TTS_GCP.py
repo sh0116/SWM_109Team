@@ -6,8 +6,8 @@ import os
 def get_TTS(NLP_Text):
     # aws 폴리 접속 인증
     client = boto3.client('polly',region_name='ap-northeast-2',
-         aws_access_key_id="AKIATH5XVEXCREBHIIZQ",
-         aws_secret_access_key="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"
+         aws_access_key_id="",
+         aws_secret_access_key=""
 	)
 
     #client = boto3.client('polly',region_name='ap-northeast-2')
