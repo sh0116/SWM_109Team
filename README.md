@@ -1,4 +1,3 @@
-SW Maestro 11기 109팀 독거노인을 위한 돌봄서비스 반려로봇🐶
 <div align="center"><img src="./images/109_logo_ver.png" width="300">
 </div>
 
